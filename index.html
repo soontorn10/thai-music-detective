@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Kanit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <!-- QRCode Generator Library (Client-Side Canvas/SVG Fallback) -->
+  <!-- QRCode Generator Library -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <style>
     :root {
@@ -15,21 +15,19 @@
       --bg-soft: #1e293b;
       --surface: #1e293b;
       --surface-light: #334155;
-      --card-light: #ffffff;
       --ink: #f8fafc;
       --ink-dark: #0f172a;
       --muted: #94a3b8;
       --border: #334155;
       --gold: #f59e0b;
       --gold-light: #fef3c7;
-      --gold-dark: #b45309;
       --brand: #3b82f6;
       --brand-hover: #2563eb;
       --success: #10b981;
       --danger: #ef4444;
       --warning: #f59e0b;
       --radius: 14px;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
       --font-head: 'Kanit', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-body: 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -52,10 +50,10 @@
 
     /* Top Bar */
     .topbar {
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.94);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 20px;
+      padding: 10px 20px;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -63,7 +61,7 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
     .brand-title {
@@ -71,13 +69,13 @@
       align-items: center;
       gap: 10px;
       font-family: var(--font-head);
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--gold);
     }
 
     .brand-sub {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--muted);
       font-weight: 400;
       display: block;
@@ -107,12 +105,12 @@
       text-decoration: none;
     }
     .btn:active { transform: scale(0.98); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .btn-primary {
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
       color: #0f172a;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
     }
     .btn-primary:hover:not(:disabled) {
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
@@ -130,6 +128,7 @@
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
     .btn-danger {
@@ -148,30 +147,40 @@
 
     .btn-sm {
       padding: 6px 12px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       border-radius: 8px;
+    }
+
+    /* Pulse green animation when all students finished */
+    .btn-ready-pulse {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      color: #ffffff !important;
+      border: 2px solid #a7f3d0 !important;
+      animation: readyGlow 1s infinite alternate;
+    }
+    @keyframes readyGlow {
+      from { box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); transform: scale(1); }
+      to { box-shadow: 0 0 22px rgba(16, 185, 129, 0.95); transform: scale(1.03); }
     }
 
     /* Container */
     .container {
-      max-width: 1220px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 20px 16px 60px;
+      padding: 16px 14px 60px;
     }
 
     .card {
-      background: rgba(30, 41, 59, 0.88);
+      background: rgba(30, 41, 59, 0.9);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 22px;
-      margin-bottom: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
     }
 
     /* Forms */
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 14px; }
     .form-label {
       display: block;
       font-weight: 600;
@@ -198,22 +207,138 @@
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
     .grid-4 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 14px;
+    }
+
+    /* Student 4-Step Progress Bar */
+    .stu-progress-wrap {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+    .stu-progress-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .stu-p-item {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 4px;
+      text-align: center;
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .stu-p-item.done {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #6ee7b7;
+      font-weight: 700;
+    }
+    .stu-p-item.current {
+      background: rgba(245, 158, 11, 0.2);
+      border: 2px solid var(--gold);
+      color: var(--gold-light);
+      font-weight: 800;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Teacher Big Stage Banner */
+    .teacher-hero-bar {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .teacher-stage-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-bottom: 14px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .stage-badge-step {
+      display: inline-block;
+      background: var(--gold);
+      color: #0f172a;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-bottom: 4px;
+    }
+    .stage-main-title {
+      font-family: var(--font-head);
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.25;
+    }
+    .stage-progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(59, 130, 246, 0.18);
+      border: 1px solid #3b82f6;
+      color: #93c5fd;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    .stage-progress-pill.all-done {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #10b981;
+      color: #6ee7b7;
+    }
+
+    .giant-next-btn {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #0f172a;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+    .giant-next-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
     }
 
     /* Group Cards in Lobby */
     .group-box {
       border-radius: 12px;
       padding: 16px;
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.78);
       border: 2px solid var(--border);
-      min-height: 160px;
-      transition: all 0.3s ease;
+      min-height: 150px;
     }
     .group-deed { border-color: #eab308; }
     .group-see { border-color: #3b82f6; }
@@ -223,7 +348,7 @@
     .group-header {
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -238,7 +363,7 @@
       color: #f8fafc;
       padding: 4px 10px;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       margin: 3px;
       border: 1px solid rgba(255,255,255,0.12);
     }
@@ -250,15 +375,13 @@
       align-items: center;
       justify-content: space-around;
       gap: 24px;
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
       border: 2px solid var(--gold);
       border-radius: 16px;
       padding: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-    .pin-display {
-      text-align: center;
-    }
+    .pin-display { text-align: center; }
     .pin-label {
       font-size: 1rem;
       color: var(--gold);
@@ -298,89 +421,25 @@
       display: block;
     }
 
-    /* Redesigned Teacher Wizard Step Bar (5 Clear Blocks) */
-    .wizard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .wizard-block {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .wizard-block.active-block {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 1px var(--gold);
-      background: rgba(245, 158, 11, 0.06);
-    }
-    .wizard-block-title {
-      font-family: var(--font-head);
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .wizard-sub-btns {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .step-btn {
-      flex: 1;
-      font-family: var(--font-head);
-      font-size: 0.84rem;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #1e293b;
-      color: #cbd5e1;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
-      white-space: nowrap;
-    }
-    .step-btn:hover { background: #334155; color: #fff; }
-    .step-btn.active {
-      background: var(--gold);
-      color: #0f172a;
-      border-color: var(--gold);
-      font-weight: 800;
-      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.35);
-    }
-
     /* Teacher Timer Bar */
     .timer-bar {
-      background: linear-gradient(90deg, #090d16 0%, #1e293b 100%);
-      border: 1px solid #475569;
-      border-radius: 12px;
-      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
     .timer-display {
       font-family: var(--font-head);
-      font-size: 1.9rem;
+      font-size: 1.65rem;
       font-weight: 800;
       color: var(--gold);
       background: #000;
-      padding: 4px 16px;
+      padding: 3px 14px;
       border-radius: 10px;
       border: 2px solid #475569;
       letter-spacing: 2px;
-      min-width: 120px;
+      min-width: 105px;
       text-align: center;
     }
     .timer-display.urgent {
@@ -457,12 +516,12 @@
       border: 1px solid #334155;
       border-radius: 12px;
       padding: 12px 14px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .inst-cat-header {
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
@@ -470,7 +529,7 @@
     }
     .inst-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 8px;
     }
     .inst-btn {
@@ -480,7 +539,7 @@
       border-radius: 10px;
       padding: 10px 8px;
       font-family: var(--font-head);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
@@ -498,6 +557,24 @@
       box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
     }
 
+    /* Sticky Bottom Submit Bar for Student K Stage */
+    .sticky-submit-bar {
+      position: sticky;
+      bottom: 10px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(8px);
+      border: 2px solid var(--gold);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      z-index: 50;
+      margin-top: 14px;
+    }
+
     /* Category Basket Table (5 Categories) */
     .clue-basket {
       background: #0f172a;
@@ -510,13 +587,13 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      padding: 8px 0;
+      padding: 7px 0;
       border-bottom: 1px solid rgba(255,255,255,0.07);
-      font-size: 0.95rem;
+      font-size: 0.94rem;
     }
     .clue-row:last-child { border-bottom: none; }
     .clue-cat {
-      min-width: 130px;
+      min-width: 125px;
       font-weight: 700;
       font-family: var(--font-head);
     }
@@ -535,7 +612,7 @@
     .choice-card:hover { border-color: #64748b; }
     .choice-card.selected {
       border-color: var(--gold);
-      background: rgba(245, 158, 11, 0.15);
+      background: rgba(245, 158, 11, 0.16);
     }
 
     /* Unanimous Vote Status Box */
@@ -550,21 +627,13 @@
       border-color: var(--success);
       background: rgba(16, 185, 129, 0.15);
     }
-    .shake {
-      animation: shakeAnim 0.4s ease;
-    }
-    @keyframes shakeAnim {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
 
     /* Press Conference Stage */
     .press-stage {
       background: radial-gradient(circle at 50% 0%, #3b0764 0%, #0f172a 70%);
       border: 3px solid var(--gold);
       border-radius: 18px;
-      padding: 28px 20px;
+      padding: 26px 20px;
       position: relative;
       overflow: hidden;
       box-shadow: 0 20px 50px rgba(0,0,0,0.7);
@@ -579,20 +648,13 @@
       background: linear-gradient(180deg, #78350f 0%, #451a03 100%);
       border-top: 6px solid var(--gold);
       border-radius: 12px 12px 0 0;
-      max-width: 420px;
+      max-width: 440px;
       margin: 24px auto 0;
       padding: 14px;
       text-align: center;
       font-family: var(--font-head);
       color: var(--gold-light);
       box-shadow: 0 -6px 20px rgba(0,0,0,0.5);
-    }
-    .camera-flash {
-      animation: flashEffect 0.6s ease-out;
-    }
-    @keyframes flashEffect {
-      0% { background-color: rgba(255,255,255,0.85); }
-      100% { background-color: transparent; }
     }
 
     /* Detective ID Card */
@@ -707,7 +769,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.82);
       display: none;
       align-items: center;
       justify-content: center;
@@ -725,7 +787,6 @@
       box-shadow: var(--shadow);
     }
 
-    /* Fullscreen Image Zoom Modal */
     .zoom-modal-card {
       position: relative;
       max-width: 96vw;
@@ -744,7 +805,6 @@
       margin: 0 auto;
     }
 
-    /* Print All ID Cards Grid */
     .all-id-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -763,7 +823,7 @@
 
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Topbar (ไม่มีคำว่า K-P-A บนหัวเว็บเพื่อรักษาบรรยากาศเกมสืบสวน) -->
+  <!-- Topbar: ปุ่มเพลงประกอบซ่อนจากหน้าจอเด็ก (แสดงเฉพาะตอนเปิดโหมดครู) -->
   <header class="topbar">
     <div class="brand-title">
       <span>🕵️‍♂️</span>
@@ -773,34 +833,36 @@
       </div>
     </div>
     <div class="top-actions">
-      <button id="btn-bgm" class="btn btn-secondary btn-sm" onclick="toggleBGM()">
+      <!-- BGM Button: Only visible in TEACHER mode -->
+      <button id="btn-bgm" class="btn btn-secondary btn-sm" style="display:none;" onclick="toggleBGM()">
         🔇 เพลงประกอบ: ปิด
       </button>
       <button id="btn-switch-student" class="btn btn-secondary btn-sm" style="display:none;" onclick="switchToStudentView()">
-        📱 มุมมองนักเรียน
+        📱 สลับดูมุมมองนักเรียน
       </button>
+      <!-- Teacher Menu Button: Hidden once student logs into workspace -->
       <button id="btn-teacher-menu" class="btn btn-secondary btn-sm" onclick="openTeacherModal()">
-        🔒 เมนูครู
+        🔒 สำหรับครู
       </button>
     </div>
   </header>
 
   <main class="container">
     <!-- Status Banner -->
-    <div id="sync-banner" style="display:none; margin-bottom:12px; padding:10px 14px; border-radius:10px; background:rgba(59,130,246,0.2); border:1px solid #3b82f6; font-size:0.9rem;"></div>
+    <div id="sync-banner" style="display:none; margin-bottom:12px; padding:10px 14px; border-radius:10px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:600; font-size:0.92rem;"></div>
 
     <!-- ================= STUDENT VIEW ================= -->
     <section id="student-view">
       <!-- 1. Student Login -->
-      <div id="stu-login-card" class="card" style="max-width: 520px; margin: 20px auto;">
-        <h2 style="color:var(--gold); text-align:center; margin-bottom:6px;">🕵️‍♂️ ลงทะเบียนเข้าหน่วยสืบสวน</h2>
-        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:0; margin-bottom:20px;">
-          กรอกรหัสห้อง (PIN 4 หลักบนจอโปรเจกเตอร์) และข้อมูลประจำตัวสายสืบ
+      <div id="stu-login-card" class="card" style="max-width: 500px; margin: 16px auto;">
+        <h2 style="color:var(--gold); text-align:center; margin-bottom:4px;">🕵️‍♂️ ลงทะเบียนเข้าหน่วยสืบสวน</h2>
+        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:0; margin-bottom:18px;">
+          กรอกรหัสห้อง 4 หลักบนจอโปรเจกเตอร์ และเลือกทีมประจำโต๊ะของคุณ
         </p>
 
         <div class="form-group">
           <label class="form-label" for="stu-pin">🔑 รหัสห้อง (PIN 4 หลัก)</label>
-          <input id="stu-pin" type="text" maxlength="6" class="form-control" placeholder="เช่น 4829" style="font-size:1.3rem; font-weight:700; text-align:center; letter-spacing:4px;">
+          <input id="stu-pin" type="text" maxlength="6" class="form-control" placeholder="เช่น 4829" style="font-size:1.35rem; font-weight:800; text-align:center; letter-spacing:4px; color:var(--gold);">
         </div>
 
         <div class="form-group">
@@ -832,114 +894,99 @@
 
         <div id="stu-login-err" style="color:#f87171; font-size:0.9rem; margin-bottom:12px; display:none;"></div>
 
-        <button id="btn-stu-join" class="btn btn-primary" style="width:100%; font-size:1.05rem; padding:14px;" onclick="studentJoinRoom()">
+        <button id="btn-stu-join" class="btn btn-primary" style="width:100%; font-size:1.08rem; padding:14px;" onclick="studentJoinRoom()">
           🚀 เข้าสู่ศูนย์สืบสวนดนตรีไทย
         </button>
       </div>
 
-      <!-- 2. Student Active Workspace -->
+      <!-- 2. Student Active Workspace (Clean UI + 4-Step Progress Tracker) -->
       <div id="stu-workspace" style="display:none;">
-        <!-- Student Header Bar -->
-        <div class="card" style="padding:14px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:rgba(15,23,42,0.9);">
-          <div>
-            <span style="color:var(--gold); font-weight:700;" id="stu-badge-info">สายสืบ: -</span>
-            <span style="color:var(--muted); font-size:0.85rem; margin-left:8px;" id="stu-pin-info">ห้อง: -</span>
+        <!-- Compact Student Identity & 4-Step Progress Tracker -->
+        <div class="stu-progress-wrap">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+            <div>
+              <span style="color:var(--gold); font-weight:700; font-size:0.98rem;" id="stu-badge-info">สายสืบ: -</span>
+              <span style="color:var(--muted); font-size:0.82rem; margin-left:6px;" id="stu-pin-info">ห้อง: -</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" style="padding:4px 10px; font-size:0.78rem;" onclick="studentLogout()">สลับชื่อ</button>
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="studentLogout()">สลับชื่อ/ออกห้อง</button>
+          <!-- 4-Step Progress Bar so student knows where they are & how the game ends -->
+          <div class="stu-progress-steps" id="stu-progress-bar">
+            <div class="stu-p-item">1. คดีที่ 1</div>
+            <div class="stu-p-item">2. คดีที่ 2</div>
+            <div class="stu-p-item">3. คดีที่ 3</div>
+            <div class="stu-p-item">4. ปิดคดี</div>
+          </div>
         </div>
 
-        <!-- Dynamic Stage Container for Student -->
+        <!-- Dynamic Stage Container for Student (Separated from live status polling so buttons never flicker) -->
         <div id="stu-stage-content"></div>
       </div>
     </section>
 
     <!-- ================= TEACHER VIEW (PROJECTOR) ================= -->
     <section id="teacher-view" style="display:none;">
-      <!-- Teacher Control Panel (Wizard + Timer) -->
-      <div class="card no-print" style="padding:16px;">
-        <!-- Row 1: Room Management & Next Step Button -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="teacherCreateNewRoom()">
-              ➕ เปิดห้องเรียนใหม่ (สุ่ม PIN)
-            </button>
-            <div style="display:flex; align-items:center; gap:6px; background:#0f172a; padding:6px 12px; border-radius:10px; border:1px solid #334155;">
-              <span style="font-size:0.85rem; color:var(--muted);">PIN ห้อง:</span>
-              <input id="teacher-pin-input" type="text" style="width:70px; background:transparent; border:none; color:var(--gold); font-weight:800; font-size:1.1rem; text-align:center;" value="4829">
-              <button class="btn btn-secondary btn-sm" onclick="teacherLoadPin()">โหลดห้อง</button>
+      <!-- Big Clear Teacher Control Panel -->
+      <div class="teacher-hero-bar no-print">
+        <!-- Row 1: Big Stage Status + Giant Single Next Button -->
+        <div class="teacher-stage-banner">
+          <div>
+            <span class="stage-badge-step" id="teacher-step-badge">ขั้นตอนที่ 1 / 9</span>
+            <h2 class="stage-main-title" id="teacher-stage-title">🟢 ห้องลงทะเบียนสายสืบ (Lobby)</h2>
+            <div id="teacher-progress-pill" class="stage-progress-pill">
+              👥 สายสืบเข้าห้องแล้ว 0 คน
             </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <button id="btn-prev-stage" class="btn btn-secondary" onclick="teacherPrevStage()">
+              ⬅️ ย้อนกลับ
+            </button>
+            <button id="btn-giant-next" class="giant-next-btn" onclick="teacherNextStage()">
+              ⏭️ ไปด่านถัดไป : เปิดคดีที่ 1 ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Row 2: Timer + Quick Stage Jump Dropdown + Room PIN -->
+        <div class="timer-bar">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-head); font-weight:700; color:#e2e8f0; font-size:0.92rem;">⏱️ จับเวลา:</span>
+            <div id="teacher-timer-display" class="timer-display">00:00</div>
+            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(60, '1 นาที')">1 นาที</button>
+            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(90, '1.30 นาที')">1.30 นาที</button>
+            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(120, '2 นาที')">2 นาที</button>
+            <button class="btn btn-blue btn-sm" onclick="addTeacherTimer(30)">+30 วิ</button>
+            <button class="btn btn-danger btn-sm" onclick="stopTeacherTimer()">⏹️ รีเซ็ต</button>
           </div>
 
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <button class="btn btn-blue" onclick="teacherNextStage()">
-              ⏭️ ไปขั้นตอนถัดไป
-            </button>
-            <button class="btn btn-secondary btn-sm" onclick="refreshRoomState()">🔄 รีเฟรช</button>
-            <button class="btn btn-secondary btn-sm" onclick="openConfigModal()">⚙️ ตั้งค่าลิงก์</button>
-          </div>
-        </div>
+            <select id="teacher-jump-select" class="form-control" style="width:auto; padding:6px 10px; font-size:0.85rem; height:36px;" onchange="teacherSetStage(this.value)">
+              <option value="LOBBY">📍 ข้ามไป: 0. ห้องลงทะเบียน (Lobby)</option>
+              <option value="1K">📍 ข้ามไป: 1.1 คดีที่ 1 (ล่าเบาะแส)</option>
+              <option value="1P">📍 ข้ามไป: 1.2 คดีที่ 1 (ถอดรหัสวง)</option>
+              <option value="2K">📍 ข้ามไป: 2.1 คดีที่ 2 (ล่าเบาะแส)</option>
+              <option value="2P">📍 ข้ามไป: 2.2 คดีที่ 2 (ถอดรหัสวง)</option>
+              <option value="3K">📍 ข้ามไป: 3.1 คดีที่ 3 (ล่าเบาะแส)</option>
+              <option value="3P">📍 ข้ามไป: 3.2 คดีที่ 3 (ถอดรหัสวง)</option>
+              <option value="PRESS">📍 ข้ามไป: 4. ห้องแถลงข่าวปิดคดี</option>
+              <option value="A">📍 ข้ามไป: 5. ภารกิจตัดสินใจ</option>
+              <option value="SUMMARY">📍 ข้ามไป: 6. สรุปผลคะแนนทั้งห้อง</option>
+            </select>
 
-        <!-- Row 2: 5-Block Wizard Step Bar (ดูง่าย แยกสีแต่ละคดีชัดเจน) -->
-        <div class="wizard-grid">
-          <div class="wizard-block" id="wblock-0">
-            <div class="wizard-block-title">🟢 ขั้นเตรียมทีม</div>
-            <div class="wizard-sub-btns">
-              <button class="step-btn active" id="tstep-LOBBY" onclick="teacherSetStage('LOBBY')">0. ห้องลงทะเบียน (Lobby)</button>
+            <div style="display:flex; align-items:center; gap:4px; background:#090d16; padding:4px 10px; border-radius:8px; border:1px solid #334155;">
+              <span style="font-size:0.8rem; color:var(--muted);">PIN:</span>
+              <input id="teacher-pin-input" type="text" style="width:58px; background:transparent; border:none; color:var(--gold); font-weight:800; font-size:1rem; text-align:center;" value="4829">
+              <button class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:0.78rem;" onclick="teacherLoadPin()">โหลด</button>
             </div>
-          </div>
 
-          <div class="wizard-block" id="wblock-1">
-            <div class="wizard-block-title" style="color:#facc15;">📁 แฟ้มคดีที่ 1</div>
-            <div class="wizard-sub-btns">
-              <button class="step-btn" id="tstep-1K" onclick="teacherSetStage('1K')">1.1 ล่าเบาะแส</button>
-              <button class="step-btn" id="tstep-1P" onclick="teacherSetStage('1P')">1.2 ถอดรหัสวง</button>
-            </div>
-          </div>
-
-          <div class="wizard-block" id="wblock-2">
-            <div class="wizard-block-title" style="color:#60a5fa;">📁 แฟ้มคดีที่ 2</div>
-            <div class="wizard-sub-btns">
-              <button class="step-btn" id="tstep-2K" onclick="teacherSetStage('2K')">2.1 ล่าเบาะแส</button>
-              <button class="step-btn" id="tstep-2P" onclick="teacherSetStage('2P')">2.2 ถอดรหัสวง</button>
-            </div>
-          </div>
-
-          <div class="wizard-block" id="wblock-3">
-            <div class="wizard-block-title" style="color:#34d399;">📁 แฟ้มคดีที่ 3</div>
-            <div class="wizard-sub-btns">
-              <button class="step-btn" id="tstep-3K" onclick="teacherSetStage('3K')">3.1 ล่าเบาะแส</button>
-              <button class="step-btn" id="tstep-3P" onclick="teacherSetStage('3P')">3.2 ถอดรหัสวง</button>
-            </div>
-          </div>
-
-          <div class="wizard-block" id="wblock-4" style="grid-column: span 2;">
-            <div class="wizard-block-title" style="color:#f472b6;">🏆 ขั้นแถลงข่าว & ตัดสินใจปิดคดี</div>
-            <div class="wizard-sub-btns">
-              <button class="step-btn" id="tstep-PRESS" onclick="teacherSetStage('PRESS')">4. แถลงข่าวปิดคดี</button>
-              <button class="step-btn" id="tstep-A" onclick="teacherSetStage('A')">5. ภารกิจตัดสินใจ</button>
-              <button class="step-btn" id="tstep-SUMMARY" onclick="teacherSetStage('SUMMARY')">6. สรุปผลคะแนน</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 3: Classroom Countdown Timer Bar -->
-        <div class="timer-bar">
-          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-            <span style="font-family:var(--font-head); font-weight:700; color:#e2e8f0;">⏱️ จับเวลาภารกิจ:</span>
-            <div id="teacher-timer-display" class="timer-display">00:00</div>
-            <span id="timer-status-label" style="font-size:0.85rem; color:var(--muted);">เลือกเวลามาตรฐานประจำด่านได้เลย</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(60, 'แถลงข่าวปิดคดี (1 นาที)')">⏱️ 1 นาที</button>
-            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(90, 'ถอดรหัสวง / ตัดสินใจ (1.30 นาที)')">⏱️ 1.30 นาที</button>
-            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(120, 'ล่าเบาะแสเครื่องดนตรี (2 นาที)')">⏱️ 2 นาที</button>
-            <button class="btn btn-blue btn-sm" onclick="addTeacherTimer(30)">➕ เพิ่ม 30 วิ</button>
-            <button class="btn btn-danger btn-sm" onclick="stopTeacherTimer()">⏹️ หยุด/รีเซ็ต</button>
+            <button class="btn btn-primary btn-sm" onclick="teacherCreateNewRoom()">➕ สร้างห้องใหม่</button>
+            <button class="btn btn-secondary btn-sm" onclick="openConfigModal()">⚙️</button>
           </div>
         </div>
       </div>
 
-      <!-- Teacher Projector Dynamic Display -->
+      <!-- Teacher Projector Dynamic Display (Video Player is isolated from live polling so it NEVER restarts) -->
       <div id="teacher-stage-display"></div>
     </section>
   </main>
@@ -949,7 +996,7 @@
     <div class="modal-card">
       <h3 style="color:var(--gold); margin-bottom:8px;">👨‍🏫 เข้าสู่แผงควบคุมครู (Game Master)</h3>
       <p style="color:var(--muted); font-size:0.9rem; margin-bottom:16px;">
-        สำหรับฉายบนจอโปรเจกเตอร์หน้าชั้นเรียน เพื่อสร้างรหัสห้อง (PIN) เปิดแฟ้มคดี และดูผลสรุปแบบสดๆ
+        สำหรับฉายบนจอโปรเจกเตอร์หน้าชั้นเรียน เพื่อสร้างรหัสห้อง (PIN) เปิดแฟ้มคดี และควบคุมจังหวะภารกิจ
       </p>
       <div class="form-group">
         <label class="form-label" for="teacher-pass">🔑 รหัสผ่านผู้ดูแลระบบ</label>
@@ -1007,10 +1054,23 @@
       if (savedBase) MEDIA_BASE_URL = savedBase;
     } catch (e) {}
 
-    // ลำดับขั้นตอนทั้งหมดสำหรับปุ่ม "ไปขั้นตอนถัดไป"
+    // ลำดับขั้นตอนทั้งหมด
     const STAGE_ORDER = ["LOBBY", "1K", "1P", "2K", "2P", "3K", "3P", "PRESS", "A", "SUMMARY"];
 
-    // รายชื่อเครื่องดนตรี 25 ชิ้น (ครบทั้งคำตอบจริง + ตัวลวงสมจริง แยกตาม 5 หมวดเพื่อให้เด็กหาไวขึ้น)
+    const STAGE_META = {
+      "LOBBY":   { step: "ขั้นเตรียมทีม (0/9)", title: "🟢 ห้องลงทะเบียนสายสืบ (Lobby)", nextLabel: "⏭️ เริ่มเปิดแฟ้มคดีที่ 1 (ล่าเบาะแส) ➔" },
+      "1K":      { step: "ขั้นตอนที่ 1 / 9", title: "📁 แฟ้มคดีที่ 1 : ล่าเบาะแสเครื่องดนตรี", nextLabel: "⏭️ ไปด่านถอดรหัสวง คดีที่ 1 ➔" },
+      "1P":      { step: "ขั้นตอนที่ 2 / 9", title: "🔓 แฟ้มคดีที่ 1 : ถอดรหัสการประสมวง (มติกลุ่ม)", nextLabel: "⏭️ ไปเปิดแฟ้มคดีที่ 2 (ล่าเบาะแส) ➔" },
+      "2K":      { step: "ขั้นตอนที่ 3 / 9", title: "📁 แฟ้มคดีที่ 2 : ล่าเบาะแสเครื่องดนตรี", nextLabel: "⏭️ ไปด่านถอดรหัสวง คดีที่ 2 ➔" },
+      "2P":      { step: "ขั้นตอนที่ 4 / 9", title: "🔓 แฟ้มคดีที่ 2 : ถอดรหัสการประสมวง (มติกลุ่ม)", nextLabel: "⏭️ ไปเปิดแฟ้มคดีที่ 3 (ล่าเบาะแส) ➔" },
+      "3K":      { step: "ขั้นตอนที่ 5 / 9", title: "📁 แฟ้มคดีที่ 3 : ล่าเบาะแสเครื่องดนตรี", nextLabel: "⏭️ ไปด่านถอดรหัสวง คดีที่ 3 ➔" },
+      "3P":      { step: "ขั้นตอนที่ 6 / 9", title: "🔓 แฟ้มคดีที่ 3 : ถอดรหัสการประสมวง (มติกลุ่ม)", nextLabel: "⏭️ ไปห้องแถลงข่าวปิดคดี (3 คดี) ➔" },
+      "PRESS":   { step: "ขั้นตอนที่ 7 / 9", title: "🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย", nextLabel: "⏭️ ไปภารกิจตัดสินใจ (เลือกวงออกงาน) ➔" },
+      "A":       { step: "ขั้นตอนที่ 8 / 9", title: "🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจเลือกวงออกงาน", nextLabel: "🏆 ไปดูสรุปผลคะแนนทั้งห้อง ➔" },
+      "SUMMARY": { step: "ขั้นตอนที่ 9 / 9 (จบภารกิจ)", title: "🏆 สรุปผลคะแนนปฏิบัติการนักสืบดนตรีไทย", nextLabel: "🔄 กลับหน้า Lobby" }
+    };
+
+    // รายชื่อเครื่องดนตรีแยกตาม 5 หมวด
     const INSTRUMENT_GROUPS = [
       {
         cat: "ดีด",
@@ -1079,13 +1139,11 @@
       }
     ];
 
-    // แผนที่หมวดหมู่สำหรับจัดตะกร้าเบาะแสในด่าน P (รวมตัวลวงด้วย)
     const LOCAL_CAT_MAP = {};
     INSTRUMENT_GROUPS.forEach(g => {
       g.items.forEach(it => { LOCAL_CAT_MAP[it.name] = g.cat; });
     });
 
-    // ข้อมูลและเฉลยของทั้ง 3 แฟ้มคดี
     const CASES_DATA = {
       1: {
         id: 1,
@@ -1096,11 +1154,9 @@
         structureAns: "ตีทำนอง+เป่า (ไร้เครื่องสาย)",
         image: "images/case1.jpg",
         video: "videos/case1.mp4",
-        songInfo: "เพลงสาธุการ (30 วินาที)",
         creditHidden: "ที่มาสื่อการเรียนรู้: สำนักการสังคีต กรมศิลปากร",
         creditFull: "ที่มา: Musicians of the Thai Music Group, Fine Arts Department (สำนักการสังคีต กรมศิลปากร - เพลงสาธุการ)",
-        instruments: ["ระนาดเอก", "ระนาดทุ้ม", "ฆ้องวงใหญ่", "ฆ้องวงเล็ก", "ปี่ใน", "ฉิ่ง", "ตะโพน", "กลองทัด"],
-        soundTone: "เสียงดังกังวาน หนักแน่น ขลัง และเร้าใจ"
+        instruments: ["ระนาดเอก", "ระนาดทุ้ม", "ฆ้องวงใหญ่", "ฆ้องวงเล็ก", "ปี่ใน", "ฉิ่ง", "ตะโพน", "กลองทัด"]
       },
       2: {
         id: 2,
@@ -1111,11 +1167,9 @@
         structureAns: "สายดีด-สี+ขลุ่ย (ไร้ระนาด)",
         image: "images/case2.jpg",
         video: "videos/case2.mp4",
-        songInfo: "เพลงเขมรปี่แก้ว ทางสักวา (39 วินาที)",
         creditHidden: "ที่มาสื่อการเรียนรู้: สำนักการสังคีต กรมศิลปากร / สถาบันบัณฑิตพัฒนศิลป์",
         creditFull: "ที่มา: Thai Music Division สำนักการสังคีต กรมศิลปากร และ โครงการพัฒนาศักยภาพผู้สอนฯ สถาบันบัณฑิตพัฒนศิลป์ (เพลงเขมรปี่แก้ว ทางสักวา)",
-        instruments: ["จะเข้", "ซอด้วง", "ซออู้", "ขลุ่ยเพียงออ", "ฉิ่ง", "โทน-รำมะนา"],
-        soundTone: "เสียงเบา นุ่มนวล หวาน ละเมียดละไม ฟังสบาย"
+        instruments: ["จะเข้", "ซอด้วง", "ซออู้", "ขลุ่ยเพียงออ", "ฉิ่ง", "โทน-รำมะนา"]
       },
       3: {
         id: 3,
@@ -1126,11 +1180,9 @@
         structureAns: "ผสมผสานครบทั้ง 4 ตระกูล",
         image: "images/case3.jpg",
         video: "videos/case3.mp4",
-        songInfo: "เพลงแขกต่อยหม้อ ๒ ชั้น (29 วินาที)",
         creditHidden: "ที่มาสื่อการเรียนรู้: สารานุกรมศัพท์ดนตรีไทยฯ เล่ม ๑ หน้า ๒๒๔ / สำนักพิมพ์เอมพันธ์",
         creditFull: "ที่มาภาพ: สารานุกรมศัพท์ดนตรีไทยภาคคีตะ-ดุริยางค์, เล่ม ๑, หน้า ๒๒๔ | ที่มาคลิป: สื่อการสอนดนตรีไทย บริษัท สำนักพิมพ์เอมพันธ์ จำกัด",
-        instruments: ["ซอสามสาย", "ซอด้วง", "ซออู้", "จะเข้", "ระนาดเอก", "ฆ้องวงใหญ่", "ขลุ่ยเพียงออ", "ฉิ่ง", "โทน-รำมะนา"],
-        soundTone: "เสียงไพเราะกลมกล่อม สมบูรณ์แบบครบทุกตระกูลเครื่องดนตรี"
+        instruments: ["ซอสามสาย", "ซอด้วง", "ซออู้", "จะเข้", "ระนาดเอก", "ฆ้องวงใหญ่", "ขลุ่ยเพียงออ", "ฉิ่ง", "โทน-รำมะนา"]
       }
     };
 
@@ -1142,22 +1194,21 @@
 
     const ENSEMBLE_CHOICES = ["วงปี่พาทย์", "วงเครื่องสาย", "วงมโหรี"];
 
-    // คำถามภารกิจตัดสินใจ (สลับลำดับไม่ให้เรียงตรงกับคดี 1-2-3 และส่งรหัส q1, q2, q3 ตรงกับ Code.gs เดิม)
     const ATTITUDE_QUESTIONS_BASE = [
       {
-        id: "q2", // Code.gs ตรวจ q2 === "วงเครื่องสาย"
+        id: "q2",
         scenarioTitle: "งานเลี้ยงรับรองแขก หรือบรรเลงขับกล่อมภายในอาคาร/ห้องขนาดเล็ก",
         desc: "พื้นที่ค่อนข้างจำกัด ต้องการวงดนตรีที่ให้เสียง เบา นุ่มนวล หวาน และฟังสบาย ไม่รบกวนการพูดคุย นักเรียนจะตัดสินใจเลือกใช้วงใด?",
         correct: "วงเครื่องสาย"
       },
       {
-        id: "q3", // Code.gs ตรวจ q3 === "วงมโหรี"
+        id: "q3",
         scenarioTitle: "งานพระราชพิธี หรืองานมงคลสมรสใหญ่",
         desc: "ต้องการวงดนตรีที่ให้เสียง ไพเราะกลมกล่อม และผสมผสานครบทุกตระกูลเครื่องดนตรีอย่างสมบูรณ์แบบ นักเรียนจะตัดสินใจเลือกใช้วงใด?",
         correct: "วงมโหรี"
       },
       {
-        id: "q1", // Code.gs ตรวจ q1 === "วงปี่พาทย์"
+        id: "q1",
         scenarioTitle: "งานพิธีไหว้ครู หรือการแสดงโขนกลางแจ้ง",
         desc: "ต้องการวงดนตรีที่ให้พลังเสียง ดังกังวาน หนักแน่น และมีความขลังศักดิ์สิทธิ์ นักเรียนจะตัดสินใจเลือกใช้วงใด?",
         correct: "วงปี่พาทย์"
@@ -1165,12 +1216,12 @@
     ];
 
     /********************************************************************
-     * 2. APPLICATION STATE
+     * 2. APPLICATION STATE & RENDERING GUARDS (FIXES VIDEO RESET & FLICKER)
      ********************************************************************/
-    let appMode = "STUDENT"; // "STUDENT" or "TEACHER"
+    let appMode = "STUDENT";
     let currentPin = "4829";
-    let studentProfile = null; // { studentId, pin, name, classRoom, number, group }
-    let studentShuffledA = null; // สุ่มลำดับข้อในมือถือของนักเรียนแต่ละคน
+    let studentProfile = null;
+    let studentShuffledA = null;
     let roomState = {
       pin: "4829",
       stage: "LOBBY",
@@ -1193,6 +1244,11 @@
 
     let teacherFolderOpened = { 1: false, 2: false, 3: false };
     let teacherMediaMode = { 1: "IMAGE", 2: "IMAGE", 3: "IMAGE" };
+
+    // Tracking current rendered view signatures so polling NEVER destroys active video or student buttons
+    let teacherRenderedSig = "";
+    let studentRenderedSig = "";
+
     let studentSelectedK = { 1: [], 2: [], 3: [] };
     let studentVoteP = {
       1: { structure: "", ensemble: "" },
@@ -1200,6 +1256,7 @@
       3: { structure: "", ensemble: "" }
     };
     let studentAnswersA = { q1: "", q2: "", q3: "" };
+    let isSubmittingNow = false;
     let lastStudentCount = 0;
     let showAllCardsPreview = false;
     let pollTimer = null;
@@ -1237,13 +1294,13 @@
         const gain = ctx.createGain();
         osc.type = "sine";
         osc.frequency.setValueAtTime(660, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.07);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.09);
+        osc.stop(now + 0.08);
       } else if (type === "clock") {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -1272,7 +1329,7 @@
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = "triangle";
-        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.setValueAtTime(420, now);
         osc.frequency.exponentialRampToValueAtTime(920, now + 0.12);
         gain.gain.setValueAtTime(0.2, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
@@ -1408,12 +1465,10 @@
       }
     }
 
-    function startTeacherTimer(seconds, labelText = "") {
+    function startTeacherTimer(seconds) {
       if (timerInterval) clearInterval(timerInterval);
       timerSeconds = seconds;
       updateTimerUI();
-      const lbl = document.getElementById("timer-status-label");
-      if (lbl) lbl.textContent = labelText ? `⏳ กำลังจับเวลา: ${labelText}` : "⏳ กำลังเดินเวลา...";
       playSound("tick");
 
       timerInterval = setInterval(() => {
@@ -1426,7 +1481,6 @@
             clearInterval(timerInterval);
             timerInterval = null;
             playSound("timeup");
-            if (lbl) lbl.textContent = "🔔 หมดเวลา! (คุณครูกดเปลี่ยนด่านได้เมื่อนักเรียนส่งครบ)";
           }
         }
       }, 1000);
@@ -1436,7 +1490,7 @@
       timerSeconds += addSec;
       updateTimerUI();
       if (!timerInterval && timerSeconds > 0) {
-        startTeacherTimer(timerSeconds, "ต่อเวลาพิเศษ");
+        startTeacherTimer(timerSeconds);
       } else {
         playSound("tick");
       }
@@ -1447,11 +1501,8 @@
       timerInterval = null;
       timerSeconds = 0;
       updateTimerUI();
-      const lbl = document.getElementById("timer-status-label");
-      if (lbl) lbl.textContent = "⏹️ หยุด/รีเซ็ตเวลาแล้ว";
     }
 
-    // สร้าง QR Code ในตัวเว็บแอปอัตโนมัติ (พ่วง ?pin=XXXX ให้เด็กสแกนเข้าห้องทันที)
     function renderLobbyQRCode() {
       const holder = document.getElementById("qr-canvas-holder");
       if (!holder) return;
@@ -1467,7 +1518,6 @@
           return;
         } catch (e) {}
       }
-      // Fallback หาก CDN ถูกบล็อก ให้ลองโหลด images/qrcode.png หรือแสดงกรอบ PIN
       holder.innerHTML = `
         <div style="padding:12px; border:2px dashed #0f172a; border-radius:10px; font-size:0.8rem; color:#0f172a;">
           <strong>PIN: ${currentPin}</strong><br>กรอกรหัสบนหน้าเว็บเพื่อเข้าห้อง
@@ -1563,9 +1613,9 @@
         }
         lastStudentCount = resp.students ? resp.students.length : 0;
         roomState = resp;
-        renderCurrentView();
+        renderCurrentView(false);
       } else {
-        renderCurrentView();
+        renderCurrentView(false);
       }
     }
 
@@ -1579,13 +1629,43 @@
     }
 
     /********************************************************************
-     * 7. STUDENT FLOW (AUTO-REMEMBER, JOIN, K, P, PRESS, A, ID CARD)
+     * 7. STUDENT FLOW (CLEAN UI, 4-STEP PROGRESS, NO FLICKER, INSTANT LOCK)
      ********************************************************************/
     function getStudentShuffledA() {
       if (!studentShuffledA) {
         studentShuffledA = ATTITUDE_QUESTIONS_BASE.slice().sort(() => Math.random() - 0.5);
       }
       return studentShuffledA;
+    }
+
+    function updateStudentProgressBar(stage, me) {
+      const bar = document.getElementById("stu-progress-bar");
+      if (!bar) return;
+
+      const s1Done = stage !== "LOBBY" && stage !== "1K" && stage !== "1P";
+      const s2Done = s1Done && stage !== "2K" && stage !== "2P";
+      const s3Done = s2Done && stage !== "3K" && stage !== "3P";
+      const s4Done = stage === "SUMMARY" || (stage === "A" && me && me.aSubmitted);
+
+      const s1Cur = stage === "1K" || stage === "1P";
+      const s2Cur = stage === "2K" || stage === "2P";
+      const s3Cur = stage === "3K" || stage === "3P";
+      const s4Cur = stage === "PRESS" || (stage === "A" && !(me && me.aSubmitted));
+
+      bar.innerHTML = `
+        <div class="stu-p-item ${s1Done ? 'done' : (s1Cur ? 'current' : '')}">
+          ${s1Done ? '✅' : (s1Cur ? '⏳' : '1.')} คดีที่ 1
+        </div>
+        <div class="stu-p-item ${s2Done ? 'done' : (s2Cur ? 'current' : '')}">
+          ${s2Done ? '✅' : (s2Cur ? '⏳' : '2.')} คดีที่ 2
+        </div>
+        <div class="stu-p-item ${s3Done ? 'done' : (s3Cur ? 'current' : '')}">
+          ${s3Done ? '✅' : (s3Cur ? '⏳' : '3.')} คดีที่ 3
+        </div>
+        <div class="stu-p-item ${s4Done ? 'done' : (s4Cur ? 'current' : '')}">
+          ${s4Done ? '🏆 จบภารกิจ' : (s4Cur ? '⏳ ปิดคดี' : '4. ปิดคดี')}
+        </div>
+      `;
     }
 
     async function studentJoinRoom() {
@@ -1655,33 +1735,51 @@
       if (!studentProfile) return;
       document.getElementById("stu-login-card").style.display = "none";
       document.getElementById("stu-workspace").style.display = "block";
+      // Hide top teacher button so student screen has zero clutter
+      document.getElementById("btn-teacher-menu").style.display = "none";
       document.getElementById("stu-badge-info").textContent = `🕵️‍♂️ ${studentProfile.name} (เลขที่ ${studentProfile.number} | กลุ่ม${studentProfile.group})`;
-      document.getElementById("stu-pin-info").textContent = `🔑 ห้อง: ${studentProfile.pin}`;
+      document.getElementById("stu-pin-info").textContent = `ห้อง ${studentProfile.pin}`;
     }
 
     function studentLogout() {
       studentProfile = null;
+      studentRenderedSig = "";
       try { localStorage.removeItem("TMD_STU_PROFILE"); } catch (e) {}
       document.getElementById("stu-workspace").style.display = "none";
       document.getElementById("stu-login-card").style.display = "block";
+      document.getElementById("btn-teacher-menu").style.display = "inline-flex";
     }
 
     function toggleInstrumentK(caseNum, instName) {
+      if (isSubmittingNow) return;
       playSound("tick");
       const list = studentSelectedK[caseNum] || [];
       const idx = list.indexOf(instName);
       if (idx === -1) list.push(instName);
       else list.splice(idx, 1);
       studentSelectedK[caseNum] = list;
-      renderStudentStage();
+      renderStudentStage(true);
     }
 
     async function submitStudentK(caseNum) {
+      if (isSubmittingNow) return;
       const selected = studentSelectedK[caseNum] || [];
       if (selected.length === 0) {
         playSound("warn");
         return;
       }
+
+      isSubmittingNow = true;
+      const btn = document.getElementById("btn-submit-k");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = "⏳ กำลังส่งเบาะแสเข้าศูนย์สืบสวน...";
+      }
+
+      // Optimistic local mark so UI immediately transitions after send
+      const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
+      if (me) me["k" + caseNum + "Submitted"] = true;
+
       playSound("fanfare");
       await callGasApi({
         action: "submitK",
@@ -1690,21 +1788,58 @@
         caseNum: caseNum,
         selected: JSON.stringify(selected)
       });
+      isSubmittingNow = false;
+      studentRenderedSig = "";
       await refreshRoomState();
     }
 
     function selectStudentP(caseNum, field, val) {
+      if (isSubmittingNow) return;
       playSound("tick");
       studentVoteP[caseNum][field] = val;
-      renderStudentStage();
+      // Update only button highlights in P stage without wiping live box
+      updateStudentPButtonsUI(caseNum);
+    }
+
+    function updateStudentPButtonsUI(caseNum) {
+      const curVote = studentVoteP[caseNum];
+      document.querySelectorAll(".p-struct-card").forEach(el => {
+        const sc = el.getAttribute("data-val");
+        if (curVote.structure === sc) {
+          el.classList.add("selected");
+          el.innerHTML = `🔘 <strong>${sc}</strong>`;
+        } else {
+          el.classList.remove("selected");
+          el.innerHTML = `⚪ <strong>${sc}</strong>`;
+        }
+      });
+      document.querySelectorAll(".p-ens-btn").forEach(el => {
+        const ec = el.getAttribute("data-val");
+        if (curVote.ensemble === ec) {
+          el.className = "btn btn-primary p-ens-btn";
+          el.innerHTML = `✓ ${ec}`;
+        } else {
+          el.className = "btn btn-secondary p-ens-btn";
+          el.innerHTML = ec;
+        }
+      });
     }
 
     async function submitStudentP(caseNum) {
+      if (isSubmittingNow) return;
       const vote = studentVoteP[caseNum];
       if (!vote.structure || !vote.ensemble) {
         playSound("warn");
         return;
       }
+
+      isSubmittingNow = true;
+      const btn = document.getElementById("btn-submit-p");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = "⏳ กำลังบันทึกผลโหวตเข้ากลุ่ม...";
+      }
+
       playSound("pop");
       await callGasApi({
         action: "submitP",
@@ -1714,20 +1849,38 @@
         structure: vote.structure,
         ensemble: vote.ensemble
       });
+      isSubmittingNow = false;
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `✅ ส่งผลโหวตแล้ว (เปลี่ยนคำตอบและกดส่งใหม่ได้ถ้ามติยังไม่ตรงกัน)`;
+      }
       await refreshRoomState();
     }
 
     function selectStudentA(qId, ans) {
+      if (isSubmittingNow) return;
       playSound("tick");
       studentAnswersA[qId] = ans;
-      renderStudentStage();
+      renderStudentStage(true);
     }
 
     async function submitStudentA() {
+      if (isSubmittingNow) return;
       if (!studentAnswersA.q1 || !studentAnswersA.q2 || !studentAnswersA.q3) {
         playSound("warn");
         return;
       }
+
+      isSubmittingNow = true;
+      const btn = document.getElementById("btn-submit-a");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = "⏳ กำลังประมวลผลบัตรประจำตัวนักสืบ...";
+      }
+
+      const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
+      if (me) me.aSubmitted = true;
+
       playSound("fanfare");
       launchConfetti();
       await callGasApi({
@@ -1736,25 +1889,50 @@
         studentId: studentProfile.studentId,
         answers: JSON.stringify(studentAnswersA)
       });
+      isSubmittingNow = false;
+      studentRenderedSig = "";
       await refreshRoomState();
     }
 
-    function renderStudentStage() {
+    function renderStudentStage(forceRebuild = false) {
       if (!studentProfile) return;
       const stage = roomState.stage || "LOBBY";
       const container = document.getElementById("stu-stage-content");
       const me = roomState.students.find(s => s.studentId === studentProfile.studentId) || {};
 
+      updateStudentProgressBar(stage, me);
+
+      const kSub = (stage === "1K" || stage === "2K" || stage === "3K") ? !!me["k" + stage[0] + "Submitted"] : false;
+      const aSub = stage === "A" ? !!me.aSubmitted : false;
+      const pressKey = stage === "PRESS" ? JSON.stringify(roomState.pressAssignments || {}) : "";
+      const newSig = `${stage}|k:${kSub}|a:${aSub}|p:${pressKey}|score:${me.total || 0}`;
+
+      // If we are in 1P/2P/3P and already built the form, ONLY update the live clue basket & vote box (no flicker!)
+      if (!forceRebuild && newSig === studentRenderedSig) {
+        if (stage === "1P" || stage === "2P" || stage === "3P") {
+          updateStudentPLiveBox(Number(stage[0]));
+        } else if (stage === "LOBBY") {
+          const cntEl = document.getElementById("stu-lobby-group-count");
+          if (cntEl) {
+            cntEl.textContent = `${roomState.students.filter(s => s.group === studentProfile.group).length} คน`;
+          }
+        }
+        return;
+      }
+
+      studentRenderedSig = newSig;
+
       // 1. LOBBY
       if (stage === "LOBBY") {
+        const gCount = roomState.students.filter(s => s.group === studentProfile.group).length;
         container.innerHTML = `
-          <div class="card" style="text-align:center; padding:36px 20px;">
-            <div style="font-size:3.5rem; margin-bottom:10px;">🛡️</div>
-            <h2 style="color:var(--gold);">เข้าประจำหน่วยสืบสวน "กลุ่ม${studentProfile.group}" สำเร็จ!</h2>
+          <div class="card" style="text-align:center; padding:34px 20px;">
+            <div style="font-size:3.4rem; margin-bottom:8px;">🛡️</div>
+            <h2 style="color:var(--gold); margin-bottom:6px;">เข้าประจำทีม "กลุ่ม${studentProfile.group}" สำเร็จ!</h2>
             <p style="color:#cbd5e1; font-size:1.05rem;">
-              สมาชิกในทีมของคุณลงทะเบียนแล้ว <strong>${roomState.students.filter(s => s.group === studentProfile.group).length} คน</strong>
+              สมาชิกในทีมของคุณลงทะเบียนแล้ว <strong id="stu-lobby-group-count" style="color:var(--gold);">${gCount} คน</strong>
             </p>
-            <div style="margin-top:20px; padding:12px 20px; background:#0f172a; border-radius:10px; display:inline-block; color:var(--gold);">
+            <div style="margin-top:18px; padding:12px 20px; background:#0f172a; border:1px solid #334155; border-radius:10px; display:inline-block; color:var(--gold);">
               ⏳ รอคุณครูเปิดแฟ้มคดีปริศนาที่ 1 บนจอโปรเจกเตอร์...
             </div>
           </div>
@@ -1762,21 +1940,20 @@
         return;
       }
 
-      // 2. STAGE 1K, 2K, 3K (ล่าเบาะแสเครื่องดนตรี - ไม่มีคำว่าวัด K บนจอเด็ก)
+      // 2. STAGE 1K, 2K, 3K (ล่าเบาะแสเครื่องดนตรี)
       if (stage === "1K" || stage === "2K" || stage === "3K") {
         const caseNum = Number(stage[0]);
         const cData = CASES_DATA[caseNum];
-        const submitted = me["k" + caseNum + "Submitted"];
         const chosen = studentSelectedK[caseNum] || [];
 
-        if (submitted) {
+        if (kSub) {
           container.innerHTML = `
-            <div class="card" style="text-align:center; padding:32px 20px;">
-              <div style="font-size:3rem; margin-bottom:8px;">✅</div>
-              <h2 style="color:var(--success);">ส่งเบาะแส${cData.title}เรียบร้อยแล้ว!</h2>
-              <p style="color:#cbd5e1;">เบาะแสเครื่องดนตรีที่คุณส่งเข้าทีม: <strong>${chosen.join(", ") || "บันทึกในระบบแล้ว"}</strong></p>
-              <div style="margin-top:16px; padding:10px 18px; background:#0f172a; border-radius:10px; display:inline-block; color:var(--gold);">
-                ⏳ รอเพื่อนในทีมส่งครบเพื่อเข้าสู่ภารกิจถอดรหัสโครงสร้างวง...
+            <div class="card" style="text-align:center; padding:34px 20px; border:2px solid var(--success);">
+              <div style="font-size:3.5rem; margin-bottom:8px;">✅</div>
+              <h2 style="color:#34d399; margin-bottom:6px;">ส่งเบาะแส${cData.title}สำเร็จแล้ว!</h2>
+              <p style="color:#cbd5e1;">เบาะแสที่คุณส่งเข้าตะกร้าทีม: <strong style="color:var(--gold);">${chosen.join(", ") || "บันทึกในระบบเรียบร้อย"}</strong></p>
+              <div style="margin-top:16px; padding:12px 18px; background:#0f172a; border-radius:10px; display:inline-block; color:var(--gold);">
+                ⏳ รอเพื่อนในห้องส่งครบสักครู่ คุณครูจะพาไปด่านถอดรหัสวง...
               </div>
             </div>
           `;
@@ -1803,16 +1980,21 @@
         container.innerHTML = `
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <h2 style="color:var(--gold); margin:0;">🔍 ภารกิจที่ 1 : ล่าเบาะแสเครื่องดนตรี (${cData.title})</h2>
-              <span class="stu-pill" style="background:var(--brand);">ภารกิจสายสืบเดี่ยว</span>
+              <h2 style="color:var(--gold); margin:0;">🔍 คดีที่ ${caseNum} : ล่าเบาะแสเครื่องดนตรี</h2>
+              <span class="stu-pill" style="background:var(--brand);">ขั้นที่ 1/2 ของคดีที่ ${caseNum}</span>
             </div>
-            <p style="color:#cbd5e1; margin:8px 0 14px;">
-              สังเกตคลิปและภาพนิ่งบนจอโปรเจกเตอร์ (เปิดหนังสือเรียนเทียบเคียงได้) <strong>เห็นนักดนตรีกำลังบรรเลงเครื่องดนตรีชิ้นใดบ้าง กดติ๊กเลือกทุกชิ้นที่เห็น</strong> (ระวังตัวลวง!)
+            <p style="color:#cbd5e1; margin:6px 0 12px; font-size:0.95rem;">
+              ดูคลิปและภาพนิ่งบนจอโปรเจกเตอร์ <strong>เห็นเครื่องดนตรีชิ้นใดกำลังบรรเลงอยู่ กดติ๊กเลือกทุกชิ้นที่เห็น</strong> แล้วกดปุ่มส่งด้านล่าง
             </p>
             ${sectionsHtml}
-            <div style="margin-top:18px; text-align:center;">
-              <button class="btn btn-primary" style="width:100%; max-width:420px; padding:14px; font-size:1.05rem;" onclick="submitStudentK(${caseNum})">
-                📤 ส่งเบาะแสคดีที่ ${caseNum} เข้าตะกร้าทีม (${chosen.length} ชิ้น)
+
+            <div class="sticky-submit-bar">
+              <div>
+                <div style="font-size:0.82rem; color:var(--muted);">เลือกไว้แล้ว</div>
+                <div style="font-family:var(--font-head); font-size:1.15rem; font-weight:800; color:var(--gold);">${chosen.length} ชิ้น</div>
+              </div>
+              <button id="btn-submit-k" class="btn btn-primary" style="padding:12px 22px; font-size:1.02rem;" onclick="submitStudentK(${caseNum})">
+                📤 ส่งเบาะแสคดีที่ ${caseNum} เข้าทีม
               </button>
             </div>
           </div>
@@ -1820,57 +2002,25 @@
         return;
       }
 
-      // 3. STAGE 1P, 2P, 3P (ถอดรหัสการประสมวง - ไม่มีคำว่าวัด P บนจอเด็ก)
+      // 3. STAGE 1P, 2P, 3P (ถอดรหัสการประสมวง - แยกส่วนปุ่มกดออกจากการรีเฟรชสด)
       if (stage === "1P" || stage === "2P" || stage === "3P") {
         const caseNum = Number(stage[0]);
-        const caseKey = "case" + caseNum;
         const g = studentProfile.group;
-        const cluesMap = (roomState.groupClues && roomState.groupClues[g] && roomState.groupClues[g][caseKey]) || {};
-        const votesList = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][caseKey]) || [];
-
-        const catBuckets = { "ดีด": [], "สี": [], "ตีทำนอง": [], "เป่า": [], "จังหวะ": [] };
-        Object.keys(cluesMap).forEach(instName => {
-          const cat = LOCAL_CAT_MAP[instName] || "จังหวะ";
-          catBuckets[cat].push(`${instName} (${cluesMap[instName]} คน)`);
-        });
-
-        const validVotes = votesList.filter(v => v.structure && v.ensemble);
-        const totalMembers = votesList.length || 1;
-        const isUnanimous = validVotes.length === totalMembers && totalMembers > 0 &&
-          validVotes.every(v => v.structure === validVotes[0].structure && v.ensemble === validVotes[0].ensemble);
-
-        const tally = { "วงปี่พาทย์": [], "วงเครื่องสาย": [], "วงมโหรี": [], "ยังไม่โหวต": [] };
-        votesList.forEach(v => {
-          if (v.ensemble && tally[v.ensemble]) {
-            tally[v.ensemble].push(`เลขที่ ${v.number}`);
-          } else {
-            tally["ยังไม่โหวต"].push(`เลขที่ ${v.number}`);
-          }
-        });
-
         const curVote = studentVoteP[caseNum];
 
         container.innerHTML = `
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-              <h2 style="color:var(--gold); margin:0;">🔓 ภารกิจที่ 2 : ถอดรหัสการประสมวง (คดีที่ ${caseNum})</h2>
+              <h2 style="color:var(--gold); margin:0;">🔓 คดีที่ ${caseNum} : ถอดรหัสการประสมวง</h2>
               <span class="stu-pill" style="background:#8b5cf6;">มติเอกฉันท์กลุ่ม${g}</span>
             </div>
 
-            <div class="clue-basket">
-              <div style="font-weight:700; color:var(--gold); margin-bottom:8px;">
-                📊 ตารางรวมเบาะแสเครื่องดนตรีของ "กลุ่ม${g}" (สมาชิก ${totalMembers} คน):
-              </div>
-              <div class="clue-row"><span class="clue-cat" style="color:#facc15;">🟡 1. เครื่องดีด:</span> <span>${catBuckets["ดีด"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-              <div class="clue-row"><span class="clue-cat" style="color:#60a5fa;">🔵 2. เครื่องสี:</span> <span>${catBuckets["สี"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-              <div class="clue-row"><span class="clue-cat" style="color:#f87171;">🔴 3. ตีทำนอง:</span> <span>${catBuckets["ตีทำนอง"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-              <div class="clue-row"><span class="clue-cat" style="color:#34d399;">🟢 4. เครื่องเป่า:</span> <span>${catBuckets["เป่า"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-              <div class="clue-row"><span class="clue-cat" style="color:#e2e8f0;">⚪ 5. จังหวะ:</span> <span>${catBuckets["จังหวะ"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-            </div>
+            <!-- Live Clue Basket (Updated seamlessly without touching buttons below) -->
+            <div id="stu-p-live-basket"></div>
 
-            <h4 style="margin-bottom:8px; color:#e2e8f0;">ข้อที่ 1: โครงสร้างการประสมวงของคดีนี้เป็นอย่างไร? (ปรึกษาในกลุ่มให้ตรงกัน)</h4>
+            <h4 style="margin-bottom:8px; color:#e2e8f0;">ข้อที่ 1: โครงสร้างการประสมวงของคดีนี้เป็นอย่างไร? (ปรึกษาในโต๊ะให้ตรงกัน)</h4>
             ${STRUCTURE_CHOICES.map(sc => `
-              <div class="choice-card ${curVote.structure === sc ? 'selected' : ''}" onclick="selectStudentP(${caseNum}, 'structure', '${sc}')">
+              <div class="choice-card p-struct-card ${curVote.structure === sc ? 'selected' : ''}" data-val="${sc}" onclick="selectStudentP(${caseNum}, 'structure', '${sc}')">
                 ${curVote.structure === sc ? '🔘' : '⚪'} <strong>${sc}</strong>
               </div>
             `).join("")}
@@ -1878,43 +2028,23 @@
             <h4 style="margin:16px 0 8px; color:#e2e8f0;">ข้อที่ 2: ฟันธงจัดประเภทวงดนตรีไทย:</h4>
             <div class="grid-2" style="grid-template-columns: repeat(3, 1fr);">
               ${ENSEMBLE_CHOICES.map(ec => `
-                <button type="button" class="btn ${curVote.ensemble === ec ? 'btn-primary' : 'btn-secondary'}" onclick="selectStudentP(${caseNum}, 'ensemble', '${ec}')">
+                <button type="button" class="btn ${curVote.ensemble === ec ? 'btn-primary' : 'btn-secondary'} p-ens-btn" data-val="${ec}" onclick="selectStudentP(${caseNum}, 'ensemble', '${ec}')">
                   ${curVote.ensemble === ec ? '✓ ' : ''}${ec}
                 </button>
               `).join("")}
             </div>
 
             <div style="margin-top:16px; text-align:center;">
-              <button class="btn btn-blue" style="width:100%; max-width:400px; padding:12px;" onclick="submitStudentP(${caseNum})">
+              <button id="btn-submit-p" class="btn btn-blue" style="width:100%; max-width:420px; padding:13px; font-size:1.02rem;" onclick="submitStudentP(${caseNum})">
                 🤝 ยืนยันมติกลุ่ม (คดีที่ ${caseNum})
               </button>
             </div>
 
-            <div class="vote-alert ${isUnanimous ? 'success' : 'shake'}">
-              ${isUnanimous ? `
-                <div style="font-weight:800; color:#34d399; font-size:1.1rem;">
-                  🎉 มติเอกฉันท์สำเร็จ 100%! (${totalMembers}/${totalMembers} คน)
-                </div>
-                <div style="font-size:0.95rem; margin-top:4px;">
-                  🔒 ล็อกซองคำตัดสินคดีที่ ${caseNum} ของกลุ่มเรียบร้อยแล้ว! (รอลุ้นผลพร้อมกันช่วงแถลงข่าวปิดคดี)
-                </div>
-              ` : `
-                <div style="font-weight:700; color:#fbbf24; margin-bottom:6px;">
-                  ⚠️ มติกลุ่มยังไม่เป็นเอกฉันท์! (ต้องการเสียงตรงกันทั้งโครงสร้างและชื่อวง ${totalMembers}/${totalMembers} คน)
-                </div>
-                <div style="font-size:0.88rem; color:#e2e8f0; line-height:1.6;">
-                  • <strong>วงปี่พาทย์:</strong> ${tally["วงปี่พาทย์"].length} คน ${tally["วงปี่พาทย์"].length ? '(' + tally["วงปี่พาทย์"].join(", ") + ')' : ''}<br>
-                  • <strong>วงเครื่องสาย:</strong> ${tally["วงเครื่องสาย"].length} คน ${tally["วงเครื่องสาย"].length ? '(' + tally["วงเครื่องสาย"].join(", ") + ')' : ''}<br>
-                  • <strong>วงมโหรี:</strong> ${tally["วงมโหรี"].length} คน ${tally["วงมโหรี"].length ? '(' + tally["วงมโหรี"].join(", ") + ')' : ''}<br>
-                  ${tally["ยังไม่โหวต"].length ? `• <span style="color:#f87171;">ยังไม่กดโหวต: ${tally["ยังไม่โหวต"].join(", ")}</span>` : ''}
-                </div>
-                <div style="font-size:0.85rem; color:var(--gold); margin-top:6px;">
-                  💬 หันไปปรึกษาเพื่อนในโต๊ะ แล้วกดเลือกคำตอบส่งใหม่อีกครั้งจนตรงกันครบทุกคนครับ!
-                </div>
-              `}
-            </div>
+            <!-- Live Unanimous Status Box (Updated seamlessly every 3.5s) -->
+            <div id="stu-p-live-vote-status"></div>
           </div>
         `;
+        updateStudentPLiveBox(caseNum);
         return;
       }
 
@@ -1957,9 +2087,9 @@
         return;
       }
 
-      // 5. STAGE A (ภารกิจที่ 3 : ภารกิจตัดสินใจ - สุ่มลำดับข้อและไม่มีคำว่าวัด A บนจอเด็ก)
+      // 5. STAGE A (ภารกิจตัดสินใจ)
       if (stage === "A") {
-        if (me.aSubmitted) {
+        if (aSub) {
           renderStudentIdCard(container, me);
           return;
         }
@@ -1969,8 +2099,8 @@
         container.innerHTML = `
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-              <h2 style="color:var(--gold); margin:0;">🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจ</h2>
-              <span class="stu-pill" style="background:var(--success);">ภารกิจส่งท้ายรายบุคคล</span>
+              <h2 style="color:var(--gold); margin:0;">🎯 ด่านสุดท้าย : ภารกิจตัดสินใจ</h2>
+              <span class="stu-pill" style="background:var(--success);">จบภารกิจรับบัตรนักสืบ</span>
             </div>
             <p style="color:#cbd5e1; margin-bottom:16px;">
               ในฐานะสุดยอดนักสืบดนตรีไทย จงตัดสินใจเลือกใช้วงดนตรีไทยให้เหมาะสมกับลักษณะงานและโทนเสียงทั้ง 3 สถานการณ์ต่อไปนี้:
@@ -1991,8 +2121,8 @@
             `).join("")}
 
             <div style="text-align:center; margin-top:16px;">
-              <button class="btn btn-primary" style="width:100%; max-width:400px; padding:14px; font-size:1.05rem;" onclick="submitStudentA()">
-                🏆 ส่งผลการตัดสินใจ & รับบัตรประจำตัวนักสืบ
+              <button id="btn-submit-a" class="btn btn-primary" style="width:100%; max-width:420px; padding:14px; font-size:1.05rem;" onclick="submitStudentA()">
+                🏆 ส่งคำตอบสุดท้าย & รับบัตรประจำตัวนักสืบ
               </button>
             </div>
           </div>
@@ -2006,6 +2136,78 @@
       }
     }
 
+    function updateStudentPLiveBox(caseNum) {
+      if (!studentProfile) return;
+      const caseKey = "case" + caseNum;
+      const g = studentProfile.group;
+      const cluesMap = (roomState.groupClues && roomState.groupClues[g] && roomState.groupClues[g][caseKey]) || {};
+      const votesList = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][caseKey]) || [];
+
+      const basketEl = document.getElementById("stu-p-live-basket");
+      if (basketEl) {
+        const catBuckets = { "ดีด": [], "สี": [], "ตีทำนอง": [], "เป่า": [], "จังหวะ": [] };
+        Object.keys(cluesMap).forEach(instName => {
+          const cat = LOCAL_CAT_MAP[instName] || "จังหวะ";
+          catBuckets[cat].push(`${instName} (${cluesMap[instName]} คน)`);
+        });
+        basketEl.innerHTML = `
+          <div class="clue-basket">
+            <div style="font-weight:700; color:var(--gold); margin-bottom:6px;">
+              📊 ตารางรวมเบาะแสเครื่องดนตรีของ "กลุ่ม${g}" (สมาชิก ${votesList.length} คน):
+            </div>
+            <div class="clue-row"><span class="clue-cat" style="color:#facc15;">🟡 1. เครื่องดีด:</span> <span>${catBuckets["ดีด"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
+            <div class="clue-row"><span class="clue-cat" style="color:#60a5fa;">🔵 2. เครื่องสี:</span> <span>${catBuckets["สี"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
+            <div class="clue-row"><span class="clue-cat" style="color:#f87171;">🔴 3. ตีทำนอง:</span> <span>${catBuckets["ตีทำนอง"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
+            <div class="clue-row"><span class="clue-cat" style="color:#34d399;">🟢 4. เครื่องเป่า:</span> <span>${catBuckets["เป่า"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
+            <div class="clue-row"><span class="clue-cat" style="color:#e2e8f0;">⚪ 5. จังหวะ:</span> <span>${catBuckets["จังหวะ"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
+          </div>
+        `;
+      }
+
+      const voteStatusEl = document.getElementById("stu-p-live-vote-status");
+      if (voteStatusEl) {
+        const validVotes = votesList.filter(v => v.structure && v.ensemble);
+        const totalMembers = votesList.length || 1;
+        const isUnanimous = validVotes.length === totalMembers && totalMembers > 0 &&
+          validVotes.every(v => v.structure === validVotes[0].structure && v.ensemble === validVotes[0].ensemble);
+
+        const tally = { "วงปี่พาทย์": [], "วงเครื่องสาย": [], "วงมโหรี": [], "ยังไม่โหวต": [] };
+        votesList.forEach(v => {
+          if (v.ensemble && tally[v.ensemble]) {
+            tally[v.ensemble].push(`เลขที่ ${v.number}`);
+          } else {
+            tally["ยังไม่โหวต"].push(`เลขที่ ${v.number}`);
+          }
+        });
+
+        voteStatusEl.innerHTML = `
+          <div class="vote-alert ${isUnanimous ? 'success' : ''}">
+            ${isUnanimous ? `
+              <div style="font-weight:800; color:#34d399; font-size:1.1rem;">
+                🎉 มติเอกฉันท์สำเร็จ 100%! (${totalMembers}/${totalMembers} คน)
+              </div>
+              <div style="font-size:0.95rem; margin-top:4px;">
+                🔒 ล็อกซองคำตัดสินคดีที่ ${caseNum} ของกลุ่มเรียบร้อยแล้ว! รอคุณครูเปิดคดีถัดไปได้เลยครับ
+              </div>
+            ` : `
+              <div style="font-weight:700; color:#fbbf24; margin-bottom:6px;">
+                ⏳ สถานะการโหวตของกลุ่ม${g} (โหวตแล้ว ${validVotes.length}/${totalMembers} คน — ต้องตรงกันทุกคน):
+              </div>
+              <div style="font-size:0.88rem; color:#e2e8f0; line-height:1.6;">
+                • <strong>วงปี่พาทย์:</strong> ${tally["วงปี่พาทย์"].length} คน ${tally["วงปี่พาทย์"].length ? '(' + tally["วงปี่พาทย์"].join(", ") + ')' : ''}<br>
+                • <strong>วงเครื่องสาย:</strong> ${tally["วงเครื่องสาย"].length} คน ${tally["วงเครื่องสาย"].length ? '(' + tally["วงเครื่องสาย"].join(", ") + ')' : ''}<br>
+                • <strong>วงมโหรี:</strong> ${tally["วงมโหรี"].length} คน ${tally["วงมโหรี"].length ? '(' + tally["วงมโหรี"].join(", ") + ')' : ''}<br>
+                ${tally["ยังไม่โหวต"].length ? `• <span style="color:#f87171;">ยังไม่กดยืนยัน: ${tally["ยังไม่โหวต"].join(", ")}</span>` : ''}
+              </div>
+              <div style="font-size:0.85rem; color:var(--gold); margin-top:6px;">
+                💬 ปรึกษาเพื่อนในโต๊ะให้เลือกทั้ง "โครงสร้าง" และ "ชื่อวง" ตรงกันครบทุกคน แล้วกดยืนยันมติกลุ่มครับ!
+              </div>
+            `}
+          </div>
+        `;
+      }
+    }
+
     function renderStudentIdCard(container, me) {
       const kScore = me.scoreK ?? 0;
       const pScore = me.scoreP ?? 0;
@@ -2015,7 +2217,10 @@
 
       container.innerHTML = `
         <div class="card" style="text-align:center;">
-          <h2 style="color:var(--gold); margin-bottom:14px;">🪪 บัตรประจำตัวสุดยอดนักสืบดนตรีไทย</h2>
+          <div style="font-size:2.4rem; margin-bottom:4px;">🎉</div>
+          <h2 style="color:var(--gold); margin-bottom:4px;">ปฏิบัติการเสร็จสมบูรณ์!</h2>
+          <p style="color:#cbd5e1; font-size:0.92rem; margin-top:0; margin-bottom:16px;">นี่คือบัตรประจำตัวสุดยอดนักสืบดนตรีไทยของคุณ</p>
+
           <div class="id-card" id="my-detective-card">
             <div class="id-card-header">
               <div style="text-align:left;">
@@ -2058,7 +2263,7 @@
     }
 
     /********************************************************************
-     * 8. TEACHER FLOW (ADMIN LOGIN, WIZARD BAR, ZOOM, SUMMARY)
+     * 8. TEACHER FLOW (NO VIDEO RESET, GIANT NEXT BUTTON, FORCE UNANIMOUS, CSV EXPORT)
      ********************************************************************/
     function openTeacherModal() {
       document.getElementById("teacher-pass").value = "";
@@ -2078,8 +2283,10 @@
       }
       closeTeacherModal();
       appMode = "TEACHER";
+      teacherRenderedSig = "";
       document.getElementById("student-view").style.display = "none";
       document.getElementById("teacher-view").style.display = "block";
+      document.getElementById("btn-bgm").style.display = "inline-flex";
       document.getElementById("btn-switch-student").style.display = "inline-flex";
       document.getElementById("btn-teacher-menu").style.display = "none";
       refreshRoomState();
@@ -2087,11 +2294,13 @@
     }
     function switchToStudentView() {
       appMode = "STUDENT";
+      studentRenderedSig = "";
       document.getElementById("teacher-view").style.display = "none";
       document.getElementById("student-view").style.display = "block";
+      document.getElementById("btn-bgm").style.display = "none";
       document.getElementById("btn-switch-student").style.display = "none";
-      document.getElementById("btn-teacher-menu").style.display = "inline-flex";
-      renderCurrentView();
+      document.getElementById("btn-teacher-menu").style.display = studentProfile ? "none" : "inline-flex";
+      renderCurrentView(true);
     }
 
     function openZoomModal(imgSrc, titleText) {
@@ -2127,6 +2336,7 @@
       document.getElementById("teacher-pin-input").value = newPin;
       currentPin = newPin;
       teacherFolderOpened = { 1: false, 2: false, 3: false };
+      teacherRenderedSig = "";
       stopTeacherTimer();
       playSound("fanfare");
 
@@ -2138,14 +2348,19 @@
       const pinVal = document.getElementById("teacher-pin-input").value.trim();
       if (!pinVal) return;
       currentPin = pinVal;
+      teacherRenderedSig = "";
       await refreshRoomState();
     }
 
     async function teacherSetStage(newStage) {
       playSound("tick");
       roomState.stage = newStage;
-      updateTeacherStepButtons(newStage);
-      renderTeacherStage();
+      teacherRenderedSig = "";
+      // Auto start recommended timer when entering P or A
+      if (newStage === "1P" || newStage === "2P" || newStage === "3P" || newStage === "A") {
+        startTeacherTimer(90);
+      }
+      renderTeacherStage(true);
       await callGasApi({ action: "setStage", pin: currentPin, stage: newStage });
       await refreshRoomState();
     }
@@ -2157,24 +2372,19 @@
       teacherSetStage(STAGE_ORDER[nextIdx]);
     }
 
-    function updateTeacherStepButtons(activeStage) {
-      document.querySelectorAll(".step-btn").forEach(btn => btn.classList.remove("active"));
-      document.querySelectorAll(".wizard-block").forEach(b => b.classList.remove("active-block"));
-
-      const target = document.getElementById("tstep-" + activeStage);
-      if (target) {
-        target.classList.add("active");
-        const parentBlock = target.closest(".wizard-block");
-        if (parentBlock) parentBlock.classList.add("active-block");
-      }
+    function teacherPrevStage() {
+      const cur = roomState.stage || "LOBBY";
+      const idx = STAGE_ORDER.indexOf(cur);
+      const prevIdx = (idx - 1) >= 0 ? (idx - 1) : 0;
+      teacherSetStage(STAGE_ORDER[prevIdx]);
     }
 
     function openSecretFolder(caseNum) {
       playSound("folder");
       teacherFolderOpened[caseNum] = true;
       teacherMediaMode[caseNum] = "VIDEO";
-      startTeacherTimer(120, `ล่าเบาะแสคดีที่ ${caseNum} (2 นาที)`);
-      renderTeacherStage();
+      startTeacherTimer(120);
+      renderTeacherStage(true);
     }
 
     function switchCaseMedia(caseNum, mode) {
@@ -2183,16 +2393,60 @@
       if (mode === "IMAGE") {
         resumeBGMAfterClip();
       }
-      renderTeacherStage();
+      renderTeacherStage(true);
+    }
+
+    // เมื่อคลิปเล่นจบ ให้สลับเป็นภาพนิ่งเต็มวงอัตโนมัติ (ครูไม่ต้องเดินมากดสลับเอง)
+    function onCaseVideoEnded(caseNum) {
+      resumeBGMAfterClip();
+      teacherMediaMode[caseNum] = "IMAGE";
+      renderTeacherStage(true);
+    }
+
+    // ปุ่มช่วยชีวิตครู: อนุมัติมติกลุ่มตามเสียงข้างมาก (กรณีมีนักเรียนในกลุ่มเน็ตหลุด/แบตหมด)
+    async function teacherForceApproveGroupP(caseNum, groupName) {
+      const caseKey = "case" + caseNum;
+      const votes = (roomState.groupVotes && roomState.groupVotes[groupName] && roomState.groupVotes[groupName][caseKey]) || [];
+      const valid = votes.filter(v => v.structure && v.ensemble);
+      let targetStruct = CASES_DATA[caseNum].structureAns;
+      let targetEns = CASES_DATA[caseNum].shortAns;
+
+      if (valid.length > 0) {
+        // Use majority vote from active members
+        targetStruct = valid[0].structure;
+        targetEns = valid[0].ensemble;
+      }
+
+      const groupMembers = (roomState.students || []).filter(s => s.group === groupName);
+      if (groupMembers.length === 0) return;
+
+      playSound("fanfare");
+      const banner = document.getElementById("sync-banner");
+      if (banner) {
+        banner.textContent = `⏳ กำลังซิงก์มติเอกฉันท์ให้กลุ่ม${groupName} ทุกคน...`;
+        banner.style.display = "block";
+      }
+
+      for (const stu of groupMembers) {
+        await callGasApi({
+          action: "submitP",
+          pin: currentPin,
+          studentId: stu.studentId,
+          caseNum: caseNum,
+          structure: targetStruct,
+          ensemble: targetEns
+        });
+      }
+
+      if (banner) {
+        banner.textContent = `✅ อนุมัติมติกลุ่ม${groupName} สำเร็จเรียบร้อย!`;
+        setTimeout(() => { banner.style.display = "none"; }, 3000);
+      }
+      await refreshRoomState();
     }
 
     async function teacherRandomizePress() {
       playSound("drumroll");
-      const stageEl = document.getElementById("teacher-stage-display");
-      if (stageEl) {
-        stageEl.classList.add("camera-flash");
-        setTimeout(() => stageEl.classList.remove("camera-flash"), 650);
-      }
       const resp = await callGasApi({ action: "randomizePress", pin: currentPin });
       if (resp && resp.assignments) {
         roomState.pressAssignments = resp.assignments;
@@ -2201,7 +2455,7 @@
         roomState.pressAssignments = { case1: g[0], case2: g[1], case3: g[2] };
       }
       setTimeout(() => playSound("fanfare"), 700);
-      renderTeacherStage();
+      renderTeacherStage(true);
     }
 
     async function teacherRevealCase(caseKey) {
@@ -2209,7 +2463,7 @@
       launchConfetti();
       if (!roomState.revealedCases) roomState.revealedCases = {};
       roomState.revealedCases[caseKey] = true;
-      renderTeacherStage();
+      renderTeacherStage(true);
       await callGasApi({ action: "setStage", pin: currentPin, stage: "PRESS", revealCase: caseKey });
     }
 
@@ -2219,11 +2473,179 @@
       return base + relPath;
     }
 
-    function renderTeacherStage() {
+    // อัปเดตแถบสถานะยักษ์ด้านบนสุดของครู + ไฟกะพริบเตือนเมื่อเด็กส่งงานครบ
+    function updateTeacherTopBanner() {
       const stage = roomState.stage || "LOBBY";
-      updateTeacherStepButtons(stage);
+      const students = roomState.students || [];
+      const meta = STAGE_META[stage] || STAGE_META["LOBBY"];
+
+      const stepBadge = document.getElementById("teacher-step-badge");
+      const stageTitle = document.getElementById("teacher-stage-title");
+      const progPill = document.getElementById("teacher-progress-pill");
+      const nextBtn = document.getElementById("btn-giant-next");
+      const jumpSel = document.getElementById("teacher-jump-select");
+
+      if (stepBadge) stepBadge.textContent = meta.step;
+      if (stageTitle) stageTitle.textContent = meta.title;
+      if (nextBtn) nextBtn.textContent = meta.nextLabel;
+      if (jumpSel && jumpSel.value !== stage) jumpSel.value = stage;
+
+      let statusText = `👥 สายสืบในห้องทั้งหมด ${students.length} คน`;
+      let isAllReady = false;
+
+      if (stage === "1K" || stage === "2K" || stage === "3K") {
+        const cNum = Number(stage[0]);
+        const doneCount = students.filter(s => s["k" + cNum + "Submitted"]).length;
+        isAllReady = students.length > 0 && doneCount === students.length;
+        statusText = isAllReady
+          ? `✅ นักเรียนส่งเบาะแสคดีที่ ${cNum} ครบ ${doneCount}/${students.length} คนแล้ว! กดปุ่มไปด่านถัดไปได้เลย`
+          : `📊 ส่งเบาะแสคดีที่ ${cNum} แล้ว: ${doneCount} / ${students.length} คน`;
+      } else if (stage === "1P" || stage === "2P" || stage === "3P") {
+        const cNum = Number(stage[0]);
+        const cKey = "case" + cNum;
+        let unanimousGroups = 0;
+        let activeGroups = 0;
+        ["ดีด", "สี", "ตี", "เป่า"].forEach(g => {
+          const votes = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][cKey]) || [];
+          if (votes.length > 0) {
+            activeGroups++;
+            const valid = votes.filter(v => v.structure && v.ensemble);
+            const unan = valid.length === votes.length &&
+              valid.every(v => v.structure === valid[0].structure && v.ensemble === valid[0].ensemble);
+            if (unan) unanimousGroups++;
+          }
+        });
+        isAllReady = activeGroups > 0 && unanimousGroups === activeGroups;
+        statusText = isAllReady
+          ? `🎉 มติเอกฉันท์ครบทั้ง ${unanimousGroups}/${activeGroups} กลุ่มแล้ว! กดปุ่มไปต่อได้เลย`
+          : `🤝 กลุ่มที่ได้มติเอกฉันท์แล้ว: ${unanimousGroups} / ${activeGroups || 4} กลุ่ม`;
+      } else if (stage === "A") {
+        const doneA = students.filter(s => s.aSubmitted).length;
+        isAllReady = students.length > 0 && doneA === students.length;
+        statusText = isAllReady
+          ? `✅ นักเรียนส่งคำตอบครบ ${doneA}/${students.length} คนแล้ว! กดดูสรุปผลได้เลย`
+          : `📊 ส่งคำตอบภารกิจตัดสินใจแล้ว: ${doneA} / ${students.length} คน`;
+      }
+
+      if (progPill) {
+        progPill.textContent = statusText;
+        if (isAllReady) progPill.classList.add("all-done");
+        else progPill.classList.remove("all-done");
+      }
+
+      if (nextBtn) {
+        if (isAllReady) nextBtn.classList.add("btn-ready-pulse");
+        else nextBtn.classList.remove("btn-ready-pulse");
+      }
+    }
+
+    function buildTeacherKGroupStatusHTML(caseNum) {
+      const students = roomState.students || [];
+      return ["ดีด", "สี", "ตี", "เป่า"].map(g => {
+        const gAll = students.filter(s => s.group === g);
+        const gDone = gAll.filter(s => s["k" + caseNum + "Submitted"]);
+        const gPending = gAll.filter(s => !s["k" + caseNum + "Submitted"]);
+        const allSent = gAll.length > 0 && gPending.length === 0;
+        return `
+          <div style="background:#0f172a; padding:12px; border-radius:10px; border:2px solid ${allSent ? '#10b981' : '#334155'};">
+            <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1rem;">
+              <span>กลุ่ม${g}</span>
+              <span style="color:${allSent ? '#34d399' : 'var(--gold)'};">${gDone.length}/${gAll.length} คน</span>
+            </div>
+            <div style="font-size:0.82rem; color:#94a3b8; margin-top:4px;">
+              ${allSent ? '✅ ส่งครบทุกคนแล้ว!' : (gPending.length ? `⏳ รอเลขที่: ${gPending.map(p => p.number).join(", ")}` : 'ยังไม่มีสมาชิก')}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderTeacherStage(forceRebuild = false) {
+      const stage = roomState.stage || "LOBBY";
+      updateTeacherTopBanner();
+
       const container = document.getElementById("teacher-stage-display");
       const students = roomState.students || [];
+
+      // CRITICAL FIX FOR VIDEO RESTART BUG:
+      // In 1K, 2K, 3K, if the stage, opened state, and mediaMode (VIDEO/IMAGE) haven't changed,
+      // DO NOT touch the video player DOM! Only update the group submission counts below it.
+      if (stage === "1K" || stage === "2K" || stage === "3K") {
+        const caseNum = Number(stage[0]);
+        const isOpened = teacherFolderOpened[caseNum];
+        const mMode = teacherMediaMode[caseNum];
+        const sig = `${stage}|open:${isOpened}|mode:${mMode}|pin:${currentPin}`;
+
+        if (!forceRebuild && teacherRenderedSig === sig) {
+          const liveGrid = document.getElementById("teacher-k-live-groups");
+          if (liveGrid) {
+            liveGrid.innerHTML = buildTeacherKGroupStatusHTML(caseNum);
+          }
+          return;
+        }
+        teacherRenderedSig = sig;
+
+        const cData = CASES_DATA[caseNum];
+        if (!isOpened) {
+          container.innerHTML = `
+            <div class="folder-envelope" onclick="openSecretFolder(${caseNum})">
+              <div class="top-secret-stamp">TOP SECRET : CASE #${caseNum}</div>
+              <h2 style="font-size:2.2rem; color:#fff; margin-bottom:8px;">📁 ${cData.title}</h2>
+              <p style="color:#fef3c7; font-size:1.1rem; margin-bottom:20px;">
+                ภารกิจที่ 1 : ล่าเบาะแสเครื่องดนตรีไทย (เวลาแนะนำ 2 นาที)
+              </p>
+              <button class="btn btn-primary" style="font-size:1.15rem; padding:14px 28px;">
+                🔓 คลิกเพื่อเปิดซองแฟ้มคดีที่ ${caseNum} (เล่นคลิป & จับเวลา)
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        const resolvedImg = resolveMediaUrl(cData.image);
+
+        container.innerHTML = `
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+              <div>
+                <h2 style="color:var(--gold); margin:0;">📁 ${cData.title} : สื่อเบาะแสประจำคดี</h2>
+                <span style="color:var(--muted); font-size:0.9rem;">เมื่อคลิปเล่นจบ ระบบจะสลับเป็นภาพนิ่งเต็มวงค้างไว้ให้อัตโนมัติ</span>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn ${mMode === 'VIDEO' ? 'btn-primary' : 'btn-secondary'}" onclick="switchCaseMedia(${caseNum}, 'VIDEO')">
+                  ▶️ เล่นคลิปสั้นฟังเสียง
+                </button>
+                <button class="btn ${mMode === 'IMAGE' ? 'btn-primary' : 'btn-secondary'}" onclick="switchCaseMedia(${caseNum}, 'IMAGE')">
+                  🖼️ ดูภาพนิ่งเต็มวง
+                </button>
+                <button class="btn btn-secondary" onclick="openZoomModal('${resolvedImg}', '${cData.title}')">
+                  🔍 ขยายภาพเต็มจอ
+                </button>
+              </div>
+            </div>
+
+            <div class="media-frame">
+              ${mMode === "VIDEO" ? `
+                <video id="case-video-player" src="${resolveMediaUrl(cData.video)}" controls autoplay playsinline onplay="pauseBGMForClip()" onended="onCaseVideoEnded(${caseNum})"></video>
+              ` : `
+                <img src="${resolvedImg}" alt="${cData.title}" style="cursor:zoom-in;" onclick="openZoomModal('${resolvedImg}', '${cData.title}')">
+              `}
+            </div>
+
+            <div class="credit-caption">
+              📌 ${cData.creditHidden} &nbsp;|&nbsp; 💡 <em>คลิกที่ภาพนิ่งเพื่อขยายเต็มจอให้แถวหลังเห็นชัดๆ ได้ครับ</em>
+            </div>
+
+            <!-- Live Group Submission Counters (Updated every 3.5s without resetting video) -->
+            <div id="teacher-k-live-groups" class="grid-4">
+              ${buildTeacherKGroupStatusHTML(caseNum)}
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      teacherRenderedSig = `${stage}|pin:${currentPin}`;
 
       // 0. LOBBY
       if (stage === "LOBBY") {
@@ -2237,18 +2659,13 @@
             <div class="pin-display">
               <div class="pin-label">🔑 รหัสห้องสืบสวน (GAME PIN)</div>
               <div class="pin-code">${currentPin}</div>
-              <div style="color:#cbd5e1; font-size:1rem; margin-top:6px;">
-                สายสืบลงทะเบียนแล้วทั้งหมด: <strong style="color:var(--gold); font-size:1.25rem;">${students.length} คน</strong>
-              </div>
-              <div style="margin-top:12px;">
-                <button class="btn btn-primary" onclick="teacherSetStage('1K')">
-                  🚀 เริ่มเปิดแฟ้มคดีที่ 1 (1.1 ล่าเบาะแส) ➔
-                </button>
+              <div style="color:#cbd5e1; font-size:1.05rem; margin-top:6px;">
+                สายสืบลงทะเบียนแล้วทั้งหมด: <strong style="color:var(--gold); font-size:1.35rem;">${students.length} คน</strong>
               </div>
             </div>
             <div class="qr-box">
               <div id="qr-canvas-holder"></div>
-              <div style="font-size:0.82rem; font-weight:700;">📱 สแกนเข้าหน่วยสืบสวน</div>
+              <div style="font-size:0.84rem; font-weight:700;">📱 สแกนเข้าหน่วยสืบสวน</div>
             </div>
           </div>
 
@@ -2290,93 +2707,7 @@
         return;
       }
 
-      // 1. STAGE 1K, 2K, 3K (เปิดซองแฟ้มลับ + คลิปสั้น + ภาพนิ่ง + รายชื่อคนยังไม่ส่ง)
-      if (stage === "1K" || stage === "2K" || stage === "3K") {
-        const caseNum = Number(stage[0]);
-        const cData = CASES_DATA[caseNum];
-        const isOpened = teacherFolderOpened[caseNum];
-        const mMode = teacherMediaMode[caseNum];
-
-        const groupStatusBoxes = ["ดีด", "สี", "ตี", "เป่า"].map(g => {
-          const gAll = students.filter(s => s.group === g);
-          const gDone = gAll.filter(s => s["k" + caseNum + "Submitted"]);
-          const gPending = gAll.filter(s => !s["k" + caseNum + "Submitted"]);
-          const allSent = gAll.length > 0 && gPending.length === 0;
-          return `
-            <div style="background:#0f172a; padding:10px 12px; border-radius:10px; border:1px solid ${allSent ? '#10b981' : '#334155'};">
-              <div style="display:flex; justify-content:space-between; font-weight:700;">
-                <span>กลุ่ม${g}</span>
-                <span style="color:${allSent ? '#34d399' : 'var(--gold)'};">${gDone.length}/${gAll.length} คน</span>
-              </div>
-              <div style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">
-                ${allSent ? '✅ ส่งครบทุกคนแล้ว!' : (gPending.length ? `⏳ รอเลขที่: ${gPending.map(p => p.number).join(", ")}` : 'ยังไม่มีสมาชิก')}
-              </div>
-            </div>
-          `;
-        }).join("");
-
-        if (!isOpened) {
-          container.innerHTML = `
-            <div class="folder-envelope" onclick="openSecretFolder(${caseNum})">
-              <div class="top-secret-stamp">TOP SECRET : CASE #${caseNum}</div>
-              <h2 style="font-size:2.2rem; color:#fff; margin-bottom:8px;">📁 ${cData.title}</h2>
-              <p style="color:#fef3c7; font-size:1.1rem; margin-bottom:20px;">
-                ภารกิจที่ 1 : ล่าเบาะแสเครื่องดนตรีไทย (เวลาแนะนำ 2 นาที)
-              </p>
-              <button class="btn btn-primary" style="font-size:1.15rem; padding:14px 28px;">
-                🔓 คลิกเพื่อเปิดซองแฟ้มคดีที่ ${caseNum} (เริ่มจับเวลา 2 นาที)
-              </button>
-            </div>
-          `;
-          return;
-        }
-
-        const resolvedImg = resolveMediaUrl(cData.image);
-
-        container.innerHTML = `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
-              <div>
-                <h2 style="color:var(--gold); margin:0;">📁 ${cData.title} : ล่าเบาะแสเครื่องดนตรี</h2>
-                <span style="color:var(--muted); font-size:0.9rem;">🔊 ฟังเสียงและสังเกตเครื่องดนตรีที่กำลังบรรเลงอยู่ในวง แล้วกดเลือกในมือถือ</span>
-              </div>
-              <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn ${mMode === 'VIDEO' ? 'btn-primary' : 'btn-secondary'}" onclick="switchCaseMedia(${caseNum}, 'VIDEO')">
-                  ▶️ เล่นคลิปสั้นฟังเสียง
-                </button>
-                <button class="btn ${mMode === 'IMAGE' ? 'btn-primary' : 'btn-secondary'}" onclick="switchCaseMedia(${caseNum}, 'IMAGE')">
-                  🖼️ ดูภาพนิ่งเต็มวง
-                </button>
-                <button class="btn btn-secondary" onclick="openZoomModal('${resolvedImg}', '${cData.title}')">
-                  🔍 ขยายภาพเต็มจอ
-                </button>
-                <button class="btn btn-blue" onclick="startTeacherTimer(90, 'ถอดรหัสคดีที่ ${caseNum} (1.30 นาที)'); teacherSetStage('${caseNum}P')">
-                  ไปด่านถอดรหัส (${caseNum}.2) ➔
-                </button>
-              </div>
-            </div>
-
-            <div class="media-frame">
-              ${mMode === "VIDEO" ? `
-                <video id="case-video-player" src="${resolveMediaUrl(cData.video)}" controls autoplay onplay="pauseBGMForClip()" onended="resumeBGMAfterClip()"></video>
-              ` : `
-                <img src="${resolvedImg}" alt="${cData.title}" style="cursor:zoom-in;" onclick="openZoomModal('${resolvedImg}', '${cData.title}')">
-              `}
-            </div>
-
-            <div class="credit-caption">
-              📌 ${cData.creditHidden} &nbsp;|&nbsp; 💡 <em>คลิกที่ภาพนิ่งเพื่อขยายเต็มจอให้แถวหลังเห็นชัดๆ ได้ครับ</em>
-            </div>
-
-            <div class="grid-4">
-              ${groupStatusBoxes}
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      // 2. STAGE 1P, 2P, 3P (ถอดรหัสการประสมวง - มติเอกฉันท์ 4 กลุ่ม)
+      // 2. STAGE 1P, 2P, 3P (ถอดรหัสการประสมวง + ปุ่มครูช่วยอนุมัติมติกลุ่มกรณีเด็กเน็ตหลุด)
       if (stage === "1P" || stage === "2P" || stage === "3P") {
         const caseNum = Number(stage[0]);
         const caseKey = "case" + caseNum;
@@ -2392,24 +2723,34 @@
             valid.every(v => v.structure === valid[0].structure && v.ensemble === valid[0].ensemble);
 
           return `
-            <div class="group-box" style="border-color:${unanimous ? '#10b981' : '#f59e0b'};">
-              <div class="group-header">
-                <span>กลุ่ม${g} (${total} คน)</span>
-                <span class="pass-tag ${unanimous ? 'pass-ok' : 'pass-no'}">
-                  ${unanimous ? '🎉 มติเอกฉันท์แล้ว' : `⏳ โหวตแล้ว ${valid.length}/${total}`}
-                </span>
+            <div class="group-box" style="border-color:${unanimous ? '#10b981' : '#f59e0b'}; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div class="group-header">
+                  <span>กลุ่ม${g} (${total} คน)</span>
+                  <span class="pass-tag ${unanimous ? 'pass-ok' : 'pass-no'}">
+                    ${unanimous ? '🎉 มติเอกฉันท์แล้ว' : `⏳ โหวตแล้ว ${valid.length}/${total}`}
+                  </span>
+                </div>
+                <div style="font-size:0.85rem; color:#cbd5e1; margin-bottom:10px;">
+                  <strong>เบาะแสที่กลุ่มพบ:</strong> ${Object.keys(clues).map(k => `${k}(${clues[k]})`).join(", ") || "-"}
+                </div>
               </div>
-              <div style="font-size:0.85rem; color:#cbd5e1; margin-bottom:10px;">
-                <strong>เบาะแสที่กลุ่มพบ:</strong> ${Object.keys(clues).map(k => `${k}(${clues[k]})`).join(", ") || "-"}
-              </div>
+
               ${unanimous ? `
-                <div style="background:rgba(16,185,129,0.15); padding:10px; border-radius:8px; color:#6ee7b7; font-weight:700; text-align:center;">
-                  🔒 ล็อกซองคำตัดสินคดีที่ ${caseNum} เรียบร้อย!
+                <div style="background:rgba(16,185,129,0.18); padding:10px; border-radius:8px; color:#6ee7b7; font-weight:700; text-align:center;">
+                  🔒 ล็อกซองคำตัดสินคดีที่ ${caseNum} สำเร็จ!
                 </div>
               ` : `
-                <div style="font-size:0.82rem; color:#fbbf24;">
-                  กำลังปรึกษาเพื่อโหวตให้ตรงกันครบทุกคน...
-                  ${pending.length ? `<br><span style="color:#f87171;">รอเลขที่: ${pending.map(p => p.number).join(", ")}</span>` : ''}
+                <div>
+                  <div style="font-size:0.82rem; color:#fbbf24; margin-bottom:8px;">
+                    กำลังปรึกษาให้ตรงกันครบทุกคน...
+                    ${pending.length ? `<br><span style="color:#f87171;">รอเลขที่: ${pending.map(p => p.number).join(", ")}</span>` : ''}
+                  </div>
+                  ${total > 0 ? `
+                    <button class="btn btn-secondary btn-sm" style="width:100%; font-size:0.78rem;" onclick="teacherForceApproveGroupP(${caseNum}, '${g}')">
+                      ✅ ครูอนุมัติมติกลุ่มนี้ (กรณีเพื่อนเน็ตหลุด)
+                    </button>
+                  ` : ''}
                 </div>
               `}
             </div>
@@ -2420,23 +2761,12 @@
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
               <div>
-                <h2 style="color:var(--gold); margin:0;">🔓 ภารกิจที่ 2 : ถอดรหัสการประสมวง (${cData.title})</h2>
-                <span style="color:var(--muted); font-size:0.9rem;">สมาชิกในแต่ละกลุ่มต้องวิเคราะห์เบาะแสรวมและโหวตเลือกโครงสร้าง + ชื่อวงให้ตรงกันครบ 100%</span>
+                <h2 style="color:var(--gold); margin:0;">🔓 ถอดรหัสการประสมวง (${cData.title})</h2>
+                <span style="color:var(--muted); font-size:0.9rem;">เมื่อทุกกลุ่มขึ้นสีเขียว "มติเอกฉันท์แล้ว" ปุ่มสีทองด้านบนจะกะพริบเป็นสีเขียวเพื่อพาไปด่านถัดไปครับ</span>
               </div>
-              <div style="display:flex; gap:8px;">
-                <button class="btn btn-secondary" onclick="openZoomModal('${resolveMediaUrl(cData.image)}', '${cData.title}')">
-                  🖼️ ดูภาพวงประกอบ
-                </button>
-                ${caseNum < 3 ? `
-                  <button class="btn btn-primary" onclick="teacherSetStage('${caseNum + 1}K')">
-                    ไปเปิดแฟ้มคดีที่ ${caseNum + 1} ➔
-                  </button>
-                ` : `
-                  <button class="btn btn-primary" onclick="teacherSetStage('PRESS')">
-                    🎙️ ไปห้องแถลงข่าวปิดคดี ➔
-                  </button>
-                `}
-              </div>
+              <button class="btn btn-secondary" onclick="openZoomModal('${resolveMediaUrl(cData.image)}', '${cData.title}')">
+                🖼️ เปิดดูภาพวงประกอบ
+              </button>
             </div>
 
             <div class="grid-4">${groupCardsHtml}</div>
@@ -2452,7 +2782,7 @@
 
         const casesHtml = [1, 2, 3].map(cNum => {
           const cKey = "case" + cNum;
-          const cData = CASES_DATA[cNum];
+          const cData = CASES_DATA[caseNum];
           const assignedGroup = assign[cKey] ? `กลุ่ม${assign[cKey]}` : "รอสุ่มกลุ่ม...";
           const isRev = !!revealed[cKey];
 
@@ -2460,7 +2790,7 @@
           const groupAns = (gVotes[0] && gVotes[0].ensemble) ? gVotes[0].ensemble : "-";
 
           return `
-            <div class="card" style="background:rgba(15,23,42,0.9); border:2px solid ${isRev ? '#10b981' : 'var(--gold)'}; margin:0;">
+            <div class="card" style="background:rgba(15,23,42,0.92); border:2px solid ${isRev ? '#10b981' : 'var(--gold)'}; margin:0;">
               <div style="font-family:var(--font-head); font-size:1.2rem; font-weight:700; color:var(--gold); margin-bottom:6px;">
                 📁 แฟ้มคดีที่ ${cNum}
               </div>
@@ -2493,14 +2823,11 @@
               <div style="color:var(--gold); font-weight:700; letter-spacing:2px; font-size:0.9rem;">💡 THAI MUSIC DETECTIVE PRESS CONFERENCE 💡</div>
               <h2 style="font-size:2rem; color:#ffffff; margin:4px 0 12px;">🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย (3 คดี)</h2>
               <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-                <button class="btn btn-primary" onclick="teacherRandomizePress()">
-                  🎲 สุ่มกลุ่มแถลงปิดคดี (3 คดี)
+                <button class="btn btn-primary" style="font-size:1.05rem; padding:12px 22px;" onclick="teacherRandomizePress()">
+                  🎲 กดสุ่มกลุ่มแถลงปิดคดี (3 คดี)
                 </button>
-                <button class="btn btn-secondary" onclick="startTeacherTimer(60, 'ตัวแทนแถลงปิดคดี (1 นาที)')">
+                <button class="btn btn-secondary" onclick="startTeacherTimer(60)">
                   ⏱️ จับเวลาพูด 1 นาที
-                </button>
-                <button class="btn btn-blue" onclick="startTeacherTimer(90, 'ภารกิจตัดสินใจ (1.30 นาที)'); teacherSetStage('A')">
-                  🎯 ไปภารกิจตัดสินใจ ➔
                 </button>
               </div>
             </div>
@@ -2517,32 +2844,27 @@
         return;
       }
 
-      // 4. STAGE A (ภารกิจตัดสินใจ - แสดงรายชื่อคนยังไม่ส่งด้วย)
+      // 4. STAGE A (ภารกิจตัดสินใจ)
       if (stage === "A") {
         const doneA = students.filter(s => s.aSubmitted);
         const pendingA = students.filter(s => !s.aSubmitted);
 
         container.innerHTML = `
           <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
-              <div>
-                <h2 style="color:var(--gold); margin:0;">🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจ (เลือกวงดนตรีออกงาน)</h2>
-                <span style="color:var(--muted);">นักเรียนแต่ละคนเลือกใช้วงดนตรีไทยให้เหมาะสมกับ 3 สถานการณ์งานบนมือถือของตนเอง (ลำดับข้อสุ่มไม่ตรงกัน)</span>
-              </div>
-              <button class="btn btn-primary" onclick="teacherSetStage('SUMMARY')">
-                🏆 ดูสรุปผลคะแนนทั้งห้อง ➔
-              </button>
+            <div style="margin-bottom:14px;">
+              <h2 style="color:var(--gold); margin:0;">🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจ (เลือกวงดนตรีออกงาน)</h2>
+              <span style="color:var(--muted);">นักเรียนแต่ละคนเลือกใช้วงดนตรีไทยให้เหมาะสมกับ 3 สถานการณ์งานบนมือถือของตนเอง (ลำดับข้อสุ่มไม่ตรงกัน)</span>
             </div>
 
             <div style="background:#0f172a; padding:16px; border-radius:12px; margin-bottom:16px; border:1px solid var(--gold);">
               <div>
-                <strong>📊 สถานะการส่งคำตอบภารกิจตัดสินใจ:</strong> ส่งแล้ว <strong style="color:var(--gold); font-size:1.2rem;">${doneA.length} / ${students.length} คน</strong>
+                <strong>📊 สถานะการส่งคำตอบภารกิจตัดสินใจ:</strong> ส่งแล้ว <strong style="color:var(--gold); font-size:1.25rem;">${doneA.length} / ${students.length} คน</strong>
               </div>
               ${pendingA.length ? `
                 <div style="font-size:0.85rem; color:#f87171; margin-top:6px;">
                   ⏳ รอเลขที่: ${pendingA.map(p => `${p.number} (${p.name})`).join(", ")}
                 </div>
-              ` : (students.length ? `<div style="font-size:0.9rem; color:#34d399; margin-top:4px;">✅ ส่งครบทุกคนแล้ว!</div>` : '')}
+              ` : (students.length ? `<div style="font-size:0.95rem; color:#34d399; margin-top:4px; font-weight:700;">✅ ส่งครบทุกคนแล้ว! กดปุ่มสีเขียวด้านบนเพื่อดูสรุปผลคะแนนทั้งห้องได้เลยครับ</div>` : '')}
             </div>
 
             <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
@@ -2558,7 +2880,7 @@
         return;
       }
 
-      // 5. STAGE SUMMARY (หน้าสรุปผลของครู แสดง K-P-A ครบสำหรับการประเมินและเขียนหลังแผน ว.PA)
+      // 5. STAGE SUMMARY (ตารางสรุปผล K-P-A + ปุ่มดาวน์โหลด Excel/CSV + ข้อความหลังแผน ว.PA)
       if (stage === "SUMMARY") {
         const totalStu = students.length;
         const passKList = students.filter(s => (s.scoreK ?? 0) >= 7);
@@ -2626,8 +2948,9 @@
           <div class="card">
             <h2 style="color:var(--gold); margin-bottom:12px;">📊 กล่องข้อความสรุปผลการประเมินประจำคาบเรียน (สำหรับบันทึกหลังแผน ว.PA)</h2>
             <div class="pa-report-box" id="pa-summary-text">${reportText}</div>
-            <div class="no-print" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+            <div class="no-print" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
               <button class="btn btn-primary" onclick="copyPaSummary()">📋 คัดลอกข้อความสรุปหลังแผน</button>
+              <button class="btn btn-success" onclick="exportRoomScoresCSV()">📥 ดาวน์โหลดตารางคะแนนห้องนี้ (Excel / .CSV)</button>
               <button class="btn btn-blue" onclick="toggleAllDetectiveCards()">🪪 แสดง/ซ่อน บัตรนักสืบของนักเรียนทั้งห้อง (แนบภาคผนวก)</button>
             </div>
             ${allCardsHtml}
@@ -2672,20 +2995,61 @@
       });
     }
 
-    function toggleAllDetectiveCards() {
-      showAllCardsPreview = !showAllCardsPreview;
-      renderTeacherStage();
+    // ดาวน์โหลดไฟล์ตารางคะแนนเป็น .CSV (เปิดด้วย Excel อ่านภาษาไทยได้ 100% ด้วย UTF-8 BOM)
+    function exportRoomScoresCSV() {
+      const students = (roomState.students || []).slice().sort((a, b) => Number(a.number) - Number(b.number));
+      const headers = ["รหัสห้อง (PIN)", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม", "คะแนน K (เต็ม 10)", "คะแนน P (เต็ม 6)", "คะแนน A (เต็ม 3)", "คะแนนรวม (เต็ม 19)", "ผลประเมิน K", "ผลประเมิน P", "ผลประเมิน A", "สรุปผลรวม"];
+      const rows = [headers];
+
+      students.forEach(s => {
+        const passK = (s.scoreK >= 7) ? "ผ่าน" : "ไม่ผ่าน";
+        const passP = (s.scoreP >= 4) ? "ผ่าน" : "ไม่ผ่าน";
+        const passA = (s.scoreA >= 2) ? "ผ่าน" : "ไม่ผ่าน";
+        const passAll = (s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? "ผ่านเกณฑ์" : "ซ่อมเสริม";
+        rows.push([
+          currentPin,
+          s.number,
+          `"${(s.name || "").replace(/"/g, '""')}"`,
+          `"${(s.classRoom || "").replace(/"/g, '""')}"`,
+          s.group,
+          s.scoreK,
+          s.scoreP,
+          s.scoreA,
+          s.total,
+          passK,
+          passP,
+          passA,
+          passAll
+        ]);
+      });
+
+      const csvContent = "\uFEFF" + rows.map(r => r.join(",")).join("\r\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `คะแนนนักสืบดนตรีไทย_ห้อง_${currentPin}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      playSound("fanfare");
     }
 
-    function renderCurrentView() {
+    function toggleAllDetectiveCards() {
+      showAllCardsPreview = !showAllCardsPreview;
+      renderTeacherStage(true);
+    }
+
+    function renderCurrentView(forceRebuild = false) {
       if (appMode === "TEACHER") {
-        renderTeacherStage();
+        renderTeacherStage(forceRebuild);
       } else {
-        renderStudentStage();
+        renderStudentStage(forceRebuild);
       }
     }
 
-    // Initialize on load (ตรวจพารามิเตอร์ ?pin=XXXX จาก QR Code และกู้คืนเซสชันนักเรียนอัตโนมัติ)
+    // Initialize on load
     window.addEventListener("DOMContentLoaded", () => {
       const urlParams = new URLSearchParams(window.location.search);
       const pinParam = urlParams.get("pin");
