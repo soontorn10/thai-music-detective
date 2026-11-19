@@ -11,23 +11,20 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-soft: #1e293b;
+      --bg: #0b1120;
       --surface: #1e293b;
       --surface-light: #334155;
       --ink: #f8fafc;
-      --ink-dark: #0f172a;
       --muted: #94a3b8;
       --border: #334155;
       --gold: #f59e0b;
       --gold-light: #fef3c7;
       --brand: #3b82f6;
-      --brand-hover: #2563eb;
       --success: #10b981;
       --danger: #ef4444;
       --warning: #f59e0b;
-      --radius: 14px;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.45), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      --radius: 16px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
       --font-head: 'Kanit', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-body: 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -37,7 +34,7 @@
       margin: 0;
       font-family: var(--font-body);
       color: var(--ink);
-      background: radial-gradient(circle at top, #1e293b 0%, #090d16 100%);
+      background: radial-gradient(circle at top, #1e293b 0%, #070b14 100%);
       min-height: 100vh;
       line-height: 1.5;
       overflow-x: hidden;
@@ -50,10 +47,10 @@
 
     /* Top Bar */
     .topbar {
-      background: rgba(15, 23, 42, 0.94);
+      background: rgba(11, 17, 32, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
-      padding: 10px 20px;
+      padding: 8px 18px;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -63,24 +60,21 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-
     .brand-title {
       display: flex;
       align-items: center;
       gap: 10px;
       font-family: var(--font-head);
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--gold);
     }
-
     .brand-sub {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       color: var(--muted);
       font-weight: 400;
       display: block;
     }
-
     .top-actions {
       display: flex;
       align-items: center;
@@ -94,23 +88,24 @@
       font-size: 0.95rem;
       font-weight: 600;
       padding: 10px 16px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid transparent;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.18s ease;
+      transition: all 0.16s ease;
       text-decoration: none;
     }
-    .btn:active { transform: scale(0.98); }
+    .btn:active { transform: scale(0.97); }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .btn-primary {
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
       color: #0f172a;
-      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
     }
     .btn-primary:hover:not(:disabled) {
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
@@ -121,33 +116,25 @@
       color: #ffffff;
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
-    .btn-blue:hover:not(:disabled) {
-      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-    }
-
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
+      font-weight: 700;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
-
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       color: #ffffff;
     }
-
     .btn-secondary {
       background: var(--surface-light);
       color: var(--ink);
       border-color: #475569;
     }
-    .btn-secondary:hover:not(:disabled) {
-      background: #475569;
-    }
-
+    .btn-secondary:hover:not(:disabled) { background: #475569; }
     .btn-sm {
       padding: 6px 12px;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       border-radius: 8px;
     }
 
@@ -156,27 +143,27 @@
       background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
       color: #ffffff !important;
       border: 2px solid #a7f3d0 !important;
-      animation: readyGlow 1s infinite alternate;
+      animation: readyGlow 0.9s infinite alternate;
     }
     @keyframes readyGlow {
       from { box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); transform: scale(1); }
-      to { box-shadow: 0 0 22px rgba(16, 185, 129, 0.95); transform: scale(1.03); }
+      to { box-shadow: 0 0 24px rgba(16, 185, 129, 0.95); transform: scale(1.04); }
     }
 
     /* Container */
     .container {
-      max-width: 1200px;
+      max-width: 1220px;
       margin: 0 auto;
-      padding: 16px 14px 60px;
+      padding: 12px 14px 115px; /* Extra bottom padding for floating teacher dock */
     }
 
     .card {
-      background: rgba(30, 41, 59, 0.9);
+      background: rgba(30, 41, 59, 0.92);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 20px;
-      margin-bottom: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
     }
 
     /* Forms */
@@ -207,12 +194,12 @@
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
+      gap: 12px;
     }
     .grid-4 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
     }
 
     /* Student 4-Step Progress Bar */
@@ -220,8 +207,8 @@
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid #334155;
       border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 14px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
     }
     .stu-progress-steps {
       display: grid;
@@ -232,214 +219,245 @@
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 8px;
-      padding: 8px 4px;
+      padding: 6px 4px;
       text-align: center;
       font-family: var(--font-head);
       font-size: 0.78rem;
       color: var(--muted);
-      transition: all 0.2s;
     }
     .stu-p-item.done {
-      background: rgba(16, 185, 129, 0.18);
+      background: rgba(16, 185, 129, 0.2);
       border-color: #10b981;
       color: #6ee7b7;
       font-weight: 700;
     }
     .stu-p-item.current {
-      background: rgba(245, 158, 11, 0.2);
+      background: rgba(245, 158, 11, 0.22);
       border: 2px solid var(--gold);
       color: var(--gold-light);
       font-weight: 800;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
     }
 
-    /* Teacher Big Stage Banner */
-    .teacher-hero-bar {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      border: 2px solid var(--gold);
-      border-radius: 16px;
-      padding: 16px 20px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-    }
-    .teacher-stage-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 14px;
-      padding-bottom: 14px;
+    /* How-To-Pass Instruction Banner (Both Teacher & Student) */
+    .mission-guide-banner {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border-left: 5px solid #3b82f6;
+      border-radius: 10px;
+      padding: 10px 14px;
       margin-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .stage-badge-step {
-      display: inline-block;
-      background: var(--gold);
-      color: #0f172a;
-      font-family: var(--font-head);
-      font-weight: 800;
-      font-size: 0.85rem;
-      padding: 3px 10px;
-      border-radius: 99px;
-      margin-bottom: 4px;
-    }
-    .stage-main-title {
-      font-family: var(--font-head);
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: #ffffff;
-      margin: 0;
-      line-height: 1.25;
-    }
-    .stage-progress-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(59, 130, 246, 0.18);
-      border: 1px solid #3b82f6;
-      color: #93c5fd;
-      padding: 6px 14px;
-      border-radius: 99px;
-      font-family: var(--font-head);
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-top: 6px;
-    }
-    .stage-progress-pill.all-done {
-      background: rgba(16, 185, 129, 0.22);
-      border-color: #10b981;
-      color: #6ee7b7;
-    }
-
-    .giant-next-btn {
-      font-family: var(--font-head);
-      font-size: 1.15rem;
-      font-weight: 800;
-      padding: 14px 24px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #0f172a;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.2s;
-    }
-    .giant-next-btn:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    }
-
-    /* Group Cards in Lobby */
-    .group-box {
-      border-radius: 12px;
-      padding: 16px;
-      background: rgba(15, 23, 42, 0.78);
-      border: 2px solid var(--border);
-      min-height: 150px;
-    }
-    .group-deed { border-color: #eab308; }
-    .group-see { border-color: #3b82f6; }
-    .group-tee { border-color: #ef4444; }
-    .group-pao { border-color: #10b981; }
-
-    .group-header {
-      font-family: var(--font-head);
-      font-weight: 700;
-      font-size: 1.05rem;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding-bottom: 8px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .stu-pill {
-      display: inline-block;
-      background: #334155;
-      color: #f8fafc;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.84rem;
-      margin: 3px;
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    /* PIN & QR Banner */
-    .lobby-hero {
-      display: flex;
       flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-around;
-      gap: 24px;
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
-      border: 2px solid var(--gold);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
+      gap: 8px;
     }
-    .pin-display { text-align: center; }
-    .pin-label {
-      font-size: 1rem;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 700;
+    .mission-guide-banner.gold {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.22) 0%, rgba(30, 41, 59, 0.9) 100%);
+      border-left-color: var(--gold);
     }
-    .pin-code {
+
+    /* Kahoot-style Category Tabs for Student K Stage (No vertical scrolling needed) */
+    .cat-tabs-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .cat-tab-btn {
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 10px;
+      padding: 8px 4px;
+      color: #cbd5e1;
       font-family: var(--font-head);
-      font-size: 4.2rem;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: 6px;
-      line-height: 1.1;
-      text-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-    }
-    .qr-box {
-      background: #ffffff;
-      padding: 14px;
-      border-radius: 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
       text-align: center;
-      color: #0f172a;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-      min-width: 190px;
+      position: relative;
+      transition: all 0.15s;
     }
-    #qr-canvas-holder {
-      width: 165px;
-      height: 165px;
-      margin: 0 auto 6px;
+    .cat-tab-btn.active {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--gold);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+    }
+    .cat-tab-count {
+      display: inline-block;
+      background: #10b981;
+      color: #0f172a;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 99px;
+      margin-top: 2px;
+    }
+
+    /* Big Kahoot-style Instrument Buttons inside active tab */
+    .kahoot-inst-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .kahoot-inst-btn {
+      background: #0f172a;
+      border: 2px solid #475569;
+      color: #f8fafc;
+      border-radius: 14px;
+      padding: 16px 10px;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
+      min-height: 62px;
     }
-    #qr-canvas-holder img, #qr-canvas-holder svg, #qr-canvas-holder canvas {
-      width: 165px !important;
-      height: 165px !important;
-      display: block;
+    .kahoot-inst-btn.selected {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.32), rgba(5, 150, 105, 0.32));
+      border-color: #10b981;
+      color: #6ee7b7;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+      transform: translateY(-2px);
     }
 
-    /* Teacher Timer Bar */
-    .timer-bar {
+    /* Big Kahoot Action Buttons for P & A Stages */
+    .kahoot-big-choice {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 3px solid rgba(255,255,255,0.18);
+      font-family: var(--font-head);
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      transition: all 0.16s ease;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+    }
+    .kahoot-big-choice:hover { transform: translateY(-2px); }
+    .kahoot-red { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
+    .kahoot-blue { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+    .kahoot-yellow { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); }
+    .kahoot-big-choice.selected {
+      border-color: #fef08a;
+      box-shadow: 0 0 0 4px rgba(254, 240, 138, 0.45);
+    }
+
+    /* 5-Category Horizontal Bar Chart (Data Visualization for Brainstorming in P Stage) */
+    .bar-chart-box {
+      background: #090d16;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .bar-row {
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-label-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      font-family: var(--font-head);
+      margin-bottom: 4px;
+    }
+    .bar-track {
+      width: 100%;
+      height: 18px;
+      background: #1e293b;
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      min-width: 4px;
+    }
+    .bar-detail-pills {
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      margin-top: 3px;
+      padding-left: 4px;
+    }
+
+    /* Floating Bottom Teacher Remote Control Dock (No scrolling needed!) */
+    .teacher-floating-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(9, 13, 22, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 2px solid var(--gold);
+      padding: 8px 16px;
+      z-index: 300;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.75);
+    }
+    .dock-inner {
+      max-width: 1240px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
     }
+    .dock-quick-stages {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .dock-stage-pill {
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dock-stage-pill:hover { background: #334155; color: #fff; }
+    .dock-stage-pill.active {
+      background: var(--gold);
+      color: #0f172a;
+      border-color: var(--gold);
+      font-weight: 800;
+    }
+
     .timer-display {
       font-family: var(--font-head);
-      font-size: 1.65rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--gold);
       background: #000;
-      padding: 3px 14px;
-      border-radius: 10px;
+      padding: 3px 12px;
+      border-radius: 8px;
       border: 2px solid #475569;
       letter-spacing: 2px;
-      min-width: 105px;
+      min-width: 88px;
       text-align: center;
     }
     .timer-display.urgent {
@@ -449,212 +467,183 @@
     }
     @keyframes pulseUrgent {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.06); }
     }
 
-    /* Secret Folder Animation */
-    .folder-envelope {
-      background: linear-gradient(145deg, #b45309 0%, #78350f 100%);
-      border: 3px solid #f59e0b;
-      border-radius: 16px;
-      padding: 36px 24px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      max-width: 680px;
-      margin: 20px auto;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .folder-envelope:hover { transform: translateY(-4px); }
-    .top-secret-stamp {
-      display: inline-block;
-      border: 4px solid #ef4444;
-      color: #ef4444;
-      background: rgba(254, 226, 226, 0.95);
-      font-family: var(--font-head);
-      font-weight: 800;
-      font-size: 1.5rem;
-      padding: 6px 20px;
-      border-radius: 8px;
-      transform: rotate(-6deg);
-      margin-bottom: 16px;
-      letter-spacing: 2px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    /* Media Viewer */
+    /* Compact Media Frame on Teacher Projector (Fits 100% in 1 screen without scrolling) */
     .media-frame {
       background: #000;
       border-radius: 12px;
       overflow: hidden;
       border: 2px solid #475569;
-      max-width: 860px;
-      margin: 0 auto 12px;
+      max-width: 780px;
+      margin: 0 auto 8px;
       position: relative;
     }
     .media-frame img, .media-frame video {
       width: 100%;
-      max-height: 480px;
+      max-height: 40vh;
       object-fit: contain;
       display: block;
       margin: 0 auto;
     }
     .credit-caption {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #cbd5e1;
       text-align: center;
-      padding: 8px 12px;
+      padding: 5px 10px;
       background: rgba(15, 23, 42, 0.8);
       border-radius: 8px;
-      margin-bottom: 16px;
-    }
-
-    /* Grouped Instrument Sections for Student K Stage */
-    .inst-cat-section {
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 12px 14px;
       margin-bottom: 10px;
     }
-    .inst-cat-header {
+
+    /* Group Boxes */
+    .group-box {
+      border-radius: 12px;
+      padding: 14px;
+      background: rgba(15, 23, 42, 0.82);
+      border: 2px solid var(--border);
+    }
+    .group-deed { border-color: #eab308; }
+    .group-see { border-color: #3b82f6; }
+    .group-tee { border-color: #ef4444; }
+    .group-pao { border-color: #10b981; }
+
+    .group-header {
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 0.96rem;
-      margin-bottom: 8px;
+      font-size: 1rem;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 6px;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .inst-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 8px;
-    }
-    .inst-btn {
-      background: #0f172a;
-      border: 2px solid #334155;
+    .stu-pill {
+      display: inline-block;
+      background: #334155;
       color: #f8fafc;
-      border-radius: 10px;
-      padding: 10px 8px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      margin: 2px;
+    }
+
+    /* Lobby Hero */
+    .lobby-hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+      gap: 20px;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .pin-code {
       font-family: var(--font-head);
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
+      font-size: 3.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 5px;
+      line-height: 1.05;
+      text-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+    .qr-box {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
       text-align: center;
-      transition: all 0.15s ease;
+      color: #0f172a;
+    }
+    #qr-canvas-holder {
+      width: 145px;
+      height: 145px;
+      margin: 0 auto 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
     }
-    .inst-btn:hover { border-color: #64748b; }
-    .inst-btn.selected {
-      background: rgba(16, 185, 129, 0.22);
-      border-color: #10b981;
-      color: #6ee7b7;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+    #qr-canvas-holder svg, #qr-canvas-holder img {
+      width: 145px !important;
+      height: 145px !important;
     }
 
-    /* Sticky Bottom Submit Bar for Student K Stage */
-    .sticky-submit-bar {
-      position: sticky;
-      bottom: 10px;
-      background: rgba(15, 23, 42, 0.96);
-      backdrop-filter: blur(8px);
-      border: 2px solid var(--gold);
-      border-radius: 14px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      z-index: 50;
-      margin-top: 14px;
-    }
-
-    /* Category Basket Table (5 Categories) */
-    .clue-basket {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 16px;
-    }
-    .clue-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      font-size: 0.94rem;
-    }
-    .clue-row:last-child { border-bottom: none; }
-    .clue-cat {
-      min-width: 125px;
-      font-weight: 700;
-      font-family: var(--font-head);
-    }
-
-    /* Radio Option Cards */
-    .choice-card {
-      display: block;
-      background: #0f172a;
-      border: 2px solid #334155;
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .choice-card:hover { border-color: #64748b; }
-    .choice-card.selected {
-      border-color: var(--gold);
-      background: rgba(245, 158, 11, 0.16);
-    }
-
-    /* Unanimous Vote Status Box */
-    .vote-alert {
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-top: 16px;
-      border: 2px solid var(--warning);
-      background: rgba(245, 158, 11, 0.12);
-    }
-    .vote-alert.success {
-      border-color: var(--success);
-      background: rgba(16, 185, 129, 0.15);
-    }
-
-    /* Press Conference Stage */
+    /* Press Conference Stage with Realistic Backdrop, Spotlights & Podium */
     .press-stage {
-      background: radial-gradient(circle at 50% 0%, #3b0764 0%, #0f172a 70%);
+      background: radial-gradient(circle at 50% 0%, #4c1d95 0%, #1e1b4b 45%, #090d16 100%);
       border: 3px solid var(--gold);
       border-radius: 18px;
-      padding: 26px 20px;
+      padding: 20px 18px 0;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.75);
     }
-    .press-backdrop {
-      text-align: center;
-      border-bottom: 2px dashed rgba(245, 158, 11, 0.4);
-      padding-bottom: 16px;
-      margin-bottom: 20px;
+    .spotlight-left {
+      position: absolute;
+      top: -60px;
+      left: 5%;
+      width: 240px;
+      height: 360px;
+      background: linear-gradient(180deg, rgba(254, 240, 138, 0.22) 0%, transparent 100%);
+      transform: rotate(-22deg);
+      pointer-events: none;
     }
-    .press-podium {
-      background: linear-gradient(180deg, #78350f 0%, #451a03 100%);
-      border-top: 6px solid var(--gold);
-      border-radius: 12px 12px 0 0;
-      max-width: 440px;
-      margin: 24px auto 0;
-      padding: 14px;
+    .spotlight-right {
+      position: absolute;
+      top: -60px;
+      right: 5%;
+      width: 240px;
+      height: 360px;
+      background: linear-gradient(180deg, rgba(254, 240, 138, 0.22) 0%, transparent 100%);
+      transform: rotate(22deg);
+      pointer-events: none;
+    }
+    .press-podium-graphic {
+      background: linear-gradient(180deg, #92400e 0%, #451a03 100%);
+      border-top: 8px solid var(--gold);
+      border-left: 2px solid #b45309;
+      border-right: 2px solid #b45309;
+      border-radius: 14px 14px 0 0;
+      max-width: 520px;
+      margin: 18px auto 0;
+      padding: 14px 18px;
       text-align: center;
+      position: relative;
+      box-shadow: 0 -8px 25px rgba(0,0,0,0.6);
+    }
+
+    /* 3-2-1 Fullscreen Mission Intro Countdown Overlay */
+    .countdown-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, rgba(15, 23, 42, 0.96) 0%, rgba(5, 8, 17, 0.99) 100%);
+      z-index: 9000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .countdown-overlay.show { display: flex; }
+    .countdown-num {
       font-family: var(--font-head);
-      color: var(--gold-light);
-      box-shadow: 0 -6px 20px rgba(0,0,0,0.5);
+      font-size: 7.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+      text-shadow: 0 0 40px rgba(245, 158, 11, 0.75);
+      margin: 12px 0;
+      animation: popScale 0.85s infinite;
+    }
+    @keyframes popScale {
+      0% { transform: scale(0.7); opacity: 0.4; }
+      50% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.95; }
     }
 
     /* Detective ID Card */
@@ -662,12 +651,13 @@
       background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       border: 3px solid var(--gold);
       border-radius: 16px;
-      padding: 20px;
-      max-width: 440px;
+      padding: 18px;
+      max-width: 460px;
       margin: 0 auto;
       position: relative;
       box-shadow: 0 12px 30px rgba(0,0,0,0.5);
       color: #f8fafc;
+      text-align: left;
     }
     .id-card-header {
       display: flex;
@@ -675,35 +665,24 @@
       justify-content: space-between;
       border-bottom: 2px solid var(--gold);
       padding-bottom: 10px;
-      margin-bottom: 14px;
-    }
-    .id-badge-icon {
-      font-size: 2.2rem;
-      background: rgba(245, 158, 11, 0.2);
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--gold);
+      margin-bottom: 12px;
     }
     .score-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin: 14px 0;
+      margin: 12px 0;
       text-align: center;
     }
     .score-box {
       background: rgba(255,255,255,0.05);
       border: 1px solid #475569;
       border-radius: 10px;
-      padding: 10px 6px;
+      padding: 8px 4px;
     }
     .score-val {
       font-family: var(--font-head);
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--gold);
     }
@@ -717,7 +696,7 @@
     .pass-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
     .pass-no { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
 
-    /* Tables */
+    /* Tables & Reports */
     .table-wrap {
       overflow-x: auto;
       border-radius: 10px;
@@ -740,21 +719,18 @@
       color: var(--gold);
       white-space: nowrap;
     }
-
-    /* Report Box for PA Lesson Plan */
     .pa-report-box {
       background: #090d16;
       border: 1px solid #475569;
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
       font-family: monospace;
       white-space: pre-wrap;
       color: #e2e8f0;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.6;
     }
 
-    /* Confetti Canvas */
     #confetti-canvas {
       position: fixed;
       top: 0;
@@ -769,11 +745,11 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.82);
+      background: rgba(0,0,0,0.85);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 500;
+      z-index: 600;
       padding: 16px;
     }
     .modal-backdrop.show { display: flex; }
@@ -781,12 +757,13 @@
       background: var(--surface);
       border: 1px solid var(--gold);
       border-radius: 16px;
-      max-width: 520px;
+      max-width: 540px;
       width: 100%;
-      padding: 24px;
+      padding: 22px;
       box-shadow: var(--shadow);
+      max-height: 92vh;
+      overflow-y: auto;
     }
-
     .zoom-modal-card {
       position: relative;
       max-width: 96vw;
@@ -807,15 +784,25 @@
 
     .all-id-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 16px;
       margin-top: 16px;
     }
 
+    /* Clean White Academic Print Layout for PA Appendix */
     @media print {
-      .topbar, .no-print { display: none !important; }
-      body { background: #fff; color: #000; }
-      .card { border: 1px solid #ccc; box-shadow: none; background: #fff; color: #000; }
+      .topbar, .teacher-floating-dock, .no-print { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      .container { padding: 0 !important; max-width: 100% !important; }
+      .card, .id-card, .group-box, .bar-chart-box {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #333333 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+      th { background: #e2e8f0 !important; color: #000000 !important; }
+      td { color: #000000 !important; border-bottom: 1px solid #cccccc !important; }
     }
   </style>
 </head>
@@ -823,7 +810,17 @@
 
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Topbar: ปุ่มเพลงประกอบซ่อนจากหน้าจอเด็ก (แสดงเฉพาะตอนเปิดโหมดครู) -->
+  <!-- 3 - 2 - 1 Mission Intro Countdown Overlay -->
+  <div id="mission-countdown-overlay" class="countdown-overlay">
+    <div style="color:var(--gold); font-family:var(--font-head); font-size:1.3rem; letter-spacing:2px; font-weight:700;" id="cd-sub-badge">🚨 เตรียมพร้อมปฏิบัติการ 🚨</div>
+    <h1 style="font-size:2.4rem; color:#ffffff; margin:8px 0;" id="cd-main-title">ภารกิจที่ 1 : ล่าเบาะแสเครื่องดนตรี</h1>
+    <div class="countdown-num" id="cd-number">3</div>
+    <p style="font-size:1.25rem; color:#cbd5e1; max-width:680px; margin:8px auto 0;" id="cd-desc">
+      สังเกตคลิปและภาพวงดนตรีบนจอ แล้วจิ้มเลือกเครื่องดนตรีที่เห็นในมือถือ!
+    </p>
+  </div>
+
+  <!-- Topbar -->
   <header class="topbar">
     <div class="brand-title">
       <span>🕵️‍♂️</span>
@@ -833,14 +830,26 @@
       </div>
     </div>
     <div class="top-actions">
-      <!-- BGM Button: Only visible in TEACHER mode -->
+      <!-- Teacher-only controls -->
+      <div id="teacher-top-pin-box" style="display:none; align-items:center; gap:6px; background:#090d16; padding:4px 10px; border-radius:8px; border:1px solid #334155;">
+        <span style="font-size:0.78rem; color:var(--muted);">PIN:</span>
+        <input id="teacher-pin-input" type="text" style="width:56px; background:transparent; border:none; color:var(--gold); font-weight:800; font-size:1rem; text-align:center;" value="4829">
+        <button class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:0.75rem;" onclick="teacherLoadPin()">โหลด</button>
+        <button class="btn btn-primary btn-sm" style="padding:3px 8px; font-size:0.75rem;" onclick="teacherCreateNewRoom()">➕ ห้องใหม่</button>
+      </div>
+
       <button id="btn-bgm" class="btn btn-secondary btn-sm" style="display:none;" onclick="toggleBGM()">
         🔇 เพลงประกอบ: ปิด
       </button>
-      <button id="btn-switch-student" class="btn btn-secondary btn-sm" style="display:none;" onclick="switchToStudentView()">
-        📱 สลับดูมุมมองนักเรียน
+      <button id="btn-test-sound" class="btn btn-secondary btn-sm" style="display:none;" onclick="playSound('fanfare')">
+        🔊 ทดสอบเสียง
       </button>
-      <!-- Teacher Menu Button: Hidden once student logs into workspace -->
+      <button id="btn-config-top" class="btn btn-secondary btn-sm" style="display:none;" onclick="openConfigModal()">
+        ⚙️
+      </button>
+      <button id="btn-switch-student" class="btn btn-secondary btn-sm" style="display:none;" onclick="switchToStudentView()">
+        📱 มุมมองนักเรียน
+      </button>
       <button id="btn-teacher-menu" class="btn btn-secondary btn-sm" onclick="openTeacherModal()">
         🔒 สำหรับครู
       </button>
@@ -849,20 +858,20 @@
 
   <main class="container">
     <!-- Status Banner -->
-    <div id="sync-banner" style="display:none; margin-bottom:12px; padding:10px 14px; border-radius:10px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:600; font-size:0.92rem;"></div>
+    <div id="sync-banner" style="display:none; margin-bottom:10px; padding:10px 14px; border-radius:10px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:600; font-size:0.92rem;"></div>
 
-    <!-- ================= STUDENT VIEW ================= -->
+    <!-- ================= STUDENT VIEW (KAHOOT-STYLE ONE CARD AT A TIME) ================= -->
     <section id="student-view">
       <!-- 1. Student Login -->
-      <div id="stu-login-card" class="card" style="max-width: 500px; margin: 16px auto;">
-        <h2 style="color:var(--gold); text-align:center; margin-bottom:4px;">🕵️‍♂️ ลงทะเบียนเข้าหน่วยสืบสวน</h2>
-        <p style="text-align:center; color:var(--muted); font-size:0.9rem; margin-top:0; margin-bottom:18px;">
-          กรอกรหัสห้อง 4 หลักบนจอโปรเจกเตอร์ และเลือกทีมประจำโต๊ะของคุณ
+      <div id="stu-login-card" class="card" style="max-width: 480px; margin: 12px auto;">
+        <h2 style="color:var(--gold); text-align:center; margin-bottom:4px;">🕵️‍♂️ เข้าร่วมหน่วยสืบสวนดนตรีไทย</h2>
+        <p style="text-align:center; color:var(--muted); font-size:0.88rem; margin-top:0; margin-bottom:16px;">
+          กรอกรหัส PIN 4 หลักบนจอคุณครู และเลือกกลุ่มประจำโต๊ะของคุณ
         </p>
 
         <div class="form-group">
           <label class="form-label" for="stu-pin">🔑 รหัสห้อง (PIN 4 หลัก)</label>
-          <input id="stu-pin" type="text" maxlength="6" class="form-control" placeholder="เช่น 4829" style="font-size:1.35rem; font-weight:800; text-align:center; letter-spacing:4px; color:var(--gold);">
+          <input id="stu-pin" type="text" maxlength="6" class="form-control" placeholder="เช่น 4829" style="font-size:1.4rem; font-weight:800; text-align:center; letter-spacing:4px; color:var(--gold);">
         </div>
 
         <div class="form-group">
@@ -882,7 +891,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="stu-group">🛡️ เลือกทีมสืบสวนประจำโต๊ะ (ดีด / สี / ตี / เป่า)</label>
+          <label class="form-label" for="stu-group">🛡️ เลือกกลุ่มประจำโต๊ะ (ดีด / สี / ตี / เป่า)</label>
           <select id="stu-group" class="form-control">
             <option value="">-- กดเลือกกลุ่มของคุณ --</option>
             <option value="ดีด">🟡 กลุ่มดีด</option>
@@ -894,23 +903,21 @@
 
         <div id="stu-login-err" style="color:#f87171; font-size:0.9rem; margin-bottom:12px; display:none;"></div>
 
-        <button id="btn-stu-join" class="btn btn-primary" style="width:100%; font-size:1.08rem; padding:14px;" onclick="studentJoinRoom()">
-          🚀 เข้าสู่ศูนย์สืบสวนดนตรีไทย
+        <button id="btn-stu-join" class="btn btn-primary" style="width:100%; font-size:1.1rem; padding:14px;" onclick="studentJoinRoom()">
+          🚀 เข้าสู่ภารกิจสืบสวน
         </button>
       </div>
 
-      <!-- 2. Student Active Workspace (Clean UI + 4-Step Progress Tracker) -->
-      <div id="stu-workspace" style="display:none;">
-        <!-- Compact Student Identity & 4-Step Progress Tracker -->
+      <!-- 2. Student Active Workspace -->
+      <div id="stu-workspace" style="display:none; max-width: 600px; margin: 0 auto;">
         <div class="stu-progress-wrap">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
             <div>
-              <span style="color:var(--gold); font-weight:700; font-size:0.98rem;" id="stu-badge-info">สายสืบ: -</span>
-              <span style="color:var(--muted); font-size:0.82rem; margin-left:6px;" id="stu-pin-info">ห้อง: -</span>
+              <span style="color:var(--gold); font-weight:700; font-size:0.95rem;" id="stu-badge-info">สายสืบ: -</span>
+              <span style="color:var(--muted); font-size:0.8rem; margin-left:6px;" id="stu-pin-info">ห้อง: -</span>
             </div>
-            <button class="btn btn-secondary btn-sm" style="padding:4px 10px; font-size:0.78rem;" onclick="studentLogout()">สลับชื่อ</button>
+            <button class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:0.75rem;" onclick="studentLogout()">สลับชื่อ</button>
           </div>
-          <!-- 4-Step Progress Bar so student knows where they are & how the game ends -->
           <div class="stu-progress-steps" id="stu-progress-bar">
             <div class="stu-p-item">1. คดีที่ 1</div>
             <div class="stu-p-item">2. คดีที่ 2</div>
@@ -919,75 +926,53 @@
           </div>
         </div>
 
-        <!-- Dynamic Stage Container for Student (Separated from live status polling so buttons never flicker) -->
+        <!-- Student Dynamic Stage Content -->
         <div id="stu-stage-content"></div>
       </div>
     </section>
 
     <!-- ================= TEACHER VIEW (PROJECTOR) ================= -->
     <section id="teacher-view" style="display:none;">
-      <!-- Big Clear Teacher Control Panel -->
-      <div class="teacher-hero-bar no-print">
-        <!-- Row 1: Big Stage Status + Giant Single Next Button -->
-        <div class="teacher-stage-banner">
-          <div>
-            <span class="stage-badge-step" id="teacher-step-badge">ขั้นตอนที่ 1 / 9</span>
-            <h2 class="stage-main-title" id="teacher-stage-title">🟢 ห้องลงทะเบียนสายสืบ (Lobby)</h2>
-            <div id="teacher-progress-pill" class="stage-progress-pill">
-              👥 สายสืบเข้าห้องแล้ว 0 คน
-            </div>
-          </div>
+      <!-- Main Projector Display Area -->
+      <div id="teacher-stage-display"></div>
 
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-            <button id="btn-prev-stage" class="btn btn-secondary" onclick="teacherPrevStage()">
+      <!-- Floating Bottom Remote Control Dock (Always visible without scrolling!) -->
+      <div class="teacher-floating-dock no-print">
+        <div class="dock-inner">
+          <!-- Left: Prev + Quick Stage Pills (Includes direct Press Conference button!) -->
+          <div class="dock-quick-stages">
+            <button class="btn btn-secondary btn-sm" onclick="teacherPrevStage()" title="ย้อนกลับ 1 ขั้น">
               ⬅️ ย้อนกลับ
             </button>
-            <button id="btn-giant-next" class="giant-next-btn" onclick="teacherNextStage()">
-              ⏭️ ไปด่านถัดไป : เปิดคดีที่ 1 ➔
-            </button>
+            <button class="dock-stage-pill" id="dock-LOBBY" onclick="teacherSetStage('LOBBY')">0.เข้าห้อง</button>
+            <button class="dock-stage-pill" id="dock-1K" onclick="teacherSetStage('1K')">1.1 คดี 1 (ชี้เบาะแส)</button>
+            <button class="dock-stage-pill" id="dock-1P" onclick="teacherSetStage('1P')">1.2 คดี 1 (สรุปวง)</button>
+            <button class="dock-stage-pill" id="dock-2K" onclick="teacherSetStage('2K')">2.1 คดี 2 (ชี้เบาะแส)</button>
+            <button class="dock-stage-pill" id="dock-2P" onclick="teacherSetStage('2P')">2.2 คดี 2 (สรุปวง)</button>
+            <button class="dock-stage-pill" id="dock-3K" onclick="teacherSetStage('3K')">3.1 คดี 3 (ชี้เบาะแส)</button>
+            <button class="dock-stage-pill" id="dock-3P" onclick="teacherSetStage('3P')">3.2 คดี 3 (สรุปวง)</button>
+            <button class="dock-stage-pill" id="dock-PRESS" onclick="teacherSetStage('PRESS')">🎙️ แถลงข่าวปิดคดี</button>
+            <button class="dock-stage-pill" id="dock-A" onclick="teacherSetStage('A')">🎯 ตัดสินใจ</button>
+            <button class="dock-stage-pill" id="dock-SUMMARY" onclick="teacherSetStage('SUMMARY')">🏆 สรุปผล</button>
           </div>
-        </div>
 
-        <!-- Row 2: Timer + Quick Stage Jump Dropdown + Room PIN -->
-        <div class="timer-bar">
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span style="font-family:var(--font-head); font-weight:700; color:#e2e8f0; font-size:0.92rem;">⏱️ จับเวลา:</span>
+          <!-- Center: Compact Timer -->
+          <div style="display:flex; align-items:center; gap:6px;">
             <div id="teacher-timer-display" class="timer-display">00:00</div>
-            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(60, '1 นาที')">1 นาที</button>
-            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(90, '1.30 นาที')">1.30 นาที</button>
-            <button class="btn btn-secondary btn-sm" onclick="startTeacherTimer(120, '2 นาที')">2 นาที</button>
-            <button class="btn btn-blue btn-sm" onclick="addTeacherTimer(30)">+30 วิ</button>
-            <button class="btn btn-danger btn-sm" onclick="stopTeacherTimer()">⏹️ รีเซ็ต</button>
+            <button class="btn btn-secondary btn-sm" style="padding:5px 8px;" onclick="startTeacherTimer(60)">1น.</button>
+            <button class="btn btn-secondary btn-sm" style="padding:5px 8px;" onclick="startTeacherTimer(90)">1.30น.</button>
+            <button class="btn btn-secondary btn-sm" style="padding:5px 8px;" onclick="startTeacherTimer(120)">2น.</button>
+            <button class="btn btn-danger btn-sm" style="padding:5px 8px;" onclick="stopTeacherTimer()">⏹️</button>
           </div>
 
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <select id="teacher-jump-select" class="form-control" style="width:auto; padding:6px 10px; font-size:0.85rem; height:36px;" onchange="teacherSetStage(this.value)">
-              <option value="LOBBY">📍 ข้ามไป: 0. ห้องลงทะเบียน (Lobby)</option>
-              <option value="1K">📍 ข้ามไป: 1.1 คดีที่ 1 (ล่าเบาะแส)</option>
-              <option value="1P">📍 ข้ามไป: 1.2 คดีที่ 1 (ถอดรหัสวง)</option>
-              <option value="2K">📍 ข้ามไป: 2.1 คดีที่ 2 (ล่าเบาะแส)</option>
-              <option value="2P">📍 ข้ามไป: 2.2 คดีที่ 2 (ถอดรหัสวง)</option>
-              <option value="3K">📍 ข้ามไป: 3.1 คดีที่ 3 (ล่าเบาะแส)</option>
-              <option value="3P">📍 ข้ามไป: 3.2 คดีที่ 3 (ถอดรหัสวง)</option>
-              <option value="PRESS">📍 ข้ามไป: 4. ห้องแถลงข่าวปิดคดี</option>
-              <option value="A">📍 ข้ามไป: 5. ภารกิจตัดสินใจ</option>
-              <option value="SUMMARY">📍 ข้ามไป: 6. สรุปผลคะแนนทั้งห้อง</option>
-            </select>
-
-            <div style="display:flex; align-items:center; gap:4px; background:#090d16; padding:4px 10px; border-radius:8px; border:1px solid #334155;">
-              <span style="font-size:0.8rem; color:var(--muted);">PIN:</span>
-              <input id="teacher-pin-input" type="text" style="width:58px; background:transparent; border:none; color:var(--gold); font-weight:800; font-size:1rem; text-align:center;" value="4829">
-              <button class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:0.78rem;" onclick="teacherLoadPin()">โหลด</button>
-            </div>
-
-            <button class="btn btn-primary btn-sm" onclick="teacherCreateNewRoom()">➕ สร้างห้องใหม่</button>
-            <button class="btn btn-secondary btn-sm" onclick="openConfigModal()">⚙️</button>
+          <!-- Right: Giant Next Step Button -->
+          <div>
+            <button id="btn-giant-next" class="btn btn-primary" style="padding:10px 18px; font-size:1rem;" onclick="teacherNextStage()">
+              ⏭️ ไปด่านถัดไป ➔
+            </button>
           </div>
         </div>
       </div>
-
-      <!-- Teacher Projector Dynamic Display (Video Player is isolated from live polling so it NEVER restarts) -->
-      <div id="teacher-stage-display"></div>
     </section>
   </main>
 
@@ -1021,7 +1006,22 @@
     </div>
   </div>
 
-  <!-- Settings Modal (API & Media Path) -->
+  <!-- Student Save PNG Report Modal (Works in LINE / Mobile Browsers too!) -->
+  <div id="png-preview-modal" class="modal-backdrop" onclick="closePngModal()">
+    <div class="modal-card" style="text-align:center;" onclick="event.stopPropagation()">
+      <h3 style="color:var(--gold); margin-bottom:6px;">🪪 ภาพใบรายงานผลรายบุคคลของคุณ</h3>
+      <p style="color:#cbd5e1; font-size:0.86rem; margin-top:0; margin-bottom:12px;">
+        📱 <strong>หากเปิดผ่านแอป LINE / มือถือ:</strong> แตะค้างที่รูปภาพด้านล่างแล้วกด <strong>"บันทึกรูปภาพ"</strong> หรือแคปหน้าจอเก็บไว้ได้เลยครับ!
+      </p>
+      <img id="generated-png-img" src="" alt="Detective Report Card PNG" style="width:100%; max-width:420px; border-radius:12px; border:2px solid var(--gold); margin:0 auto 14px; display:block;">
+      <div style="display:flex; justify-content:center; gap:10px;">
+        <a id="download-png-link" class="btn btn-success" download="บัตรนักสืบดนตรีไทย.png">📥 ดาวน์โหลดไฟล์ภาพ (.PNG)</a>
+        <button class="btn btn-secondary" onclick="closePngModal()">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
   <div id="config-modal" class="modal-backdrop">
     <div class="modal-card">
       <h3 style="color:var(--gold); margin-bottom:8px;">⚙️ ตั้งค่าการเชื่อมต่อฐานข้อมูลและโฟลเดอร์สื่อ</h3>
@@ -1042,7 +1042,7 @@
 
   <script>
     /********************************************************************
-     * 1. CONFIGURATION & CASE DATA
+     * 1. CONFIGURATION & ACADEMICALLY ACCURATE THAI MUSIC DATA
      ********************************************************************/
     let GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwpCOd3jhMuynVJj_WfuiyZ-JiUoNEnIoc2s3OSPuyfNtsEyVyJKx5QsqB_Fs7SVLDZhQ/exec";
     let MEDIA_BASE_URL = "";
@@ -1054,27 +1054,27 @@
       if (savedBase) MEDIA_BASE_URL = savedBase;
     } catch (e) {}
 
-    // ลำดับขั้นตอนทั้งหมด
     const STAGE_ORDER = ["LOBBY", "1K", "1P", "2K", "2P", "3K", "3P", "PRESS", "A", "SUMMARY"];
 
     const STAGE_META = {
-      "LOBBY":   { step: "ขั้นเตรียมทีม (0/9)", title: "🟢 ห้องลงทะเบียนสายสืบ (Lobby)", nextLabel: "⏭️ เริ่มเปิดแฟ้มคดีที่ 1 (ล่าเบาะแส) ➔" },
-      "1K":      { step: "ขั้นตอนที่ 1 / 9", title: "📁 แฟ้มคดีที่ 1 : ล่าเบาะแสเครื่องดนตรี", nextLabel: "⏭️ ไปด่านถอดรหัสวง คดีที่ 1 ➔" },
-      "1P":      { step: "ขั้นตอนที่ 2 / 9", title: "🔓 แฟ้มคดีที่ 1 : ถอดรหัสการประสมวง (มติกลุ่ม)", nextLabel: "⏭️ ไปเปิดแฟ้มคดีที่ 2 (ล่าเบาะแส) ➔" },
-      "2K":      { step: "ขั้นตอนที่ 3 / 9", title: "📁 แฟ้มคดีที่ 2 : ล่าเบาะแสเครื่องดนตรี", nextLabel: "⏭️ ไปด่านถอดรหัสวง คดีที่ 2 ➔" },
-      "2P":      { step: "ขั้นตอนที่ 4 / 9", title: "🔓 แฟ้มคดีที่ 2 : ถอดรหัสการประสมวง (มติกลุ่ม)", nextLabel: "⏭️ ไปเปิดแฟ้มคดีที่ 3 (ล่าเบาะแส) ➔" },
-      "3K":      { step: "ขั้นตอนที่ 5 / 9", title: "📁 แฟ้มคดีที่ 3 : ล่าเบาะแสเครื่องดนตรี", nextLabel: "⏭️ ไปด่านถอดรหัสวง คดีที่ 3 ➔" },
-      "3P":      { step: "ขั้นตอนที่ 6 / 9", title: "🔓 แฟ้มคดีที่ 3 : ถอดรหัสการประสมวง (มติกลุ่ม)", nextLabel: "⏭️ ไปห้องแถลงข่าวปิดคดี (3 คดี) ➔" },
-      "PRESS":   { step: "ขั้นตอนที่ 7 / 9", title: "🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย", nextLabel: "⏭️ ไปภารกิจตัดสินใจ (เลือกวงออกงาน) ➔" },
-      "A":       { step: "ขั้นตอนที่ 8 / 9", title: "🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจเลือกวงออกงาน", nextLabel: "🏆 ไปดูสรุปผลคะแนนทั้งห้อง ➔" },
-      "SUMMARY": { step: "ขั้นตอนที่ 9 / 9 (จบภารกิจ)", title: "🏆 สรุปผลคะแนนปฏิบัติการนักสืบดนตรีไทย", nextLabel: "🔄 กลับหน้า Lobby" }
+      "LOBBY":   { step: "ขั้นเตรียมทีม", title: "🟢 ห้องลงทะเบียนสายสืบ (Lobby)", nextLabel: "⏭️ เริ่มคดีที่ 1 (ล่าเบาะแส) ➔", instruction: "ให้นักเรียนสแกน QR Code หรือกรอกรหัส PIN 4 หลัก แล้วเลือกกลุ่ม (ดีด / สี / ตี / เป่า)" },
+      "1K":      { step: "คดีที่ 1 (ด่าน 1/2)", title: "📁 แฟ้มคดีที่ 1 : ด่านบอกชื่อเครื่องดนตรี", nextLabel: "⏭️ ไปด่านสรุปวง คดีที่ 1 ➔", instruction: "🎯 ภารกิจนี้: ดูคลิปและภาพเบาะแสบนจอ แล้วจิ้มเลือกชื่อเครื่องดนตรีที่เห็นในมือถือของตัวเอง!" },
+      "1P":      { step: "คดีที่ 1 (ด่าน 2/2)", title: "📊 แฟ้มคดีที่ 1 : ด่านระดมสมองสรุปชื่อวง", nextLabel: "⏭️ ไปเปิดแฟ้มคดีที่ 2 ➔", instruction: "🎯 ภารกิจนี้: ดูแผนภูมิแท่งเบาะแสรวมของกลุ่ม ปรึกษากัน แล้วกดเลือกโครงสร้างวงและชื่อวงให้ตรงกันทุกคน!" },
+      "2K":      { step: "คดีที่ 2 (ด่าน 1/2)", title: "📁 แฟ้มคดีที่ 2 : ด่านบอกชื่อเครื่องดนตรี", nextLabel: "⏭️ ไปด่านสรุปวง คดีที่ 2 ➔", instruction: "🎯 ภารกิจนี้: ดูคลิปและภาพเบาะแสคดีที่ 2 บนจอ แล้วจิ้มเลือกชื่อเครื่องดนตรีที่เห็นในมือถือ!" },
+      "2P":      { step: "คดีที่ 2 (ด่าน 2/2)", title: "📊 แฟ้มคดีที่ 2 : ด่านระดมสมองสรุปชื่อวง", nextLabel: "⏭️ ไปเปิดแฟ้มคดีที่ 3 ➔", instruction: "🎯 ภารกิจนี้: ดูแผนภูมิแท่งเบาะแสรวมของกลุ่ม ปรึกษากัน แล้วกดเลือกโครงสร้างวงและชื่อวงให้ตรงกันทุกคน!" },
+      "3K":      { step: "คดีที่ 3 (ด่าน 1/2)", title: "📁 แฟ้มคดีที่ 3 : ด่านบอกชื่อเครื่องดนตรี", nextLabel: "⏭️ ไปด่านสรุปวง คดีที่ 3 ➔", instruction: "🎯 ภารกิจนี้: ดูคลิปและภาพเบาะแสคดีที่ 3 บนจอ แล้วจิ้มเลือกชื่อเครื่องดนตรีที่เห็นในมือถือ!" },
+      "3P":      { step: "คดีที่ 3 (ด่าน 2/2)", title: "📊 แฟ้มคดีที่ 3 : ด่านระดมสมองสรุปชื่อวง", nextLabel: "⏭️ ไปห้องแถลงข่าวปิดคดี ➔", instruction: "🎯 ภารกิจนี้: ดูแผนภูมิแท่งเบาะแสรวมของกลุ่ม ปรึกษากัน แล้วกดเลือกโครงสร้างวงและชื่อวงให้ตรงกันทุกคน!" },
+      "PRESS":   { step: "ไคลแมกซ์ปิดคดี", title: "🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย", nextLabel: "⏭️ ไปภารกิจตัดสินใจ ➔", instruction: "🎯 ภารกิจนี้: ตัวแทนกลุ่มที่ถูกสุ่มยืนแถลงปิดคดีตามสคริปต์บนจอ แล้วร่วมกันลุ้นเปิดซองเฉลย!" },
+      "A":       { step: "ด่านสุดท้าย", title: "🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจเลือกวงออกงาน", nextLabel: "🏆 ไปดูสรุปผลคะแนนทั้งห้อง ➔", instruction: "🎯 ภารกิจนี้: นักเรียนแต่ละคนตัดสินใจเลือกวงดนตรีไทยให้เหมาะกับงานทั้ง 3 ข้อในมือถือ" },
+      "SUMMARY": { step: "สรุปผลภารกิจ", title: "🏆 รายงานสรุปผลปฏิบัติการนักสืบดนตรีไทย", nextLabel: "🔄 กลับหน้า Lobby", instruction: "สรุปผลคะแนนรายบุคคล รายงานการสังเคราะห์ผลรายกลุ่ม (P) และสถิติสำหรับบันทึกหลังแผน ว.PA" }
     };
 
-    // รายชื่อเครื่องดนตรีแยกตาม 5 หมวด
+    // 5 หมวดตามหลักวิชาการ: เครื่องดีด, เครื่องสี, เครื่องตี, เครื่องเป่า, เครื่องประกอบจังหวะ
     const INSTRUMENT_GROUPS = [
       {
         cat: "ดีด",
-        title: "🟡 หมวดเครื่องดีด",
+        title: "🟡 เครื่องดีด",
+        shortTab: "🟡 ดีด",
         color: "#facc15",
         items: [
           { name: "จะเข้", label: "จะเข้" },
@@ -1085,8 +1085,9 @@
       },
       {
         cat: "สี",
-        title: "🔵 หมวดเครื่องสี",
-        color: "#60a5fa",
+        title: "🔵 เครื่องสี",
+        shortTab: "🔵 สี",
+        color: "#38bdf8",
         items: [
           { name: "ซอด้วง", label: "ซอด้วง" },
           { name: "ซออู้", label: "ซออู้" },
@@ -1095,8 +1096,9 @@
         ]
       },
       {
-        cat: "ตีทำนอง",
-        title: "🔴 หมวดเครื่องตีดำเนินทำนอง",
+        cat: "ตี",
+        title: "🔴 เครื่องตี",
+        shortTab: "🔴 ตี",
         color: "#f87171",
         items: [
           { name: "ระนาดเอก", label: "ระนาดเอก" },
@@ -1110,7 +1112,8 @@
       },
       {
         cat: "เป่า",
-        title: "🟢 หมวดเครื่องเป่า",
+        title: "🟢 เครื่องเป่า",
+        shortTab: "🟢 เป่า",
         color: "#34d399",
         items: [
           { name: "ปี่ใน", label: "ปี่ใน" },
@@ -1123,8 +1126,9 @@
       },
       {
         cat: "จังหวะ",
-        title: "⚪ หมวดเครื่องประกอบจังหวะ",
-        color: "#e2e8f0",
+        title: "⚪ เครื่องประกอบจังหวะ",
+        shortTab: "⚪ จังหวะ",
+        color: "#cbd5e1",
         items: [
           { name: "ฉิ่ง", label: "ฉิ่ง" },
           { name: "ฉาบเล็ก", label: "ฉาบเล็ก" },
@@ -1144,6 +1148,37 @@
       g.items.forEach(it => { LOCAL_CAT_MAP[it.name] = g.cat; });
     });
 
+    // ตัวเลือกโครงสร้างวง: แสดงข้อความตามหลักวิชาการ ("เครื่องตี") แต่ส่งค่า value ตรงกับ Code.gs เดิม 100%
+    const STRUCTURE_OPTIONS = [
+      {
+        value: "ตีทำนอง+เป่า (ไร้เครื่องสาย)",
+        label: "เน้นเครื่องตีและเครื่องเป่า (ไม่มีเครื่องสาย)",
+        colorClass: "kahoot-red",
+        icon: "🔴"
+      },
+      {
+        value: "สายดีด-สี+ขลุ่ย (ไร้ระนาด)",
+        label: "เน้นเครื่องสาย ดีด-สี และขลุ่ย (ไม่มีระนาด/ฆ้อง)",
+        colorClass: "kahoot-blue",
+        icon: "🔵"
+      },
+      {
+        value: "ผสมผสานครบทั้ง 4 ตระกูล",
+        label: "ผสมผสานครบทุกประเภท (มีทั้งเครื่องสายและเครื่องตี)",
+        colorClass: "kahoot-yellow",
+        icon: "🟡"
+      }
+    ];
+
+    const STRUCTURE_LABEL_MAP = {};
+    STRUCTURE_OPTIONS.forEach(o => { STRUCTURE_LABEL_MAP[o.value] = o.label; });
+
+    const ENSEMBLE_OPTIONS = [
+      { value: "วงปี่พาทย์", label: "วงปี่พาทย์", colorClass: "kahoot-red", icon: "🟥" },
+      { value: "วงเครื่องสาย", label: "วงเครื่องสาย", colorClass: "kahoot-blue", icon: "🟦" },
+      { value: "วงมโหรี", label: "วงมโหรี", colorClass: "kahoot-yellow", icon: "🟨" }
+    ];
+
     const CASES_DATA = {
       1: {
         id: 1,
@@ -1151,7 +1186,8 @@
         title: "แฟ้มคดีปริศนาที่ 1",
         shortAns: "วงปี่พาทย์",
         fullAns: "วงปี่พาทย์ไม้แข็งเครื่องคู่",
-        structureAns: "ตีทำนอง+เป่า (ไร้เครื่องสาย)",
+        structureVal: "ตีทำนอง+เป่า (ไร้เครื่องสาย)",
+        structureLabel: "เน้นเครื่องตีและเครื่องเป่า (ไม่มีเครื่องสาย)",
         image: "images/case1.jpg",
         video: "videos/case1.mp4",
         creditHidden: "ที่มาสื่อการเรียนรู้: สำนักการสังคีต กรมศิลปากร",
@@ -1164,7 +1200,8 @@
         title: "แฟ้มคดีปริศนาที่ 2",
         shortAns: "วงเครื่องสาย",
         fullAns: "วงเครื่องสายเครื่องเดี่ยว",
-        structureAns: "สายดีด-สี+ขลุ่ย (ไร้ระนาด)",
+        structureVal: "สายดีด-สี+ขลุ่ย (ไร้ระนาด)",
+        structureLabel: "เน้นเครื่องสาย ดีด-สี และขลุ่ย (ไม่มีระนาด/ฆ้อง)",
         image: "images/case2.jpg",
         video: "videos/case2.mp4",
         creditHidden: "ที่มาสื่อการเรียนรู้: สำนักการสังคีต กรมศิลปากร / สถาบันบัณฑิตพัฒนศิลป์",
@@ -1177,7 +1214,8 @@
         title: "แฟ้มคดีปริศนาที่ 3",
         shortAns: "วงมโหรี",
         fullAns: "วงมโหรีเครื่องเดี่ยว",
-        structureAns: "ผสมผสานครบทั้ง 4 ตระกูล",
+        structureVal: "ผสมผสานครบทั้ง 4 ตระกูล",
+        structureLabel: "ผสมผสานครบทุกประเภท (มีทั้งเครื่องสายและเครื่องตี)",
         image: "images/case3.jpg",
         video: "videos/case3.mp4",
         creditHidden: "ที่มาสื่อการเรียนรู้: สารานุกรมศัพท์ดนตรีไทยฯ เล่ม ๑ หน้า ๒๒๔ / สำนักพิมพ์เอมพันธ์",
@@ -1186,42 +1224,41 @@
       }
     };
 
-    const STRUCTURE_CHOICES = [
-      "ตีทำนอง+เป่า (ไร้เครื่องสาย)",
-      "สายดีด-สี+ขลุ่ย (ไร้ระนาด)",
-      "ผสมผสานครบทั้ง 4 ตระกูล"
-    ];
-
-    const ENSEMBLE_CHOICES = ["วงปี่พาทย์", "วงเครื่องสาย", "วงมโหรี"];
-
     const ATTITUDE_QUESTIONS_BASE = [
       {
         id: "q2",
         scenarioTitle: "งานเลี้ยงรับรองแขก หรือบรรเลงขับกล่อมภายในอาคาร/ห้องขนาดเล็ก",
-        desc: "พื้นที่ค่อนข้างจำกัด ต้องการวงดนตรีที่ให้เสียง เบา นุ่มนวล หวาน และฟังสบาย ไม่รบกวนการพูดคุย นักเรียนจะตัดสินใจเลือกใช้วงใด?",
+        desc: "พื้นที่ค่อนข้างจำกัด ต้องการวงดนตรีที่ให้เสียง เบา นุ่มนวล หวาน และฟังสบาย ไม่รบกวนการพูดคุย ควรเลือกใช้วงใด?",
         correct: "วงเครื่องสาย"
       },
       {
         id: "q3",
         scenarioTitle: "งานพระราชพิธี หรืองานมงคลสมรสใหญ่",
-        desc: "ต้องการวงดนตรีที่ให้เสียง ไพเราะกลมกล่อม และผสมผสานครบทุกตระกูลเครื่องดนตรีอย่างสมบูรณ์แบบ นักเรียนจะตัดสินใจเลือกใช้วงใด?",
+        desc: "ต้องการวงดนตรีที่ให้เสียง ไพเราะกลมกล่อม และผสมผสานครบทุกตระกูลเครื่องดนตรีอย่างสมบูรณ์แบบ ควรเลือกใช้วงใด?",
         correct: "วงมโหรี"
       },
       {
         id: "q1",
         scenarioTitle: "งานพิธีไหว้ครู หรือการแสดงโขนกลางแจ้ง",
-        desc: "ต้องการวงดนตรีที่ให้พลังเสียง ดังกังวาน หนักแน่น และมีความขลังศักดิ์สิทธิ์ นักเรียนจะตัดสินใจเลือกใช้วงใด?",
+        desc: "ต้องการวงดนตรีที่ให้พลังเสียง ดังกังวาน หนักแน่น และมีความขลังศักดิ์สิทธิ์ ควรเลือกใช้วงใด?",
         correct: "วงปี่พาทย์"
       }
     ];
 
     /********************************************************************
-     * 2. APPLICATION STATE & RENDERING GUARDS (FIXES VIDEO RESET & FLICKER)
+     * 2. APPLICATION STATE
      ********************************************************************/
     let appMode = "STUDENT";
     let currentPin = "4829";
     let studentProfile = null;
     let studentShuffledA = null;
+
+    // Student Step-by-Step UI Sub-states (Kahoot style)
+    let activeKTab = "ดีด"; // Current category tab in K stage
+    let studentPSubStep = { 1: 1, 2: 1, 3: 1 }; // 1 = Choose Structure, 2 = Choose Ensemble, 3 = Vote Status Board
+    let studentASubStep = 0; // 0, 1, 2 (One question at a time)
+    let expandedBarCat = null; // Toggle instrument names when tapping a bar in the 5-category chart
+
     let roomState = {
       pin: "4829",
       stage: "LOBBY",
@@ -1244,8 +1281,6 @@
 
     let teacherFolderOpened = { 1: false, 2: false, 3: false };
     let teacherMediaMode = { 1: "IMAGE", 2: "IMAGE", 3: "IMAGE" };
-
-    // Tracking current rendered view signatures so polling NEVER destroys active video or student buttons
     let teacherRenderedSig = "";
     let studentRenderedSig = "";
 
@@ -1256,17 +1291,27 @@
       3: { structure: "", ensemble: "" }
     };
     let studentAnswersA = { q1: "", q2: "", q3: "" };
+
+    // TeacherSummary View Toggles
+    let showGroupPReport = true;
+    let showAllCardsPreview = false;
+
     let isSubmittingNow = false;
     let lastStudentCount = 0;
-    let showAllCardsPreview = false;
     let pollTimer = null;
-
-    // Timer State
     let timerSeconds = 0;
     let timerInterval = null;
 
+    // Load saved student local answers so individual report card has full details
+    try {
+      const savedK = localStorage.getItem("TMD_STU_K");
+      if (savedK) studentSelectedK = JSON.parse(savedK);
+      const savedA = localStorage.getItem("TMD_STU_A");
+      if (savedA) studentAnswersA = JSON.parse(savedA);
+    } catch (e) {}
+
     /********************************************************************
-     * 3. WEB AUDIO API (SOUND EFFECTS, TIMER ALARM & DETECTIVE BGM)
+     * 3. WEB AUDIO API & 3-2-1 MISSION INTRO COUNTDOWN
      ********************************************************************/
     let audioCtx = null;
     let bgmPlaying = false;
@@ -1293,14 +1338,36 @@
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = "sine";
-        osc.frequency.setValueAtTime(660, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.07);
+        osc.frequency.setValueAtTime(680, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.06);
         gain.gain.setValueAtTime(0.14, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.08);
+        osc.stop(now + 0.07);
+      } else if (type === "beep") {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(523.25, now);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.24);
+      } else if (type === "go") {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(1046.5, now);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.46);
       } else if (type === "clock") {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -1337,19 +1404,6 @@
         gain.connect(ctx.destination);
         osc.start(now);
         osc.stop(now + 0.14);
-      } else if (type === "folder") {
-        [220, 277.18, 329.63, 440].forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = "sawtooth";
-          osc.frequency.setValueAtTime(freq, now + idx * 0.06);
-          gain.gain.setValueAtTime(0.08, now + idx * 0.06);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.45);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now + idx * 0.06);
-          osc.stop(now + idx * 0.06 + 0.46);
-        });
       } else if (type === "warn") {
         [180, 160].forEach((freq, idx) => {
           const osc = ctx.createOscillator();
@@ -1393,6 +1447,43 @@
       }
     }
 
+    // 3 - 2 - 1 Mission Intro Countdown Overlay
+    function runMissionCountdown(badgeText, titleText, descText, onDone) {
+      const overlay = document.getElementById("mission-countdown-overlay");
+      const badgeEl = document.getElementById("cd-sub-badge");
+      const titleEl = document.getElementById("cd-main-title");
+      const descEl = document.getElementById("cd-desc");
+      const numEl = document.getElementById("cd-number");
+
+      if (!overlay) {
+        if (onDone) onDone();
+        return;
+      }
+
+      badgeEl.textContent = badgeText;
+      titleEl.textContent = titleText;
+      descEl.textContent = descText;
+      let count = 3;
+      numEl.textContent = count;
+      overlay.classList.add("show");
+      playSound("beep");
+
+      const iv = setInterval(() => {
+        count--;
+        if (count > 0) {
+          numEl.textContent = count;
+          playSound("beep");
+        } else if (count === 0) {
+          numEl.textContent = "เริ่ม!";
+          playSound("go");
+        } else {
+          clearInterval(iv);
+          overlay.classList.remove("show");
+          if (onDone) onDone();
+        }
+      }, 800);
+    }
+
     function toggleBGM() {
       if (bgmPlaying) stopBGM();
       else startBGM();
@@ -1434,7 +1525,7 @@
     function pauseBGMForClip() {
       if (bgmPlaying) {
         bgmPausedByVideo = true;
-        document.getElementById("btn-bgm").innerHTML = "⏸️ เพลงพักชั่วคราว (ฟังคลิป)";
+        document.getElementById("btn-bgm").innerHTML = "⏸️ เพลงพักชั่วคราว";
       }
     }
 
@@ -1446,7 +1537,7 @@
     }
 
     /********************************************************************
-     * 4. TEACHER COUNTDOWN TIMER & AUTO QR GENERATOR
+     * 4. TIMER, QR CODE & CONFETTI
      ********************************************************************/
     function formatTimeMMSS(sec) {
       const m = String(Math.floor(sec / 60)).padStart(2, "0");
@@ -1458,11 +1549,8 @@
       const el = document.getElementById("teacher-timer-display");
       if (!el) return;
       el.textContent = formatTimeMMSS(timerSeconds);
-      if (timerSeconds > 0 && timerSeconds <= 10) {
-        el.classList.add("urgent");
-      } else {
-        el.classList.remove("urgent");
-      }
+      if (timerSeconds > 0 && timerSeconds <= 10) el.classList.add("urgent");
+      else el.classList.remove("urgent");
     }
 
     function startTeacherTimer(seconds) {
@@ -1475,25 +1563,14 @@
         if (timerSeconds > 0) {
           timerSeconds--;
           updateTimerUI();
-          if (timerSeconds > 0 && timerSeconds <= 10) {
-            playSound("clock");
-          } else if (timerSeconds === 0) {
+          if (timerSeconds > 0 && timerSeconds <= 10) playSound("clock");
+          else if (timerSeconds === 0) {
             clearInterval(timerInterval);
             timerInterval = null;
             playSound("timeup");
           }
         }
       }, 1000);
-    }
-
-    function addTeacherTimer(addSec) {
-      timerSeconds += addSec;
-      updateTimerUI();
-      if (!timerInterval && timerSeconds > 0) {
-        startTeacherTimer(timerSeconds);
-      } else {
-        playSound("tick");
-      }
     }
 
     function stopTeacherTimer() {
@@ -1518,16 +1595,9 @@
           return;
         } catch (e) {}
       }
-      holder.innerHTML = `
-        <div style="padding:12px; border:2px dashed #0f172a; border-radius:10px; font-size:0.8rem; color:#0f172a;">
-          <strong>PIN: ${currentPin}</strong><br>กรอกรหัสบนหน้าเว็บเพื่อเข้าห้อง
-        </div>
-      `;
+      holder.innerHTML = `<div style="padding:10px; font-weight:800; color:#0f172a;">PIN: ${currentPin}</div>`;
     }
 
-    /********************************************************************
-     * 5. CONFETTI / FIREWORKS EFFECT
-     ********************************************************************/
     function launchConfetti() {
       const canvas = document.getElementById("confetti-canvas");
       if (!canvas) return;
@@ -1537,7 +1607,7 @@
 
       const pieces = [];
       const colors = ["#f59e0b", "#10b981", "#3b82f6", "#ef4444", "#a855f7", "#fef08a"];
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 95; i++) {
         pieces.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height - canvas.height,
@@ -1565,13 +1635,85 @@
           ctx.restore();
         });
         frames++;
-        if (frames < 130) {
-          requestAnimationFrame(draw);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        if (frames < 130) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
       draw();
+    }
+
+    /********************************************************************
+     * 5.5-CATEGORY BAR CHART BUILDER (DATA VISUALIZATION FOR P STAGE & REPORTS)
+     ********************************************************************/
+    function buildFiveCatBarChartHTML(cluesMap, totalMembers, interactive = false) {
+      const buckets = {
+        "ดีด": { count: 0, items: [] },
+        "สี": { count: 0, items: [] },
+        "ตี": { count: 0, items: [] },
+        "เป่า": { count: 0, items: [] },
+        "จังหวะ": { count: 0, items: [] }
+      };
+
+      Object.keys(cluesMap || {}).forEach(instName => {
+        const c = Number(cluesMap[instName] || 0);
+        if (c > 0) {
+          const cat = LOCAL_CAT_MAP[instName] || "จังหวะ";
+          buckets[cat].count += c;
+          buckets[cat].items.push(`${instName} (${c})`);
+        }
+      });
+
+      const maxCount = Math.max(
+        1,
+        buckets["ดีด"].count,
+        buckets["สี"].count,
+        buckets["ตี"].count,
+        buckets["เป่า"].count,
+        buckets["จังหวะ"].count
+      );
+
+      const metaList = [
+        { key: "ดีด", label: "🟡 เครื่องดีด", color: "#facc15" },
+        { key: "สี", label: "🔵 เครื่องสี", color: "#38bdf8" },
+        { key: "ตี", label: "🔴 เครื่องตี", color: "#f87171" },
+        { key: "เป่า", label: "🟢 เครื่องเป่า", color: "#34d399" },
+        { key: "จังหวะ", label: "⚪ เครื่องประกอบจังหวะ", color: "#94a3b8" }
+      ];
+
+      return `
+        <div class="bar-chart-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="font-family:var(--font-head); font-weight:700; color:var(--gold); font-size:0.95rem;">
+              📊 แผนภูมิแท่งสรุปเบาะแสของกลุ่ม (แยก 5 หมวด)
+            </span>
+            <span style="font-size:0.75rem; color:var(--muted);">สมาชิก ${totalMembers} คน</span>
+          </div>
+          ${metaList.map(m => {
+            const b = buckets[m.key];
+            const pct = b.count > 0 ? Math.max(8, Math.round((b.count / maxCount) * 100)) : 0;
+            const detailsText = b.items.length > 0 ? b.items.join(", ") : "ไม่มีใครเลือก (0)";
+            return `
+              <div class="bar-row" ${interactive ? `onclick="toggleBarDetails('${m.key}')"` : ''}>
+                <div class="bar-label-line">
+                  <span style="color:${m.color};">${m.label}</span>
+                  <span style="color:${b.count > 0 ? '#ffffff' : 'var(--muted)'};">
+                    ${b.count} เบาะแส ${b.count === maxCount && b.count > 0 ? '🔥' : ''}
+                  </span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width:${pct}%; background:${m.color};"></div>
+                </div>
+                <div class="bar-detail-pills">
+                  ${detailsText}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function toggleBarDetails(catKey) {
+      expandedBarCat = (expandedBarCat === catKey) ? null : catKey;
     }
 
     /********************************************************************
@@ -1592,7 +1734,6 @@
           const res2 = await fetch(GAS_WEB_APP_URL + "?" + qs);
           return await res2.json();
         } catch (err2) {
-          console.warn("Offline/Local mode fallback:", err2);
           return null;
         }
       }
@@ -1612,7 +1753,16 @@
           playSound("pop");
         }
         lastStudentCount = resp.students ? resp.students.length : 0;
+
+        // Preserve teacher's local press assignments or revealed cases if server hasn't caught up yet
+        const prevAssign = roomState.pressAssignments || {};
+        const prevRev = roomState.revealedCases || {};
         roomState = resp;
+        if (Object.keys(roomState.pressAssignments || {}).length === 0 && Object.keys(prevAssign).length > 0) {
+          roomState.pressAssignments = prevAssign;
+        }
+        roomState.revealedCases = Object.assign({}, prevRev, roomState.revealedCases || {});
+
         renderCurrentView(false);
       } else {
         renderCurrentView(false);
@@ -1629,7 +1779,7 @@
     }
 
     /********************************************************************
-     * 7. STUDENT FLOW (CLEAN UI, 4-STEP PROGRESS, NO FLICKER, INSTANT LOCK)
+     * 7. STUDENT FLOW (KAHOOT-STYLE STEP-BY-STEP, BAR CHART, PNG DOWNLOAD)
      ********************************************************************/
     function getStudentShuffledA() {
       if (!studentShuffledA) {
@@ -1653,18 +1803,10 @@
       const s4Cur = stage === "PRESS" || (stage === "A" && !(me && me.aSubmitted));
 
       bar.innerHTML = `
-        <div class="stu-p-item ${s1Done ? 'done' : (s1Cur ? 'current' : '')}">
-          ${s1Done ? '✅' : (s1Cur ? '⏳' : '1.')} คดีที่ 1
-        </div>
-        <div class="stu-p-item ${s2Done ? 'done' : (s2Cur ? 'current' : '')}">
-          ${s2Done ? '✅' : (s2Cur ? '⏳' : '2.')} คดีที่ 2
-        </div>
-        <div class="stu-p-item ${s3Done ? 'done' : (s3Cur ? 'current' : '')}">
-          ${s3Done ? '✅' : (s3Cur ? '⏳' : '3.')} คดีที่ 3
-        </div>
-        <div class="stu-p-item ${s4Done ? 'done' : (s4Cur ? 'current' : '')}">
-          ${s4Done ? '🏆 จบภารกิจ' : (s4Cur ? '⏳ ปิดคดี' : '4. ปิดคดี')}
-        </div>
+        <div class="stu-p-item ${s1Done ? 'done' : (s1Cur ? 'current' : '')}">${s1Done ? '✅' : '1.'} คดีที่ 1</div>
+        <div class="stu-p-item ${s2Done ? 'done' : (s2Cur ? 'current' : '')}">${s2Done ? '✅' : '2.'} คดีที่ 2</div>
+        <div class="stu-p-item ${s3Done ? 'done' : (s3Cur ? 'current' : '')}">${s3Done ? '✅' : '3.'} คดีที่ 3</div>
+        <div class="stu-p-item ${s4Done ? 'done' : (s4Cur ? 'current' : '')}">${s4Done ? '🏆 จบ' : '4. ปิดคดี'}</div>
       `;
     }
 
@@ -1686,7 +1828,7 @@
 
       const btn = document.getElementById("btn-stu-join");
       btn.disabled = true;
-      btn.textContent = "⏳ กำลังเข้าสู่หน่วยสืบสวน...";
+      btn.textContent = "⏳ กำลังเข้าสู่ภารกิจ...";
 
       const studentId = "STU_" + number + "_" + pin;
       const resp = await callGasApi({
@@ -1700,7 +1842,7 @@
       });
 
       btn.disabled = false;
-      btn.textContent = "🚀 เข้าสู่ศูนย์สืบสวนดนตรีไทย";
+      btn.textContent = "🚀 เข้าสู่ภารกิจสืบสวน";
 
       if (resp && resp.status === "error") {
         errEl.textContent = "❌ " + resp.message;
@@ -1711,9 +1853,7 @@
 
       studentProfile = { studentId, pin, name, classRoom, number, group };
       currentPin = pin;
-      try {
-        localStorage.setItem("TMD_STU_PROFILE", JSON.stringify(studentProfile));
-      } catch (e) {}
+      try { localStorage.setItem("TMD_STU_PROFILE", JSON.stringify(studentProfile)); } catch (e) {}
 
       playSound("fanfare");
 
@@ -1721,8 +1861,7 @@
         roomState.students.push({
           studentId, name, classRoom, number, group,
           k1Submitted: false, k2Submitted: false, k3Submitted: false, aSubmitted: false,
-          scoreK: 0, scoreP: 0, scoreA: 0, total: 0,
-          passK: "รอประเมิน", passP: "รอประเมิน", passA: "รอประเมิน", passAll: "รอประเมิน"
+          scoreK: 0, scoreP: 0, scoreA: 0, total: 0
         });
       }
 
@@ -1735,7 +1874,6 @@
       if (!studentProfile) return;
       document.getElementById("stu-login-card").style.display = "none";
       document.getElementById("stu-workspace").style.display = "block";
-      // Hide top teacher button so student screen has zero clutter
       document.getElementById("btn-teacher-menu").style.display = "none";
       document.getElementById("stu-badge-info").textContent = `🕵️‍♂️ ${studentProfile.name} (เลขที่ ${studentProfile.number} | กลุ่ม${studentProfile.group})`;
       document.getElementById("stu-pin-info").textContent = `ห้อง ${studentProfile.pin}`;
@@ -1750,6 +1888,12 @@
       document.getElementById("btn-teacher-menu").style.display = "inline-flex";
     }
 
+    function switchStudentKTab(catName) {
+      playSound("tick");
+      activeKTab = catName;
+      renderStudentStage(true);
+    }
+
     function toggleInstrumentK(caseNum, instName) {
       if (isSubmittingNow) return;
       playSound("tick");
@@ -1758,6 +1902,7 @@
       if (idx === -1) list.push(instName);
       else list.splice(idx, 1);
       studentSelectedK[caseNum] = list;
+      try { localStorage.setItem("TMD_STU_K", JSON.stringify(studentSelectedK)); } catch (e) {}
       renderStudentStage(true);
     }
 
@@ -1773,10 +1918,9 @@
       const btn = document.getElementById("btn-submit-k");
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = "⏳ กำลังส่งเบาะแสเข้าศูนย์สืบสวน...";
+        btn.innerHTML = "⏳ กำลังส่งเบาะแส...";
       }
 
-      // Optimistic local mark so UI immediately transitions after send
       const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
       if (me) me["k" + caseNum + "Submitted"] = true;
 
@@ -1793,105 +1937,70 @@
       await refreshRoomState();
     }
 
-    function selectStudentP(caseNum, field, val) {
+    // Step-by-Step P Stage for Student (Step 1: Structure -> Step 2: Ensemble -> Step 3: Live Group Consensus)
+    function chooseStudentPStructure(caseNum, structVal) {
       if (isSubmittingNow) return;
       playSound("tick");
-      studentVoteP[caseNum][field] = val;
-      // Update only button highlights in P stage without wiping live box
-      updateStudentPButtonsUI(caseNum);
+      studentVoteP[caseNum].structure = structVal;
+      studentPSubStep[caseNum] = 2;
+      renderStudentStage(true);
     }
 
-    function updateStudentPButtonsUI(caseNum) {
-      const curVote = studentVoteP[caseNum];
-      document.querySelectorAll(".p-struct-card").forEach(el => {
-        const sc = el.getAttribute("data-val");
-        if (curVote.structure === sc) {
-          el.classList.add("selected");
-          el.innerHTML = `🔘 <strong>${sc}</strong>`;
-        } else {
-          el.classList.remove("selected");
-          el.innerHTML = `⚪ <strong>${sc}</strong>`;
-        }
-      });
-      document.querySelectorAll(".p-ens-btn").forEach(el => {
-        const ec = el.getAttribute("data-val");
-        if (curVote.ensemble === ec) {
-          el.className = "btn btn-primary p-ens-btn";
-          el.innerHTML = `✓ ${ec}`;
-        } else {
-          el.className = "btn btn-secondary p-ens-btn";
-          el.innerHTML = ec;
-        }
-      });
-    }
-
-    async function submitStudentP(caseNum) {
+    async function chooseStudentPEnsembleAndSubmit(caseNum, ensVal) {
       if (isSubmittingNow) return;
-      const vote = studentVoteP[caseNum];
-      if (!vote.structure || !vote.ensemble) {
-        playSound("warn");
-        return;
-      }
+      playSound("pop");
+      studentVoteP[caseNum].ensemble = ensVal;
+      studentPSubStep[caseNum] = 3;
+      renderStudentStage(true);
 
       isSubmittingNow = true;
-      const btn = document.getElementById("btn-submit-p");
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = "⏳ กำลังบันทึกผลโหวตเข้ากลุ่ม...";
-      }
-
-      playSound("pop");
       await callGasApi({
         action: "submitP",
         pin: studentProfile.pin,
         studentId: studentProfile.studentId,
         caseNum: caseNum,
-        structure: vote.structure,
-        ensemble: vote.ensemble
+        structure: studentVoteP[caseNum].structure,
+        ensemble: ensVal
       });
       isSubmittingNow = false;
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = `✅ ส่งผลโหวตแล้ว (เปลี่ยนคำตอบและกดส่งใหม่ได้ถ้ามติยังไม่ตรงกัน)`;
-      }
       await refreshRoomState();
     }
 
-    function selectStudentA(qId, ans) {
-      if (isSubmittingNow) return;
+    function changeStudentPVote(caseNum) {
       playSound("tick");
-      studentAnswersA[qId] = ans;
+      studentPSubStep[caseNum] = 1;
       renderStudentStage(true);
     }
 
-    async function submitStudentA() {
+    // One-card-at-a-time A Stage for Student
+    async function chooseStudentAQuestion(qId, ansVal, totalQuestions) {
       if (isSubmittingNow) return;
-      if (!studentAnswersA.q1 || !studentAnswersA.q2 || !studentAnswersA.q3) {
-        playSound("warn");
-        return;
+      playSound("tick");
+      studentAnswersA[qId] = ansVal;
+      try { localStorage.setItem("TMD_STU_A", JSON.stringify(studentAnswersA)); } catch (e) {}
+
+      if (studentASubStep < totalQuestions - 1) {
+        studentASubStep++;
+        renderStudentStage(true);
+      } else {
+        // All 3 answered -> Submit automatically!
+        isSubmittingNow = true;
+        renderStudentStage(true);
+        const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
+        if (me) me.aSubmitted = true;
+
+        playSound("fanfare");
+        launchConfetti();
+        await callGasApi({
+          action: "submitA",
+          pin: studentProfile.pin,
+          studentId: studentProfile.studentId,
+          answers: JSON.stringify(studentAnswersA)
+        });
+        isSubmittingNow = false;
+        studentRenderedSig = "";
+        await refreshRoomState();
       }
-
-      isSubmittingNow = true;
-      const btn = document.getElementById("btn-submit-a");
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = "⏳ กำลังประมวลผลบัตรประจำตัวนักสืบ...";
-      }
-
-      const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
-      if (me) me.aSubmitted = true;
-
-      playSound("fanfare");
-      launchConfetti();
-      await callGasApi({
-        action: "submitA",
-        pin: studentProfile.pin,
-        studentId: studentProfile.studentId,
-        answers: JSON.stringify(studentAnswersA)
-      });
-      isSubmittingNow = false;
-      studentRenderedSig = "";
-      await refreshRoomState();
     }
 
     function renderStudentStage(forceRebuild = false) {
@@ -1902,99 +2011,120 @@
 
       updateStudentProgressBar(stage, me);
 
-      const kSub = (stage === "1K" || stage === "2K" || stage === "3K") ? !!me["k" + stage[0] + "Submitted"] : false;
+      const caseNum = (stage === "1K" || stage === "2K" || stage === "3K" || stage === "1P" || stage === "2P" || stage === "3P")
+        ? Number(stage[0]) : 0;
+      const kSub = (stage === "1K" || stage === "2K" || stage === "3K") ? !!me["k" + caseNum + "Submitted"] : false;
+      const pSubStep = caseNum ? studentPSubStep[caseNum] : 0;
       const aSub = stage === "A" ? !!me.aSubmitted : false;
-      const pressKey = stage === "PRESS" ? JSON.stringify(roomState.pressAssignments || {}) : "";
-      const newSig = `${stage}|k:${kSub}|a:${aSub}|p:${pressKey}|score:${me.total || 0}`;
+      const pressKey = JSON.stringify(roomState.pressAssignments || {}) + JSON.stringify(roomState.revealedCases || {});
 
-      // If we are in 1P/2P/3P and already built the form, ONLY update the live clue basket & vote box (no flicker!)
+      const newSig = `${stage}|k:${kSub}|tab:${activeKTab}|pStep:${pSubStep}|aStep:${studentASubStep}|a:${aSub}|pr:${pressKey}|sc:${me.total || 0}`;
+
       if (!forceRebuild && newSig === studentRenderedSig) {
         if (stage === "1P" || stage === "2P" || stage === "3P") {
-          updateStudentPLiveBox(Number(stage[0]));
+          updateStudentPLiveWidgets(caseNum);
+        } else if (stage === "1K" || stage === "2K" || stage === "3K") {
+          updateStudentKWaitingCount(caseNum);
         } else if (stage === "LOBBY") {
           const cntEl = document.getElementById("stu-lobby-group-count");
-          if (cntEl) {
-            cntEl.textContent = `${roomState.students.filter(s => s.group === studentProfile.group).length} คน`;
-          }
+          if (cntEl) cntEl.textContent = `${roomState.students.filter(s => s.group === studentProfile.group).length} คน`;
         }
         return;
       }
-
       studentRenderedSig = newSig;
 
       // 1. LOBBY
       if (stage === "LOBBY") {
         const gCount = roomState.students.filter(s => s.group === studentProfile.group).length;
         container.innerHTML = `
-          <div class="card" style="text-align:center; padding:34px 20px;">
+          <div class="card" style="text-align:center; padding:32px 18px;">
             <div style="font-size:3.4rem; margin-bottom:8px;">🛡️</div>
             <h2 style="color:var(--gold); margin-bottom:6px;">เข้าประจำทีม "กลุ่ม${studentProfile.group}" สำเร็จ!</h2>
             <p style="color:#cbd5e1; font-size:1.05rem;">
-              สมาชิกในทีมของคุณลงทะเบียนแล้ว <strong id="stu-lobby-group-count" style="color:var(--gold);">${gCount} คน</strong>
+              เพื่อนในทีมของคุณเข้าห้องแล้ว <strong id="stu-lobby-group-count" style="color:var(--gold);">${gCount} คน</strong>
             </p>
-            <div style="margin-top:18px; padding:12px 20px; background:#0f172a; border:1px solid #334155; border-radius:10px; display:inline-block; color:var(--gold);">
-              ⏳ รอคุณครูเปิดแฟ้มคดีปริศนาที่ 1 บนจอโปรเจกเตอร์...
+            <div style="margin-top:16px; padding:12px 18px; background:#0f172a; border:1px solid #334155; border-radius:12px; color:var(--gold); font-weight:700;">
+              👀 เงยหน้ามองจอโปรเจกเตอร์ รอคุณครูเริ่มเปิดแฟ้มคดีที่ 1...
             </div>
           </div>
         `;
         return;
       }
 
-      // 2. STAGE 1K, 2K, 3K (ล่าเบาะแสเครื่องดนตรี)
+      // 2. STAGE 1K, 2K, 3K (KAHOOT-STYLE CATEGORY TABS - NO LONG SCROLLING)
       if (stage === "1K" || stage === "2K" || stage === "3K") {
-        const caseNum = Number(stage[0]);
-        const cData = CASES_DATA[caseNum];
         const chosen = studentSelectedK[caseNum] || [];
 
         if (kSub) {
           container.innerHTML = `
-            <div class="card" style="text-align:center; padding:34px 20px; border:2px solid var(--success);">
-              <div style="font-size:3.5rem; margin-bottom:8px;">✅</div>
-              <h2 style="color:#34d399; margin-bottom:6px;">ส่งเบาะแส${cData.title}สำเร็จแล้ว!</h2>
-              <p style="color:#cbd5e1;">เบาะแสที่คุณส่งเข้าตะกร้าทีม: <strong style="color:var(--gold);">${chosen.join(", ") || "บันทึกในระบบเรียบร้อย"}</strong></p>
-              <div style="margin-top:16px; padding:12px 18px; background:#0f172a; border-radius:10px; display:inline-block; color:var(--gold);">
-                ⏳ รอเพื่อนในห้องส่งครบสักครู่ คุณครูจะพาไปด่านถอดรหัสวง...
+            <div class="card" style="text-align:center; padding:30px 18px; border:2px solid var(--success);">
+              <div style="font-size:3.2rem; margin-bottom:6px;">✅</div>
+              <h2 style="color:#34d399; margin-bottom:6px;">ด่านที่ 1 สำเร็จ! ส่งเบาะแสคดีที่ ${caseNum} แล้ว</h2>
+              <p style="color:#cbd5e1; font-size:0.95rem;">
+                เครื่องดนตรีที่คุณส่งเข้าทีม (${chosen.length} ชิ้น): <strong style="color:var(--gold);">${chosen.join(", ") || "บันทึกแล้ว"}</strong>
+              </p>
+              <div id="stu-k-wait-box" style="margin-top:16px; padding:12px; background:#0f172a; border-radius:12px; color:var(--gold); font-weight:700;">
+                ⏳ กำลังรอเพื่อนส่งเบาะแส... เดี๋ยวคุณครูจะพาไปด่านที่ 2 (สรุปชื่อวง)
               </div>
             </div>
           `;
+          updateStudentKWaitingCount(caseNum);
           return;
         }
 
-        const sectionsHtml = INSTRUMENT_GROUPS.map(grp => `
-          <div class="inst-cat-section">
-            <div class="inst-cat-header" style="color:${grp.color};">${grp.title}</div>
-            <div class="inst-grid">
-              ${grp.items.map(inst => {
+        const currentCatObj = INSTRUMENT_GROUPS.find(g => g.cat === activeKTab) || INSTRUMENT_GROUPS[0];
+
+        container.innerHTML = `
+          <div class="card" style="padding:16px;">
+            <div class="mission-guide-banner">
+              <div>
+                <div style="font-family:var(--font-head); font-weight:800; color:#60a5fa; font-size:1.05rem;">
+                  🔍 คดีที่ ${caseNum} (ด่านที่ 1/2) : บอกชื่อเครื่องดนตรีที่เห็น
+                </div>
+                <div style="font-size:0.86rem; color:#e2e8f0;">
+                  <strong>วิธีผ่านด่าน:</strong> แตะหมวดสีด้านล่าง แล้วจิ้มเครื่องดนตรีที่เห็นบนจอคุณครูให้ครบทุกชิ้น!
+                </div>
+              </div>
+            </div>
+
+            <!-- 5 Category Tabs -->
+            <div class="cat-tabs-bar">
+              ${INSTRUMENT_GROUPS.map(grp => {
+                const countInCat = grp.items.filter(it => chosen.indexOf(it.name) !== -1).length;
+                return `
+                  <button type="button" class="cat-tab-btn ${grp.cat === activeKTab ? 'active' : ''}" onclick="switchStudentKTab('${grp.cat}')">
+                    <div>${grp.shortTab}</div>
+                    ${countInCat > 0 ? `<div class="cat-tab-count">เลือก ${countInCat}</div>` : `<div style="font-size:0.68rem; color:var(--muted);">กดดู</div>`}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+
+            <div style="font-family:var(--font-head); font-size:0.92rem; font-weight:700; color:${currentCatObj.color}; margin-bottom:8px;">
+              กำลังแสดงหมวด: ${currentCatObj.title} (แตะเลือกได้หลายชิ้น)
+            </div>
+
+            <!-- Big Buttons for Active Category Only -->
+            <div class="kahoot-inst-grid">
+              ${currentCatObj.items.map(inst => {
                 const isSel = chosen.indexOf(inst.name) !== -1;
                 return `
-                  <button type="button" class="inst-btn ${isSel ? 'selected' : ''}" onclick="toggleInstrumentK(${caseNum}, '${inst.name}')">
+                  <button type="button" class="kahoot-inst-btn ${isSel ? 'selected' : ''}" onclick="toggleInstrumentK(${caseNum}, '${inst.name}')">
                     <span>${isSel ? '✅' : '⬜'}</span>
                     <span>${inst.label}</span>
                   </button>
                 `;
               }).join("")}
             </div>
-          </div>
-        `).join("");
 
-        container.innerHTML = `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <h2 style="color:var(--gold); margin:0;">🔍 คดีที่ ${caseNum} : ล่าเบาะแสเครื่องดนตรี</h2>
-              <span class="stu-pill" style="background:var(--brand);">ขั้นที่ 1/2 ของคดีที่ ${caseNum}</span>
-            </div>
-            <p style="color:#cbd5e1; margin:6px 0 12px; font-size:0.95rem;">
-              ดูคลิปและภาพนิ่งบนจอโปรเจกเตอร์ <strong>เห็นเครื่องดนตรีชิ้นใดกำลังบรรเลงอยู่ กดติ๊กเลือกทุกชิ้นที่เห็น</strong> แล้วกดปุ่มส่งด้านล่าง
-            </p>
-            ${sectionsHtml}
-
-            <div class="sticky-submit-bar">
+            <!-- Bottom Submit Bar -->
+            <div style="background:#090d16; border:2px solid var(--gold); border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
               <div>
-                <div style="font-size:0.82rem; color:var(--muted);">เลือกไว้แล้ว</div>
+                <div style="font-size:0.78rem; color:var(--muted);">คุณเลือกไว้ทั้งหมด</div>
                 <div style="font-family:var(--font-head); font-size:1.15rem; font-weight:800; color:var(--gold);">${chosen.length} ชิ้น</div>
               </div>
-              <button id="btn-submit-k" class="btn btn-primary" style="padding:12px 22px; font-size:1.02rem;" onclick="submitStudentK(${caseNum})">
-                📤 ส่งเบาะแสคดีที่ ${caseNum} เข้าทีม
+              <button id="btn-submit-k" class="btn btn-primary" style="padding:12px 20px; font-size:1rem;" onclick="submitStudentK(${caseNum})">
+                📤 ส่งเบาะแส (${chosen.length} ชิ้น) ➔
               </button>
             </div>
           </div>
@@ -2002,49 +2132,62 @@
         return;
       }
 
-      // 3. STAGE 1P, 2P, 3P (ถอดรหัสการประสมวง - แยกส่วนปุ่มกดออกจากการรีเฟรชสด)
+      // 3. STAGE 1P, 2P, 3P (STEP-BY-STEP WITH 5-CATEGORY BAR CHART)
       if (stage === "1P" || stage === "2P" || stage === "3P") {
-        const caseNum = Number(stage[0]);
         const g = studentProfile.group;
         const curVote = studentVoteP[caseNum];
+        const stepNow = studentPSubStep[caseNum] || 1;
 
         container.innerHTML = `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-              <h2 style="color:var(--gold); margin:0;">🔓 คดีที่ ${caseNum} : ถอดรหัสการประสมวง</h2>
-              <span class="stu-pill" style="background:#8b5cf6;">มติเอกฉันท์กลุ่ม${g}</span>
-            </div>
-
-            <!-- Live Clue Basket (Updated seamlessly without touching buttons below) -->
-            <div id="stu-p-live-basket"></div>
-
-            <h4 style="margin-bottom:8px; color:#e2e8f0;">ข้อที่ 1: โครงสร้างการประสมวงของคดีนี้เป็นอย่างไร? (ปรึกษาในโต๊ะให้ตรงกัน)</h4>
-            ${STRUCTURE_CHOICES.map(sc => `
-              <div class="choice-card p-struct-card ${curVote.structure === sc ? 'selected' : ''}" data-val="${sc}" onclick="selectStudentP(${caseNum}, 'structure', '${sc}')">
-                ${curVote.structure === sc ? '🔘' : '⚪'} <strong>${sc}</strong>
+          <div class="card" style="padding:16px;">
+            <div class="mission-guide-banner gold">
+              <div>
+                <div style="font-family:var(--font-head); font-weight:800; color:var(--gold); font-size:1.05rem;">
+                  📊 คดีที่ ${caseNum} (ด่านที่ 2/2) : ระดมสมองสรุปชื่อวง (กลุ่ม${g})
+                </div>
+                <div style="font-size:0.86rem; color:#e2e8f0;">
+                  <strong>วิธีผ่านด่าน:</strong> ดูแผนภูมิแท่งเบาะแสของกลุ่ม หันไปคุยกันในโต๊ะ แล้วกดคำตอบให้ตรงกันทุกคน!
+                </div>
               </div>
-            `).join("")}
-
-            <h4 style="margin:16px 0 8px; color:#e2e8f0;">ข้อที่ 2: ฟันธงจัดประเภทวงดนตรีไทย:</h4>
-            <div class="grid-2" style="grid-template-columns: repeat(3, 1fr);">
-              ${ENSEMBLE_CHOICES.map(ec => `
-                <button type="button" class="btn ${curVote.ensemble === ec ? 'btn-primary' : 'btn-secondary'} p-ens-btn" data-val="${ec}" onclick="selectStudentP(${caseNum}, 'ensemble', '${ec}')">
-                  ${curVote.ensemble === ec ? '✓ ' : ''}${ec}
-                </button>
-              `).join("")}
             </div>
 
-            <div style="margin-top:16px; text-align:center;">
-              <button id="btn-submit-p" class="btn btn-blue" style="width:100%; max-width:420px; padding:13px; font-size:1.02rem;" onclick="submitStudentP(${caseNum})">
-                🤝 ยืนยันมติกลุ่ม (คดีที่ ${caseNum})
-              </button>
-            </div>
+            <!-- Live 5-Category Bar Chart -->
+            <div id="stu-p-live-chart"></div>
 
-            <!-- Live Unanimous Status Box (Updated seamlessly every 3.5s) -->
-            <div id="stu-p-live-vote-status"></div>
+            <!-- Step-by-Step Kahoot Card -->
+            ${stepNow === 1 ? `
+              <div style="background:#0f172a; border:1px solid #475569; border-radius:14px; padding:14px;">
+                <div style="font-family:var(--font-head); font-weight:800; color:#ffffff; font-size:1.05rem; margin-bottom:10px;">
+                  ขั้นที่ 1/2 : จากกราฟแท่งข้างบน วงนี้มีโครงสร้างอย่างไร?
+                </div>
+                ${STRUCTURE_OPTIONS.map(opt => `
+                  <button type="button" class="kahoot-big-choice ${opt.colorClass} ${curVote.structure === opt.value ? 'selected' : ''}" onclick="chooseStudentPStructure(${caseNum}, '${opt.value}')">
+                    <span>${opt.icon} ${opt.label}</span>
+                    <span>➔</span>
+                  </button>
+                `).join("")}
+              </div>
+            ` : stepNow === 2 ? `
+              <div style="background:#0f172a; border:1px solid #475569; border-radius:14px; padding:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <span style="font-family:var(--font-head); font-weight:800; color:var(--gold); font-size:1.05rem;">
+                    ขั้นที่ 2/2 : ฟันธง! คดีที่ ${caseNum} คือวงดนตรีประเภทใด?
+                  </span>
+                  <button class="btn btn-secondary btn-sm" onclick="changeStudentPVote(${caseNum})">⬅️ แก้ข้อ 1</button>
+                </div>
+                ${ENSEMBLE_OPTIONS.map(opt => `
+                  <button type="button" class="kahoot-big-choice ${opt.colorClass}" onclick="chooseStudentPEnsembleAndSubmit(${caseNum}, '${opt.value}')">
+                    <span>${opt.icon} ${opt.label}</span>
+                    <span>ส่งมติกลุ่ม 📤</span>
+                  </button>
+                `).join("")}
+              </div>
+            ` : `
+              <div id="stu-p-live-vote-status"></div>
+            `}
           </div>
         `;
-        updateStudentPLiveBox(caseNum);
+        updateStudentPLiveWidgets(caseNum);
         return;
       }
 
@@ -2059,26 +2202,31 @@
         const gVotes = (roomState.groupVotes && roomState.groupVotes[studentProfile.group]) || {};
         const myCaseVote = (myAssignedCase && gVotes["case" + myAssignedCase] && gVotes["case" + myAssignedCase][0]) || {};
         const myClues = (myAssignedCase && roomState.groupClues && roomState.groupClues[studentProfile.group] && roomState.groupClues[studentProfile.group]["case" + myAssignedCase]) || {};
+        const structReadable = STRUCTURE_LABEL_MAP[myCaseVote.structure] || myCaseVote.structure || "...";
 
         container.innerHTML = `
           <div class="card">
             <h2 style="color:var(--gold); margin-bottom:8px;">🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย</h2>
             ${myAssignedCase ? `
-              <div style="background:rgba(245,158,11,0.15); border:2px solid var(--gold); border-radius:12px; padding:16px; margin-bottom:14px;">
+              <div style="background:rgba(245,158,11,0.16); border:2px solid var(--gold); border-radius:14px; padding:16px;">
                 <div style="font-weight:800; font-size:1.15rem; color:var(--gold); margin-bottom:8px;">
-                  🎯 กลุ่ม${studentProfile.group} ของคุณได้รับเลือกให้แถลง: "แฟ้มคดีที่ ${myAssignedCase}"
+                  🎯 กลุ่ม${studentProfile.group} ของคุณได้แถลงปิด: "แฟ้มคดีที่ ${myAssignedCase}"
                 </div>
-                <div style="background:#0f172a; padding:14px; border-radius:10px; line-height:1.8; font-size:1rem;">
-                  <strong>📋 สคริปต์โครงสร้างการพูดแถลงปิดคดี (3 ประโยค):</strong><br>
+                <div style="background:#0f172a; padding:14px; border-radius:10px; line-height:1.85; font-size:1rem;">
+                  <strong>📋 สคริปต์สำหรับตัวแทนยืนพูดแถลง (อ่านจากจอนี้หรือจอคุณครูได้เลย):</strong><br>
                   1. "สวัสดีครับ/ค่ะ ทีมสืบสวน <strong>กลุ่ม${studentProfile.group}</strong> ขอแถลงปิด<strong>คดีที่ ${myAssignedCase}</strong> ครับ/ค่ะ"<br>
-                  2. "เบาะแสเครื่องดนตรีสำคัญที่เราพบคือ <strong>${Object.keys(myClues).slice(0, 5).join(", ") || "..."}</strong> ซึ่งมีโครงสร้างแบบ <strong>${myCaseVote.structure || "..."}</strong>"<br>
-                  3. "กลุ่มของเราจึงฟันธงปิดคดีนี้ว่าคือ <strong>${myCaseVote.ensemble || "..."}</strong> ครับ/ค่ะ!"
+                  2. "จากการระดมสมอง เบาะแสหลักที่เราพบคือ <strong>${Object.keys(myClues).slice(0, 5).join(", ") || "..."}</strong> ซึ่งสังเคราะห์โครงสร้างได้ว่า <strong>${structReadable}</strong>"<br>
+                  3. "กลุ่มของเราจึงลงมติเอกฉันท์ฟันธงว่าคือ <strong>${myCaseVote.ensemble || "..."}</strong> ครับ/ค่ะ!"
                 </div>
               </div>
             ` : `
-              <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:16px;">
-                <p style="margin:0; font-size:1rem;">
-                  👂 ร่วมรับฟังเพื่อนแถลงปิดคดีทั้ง 3 คดี และเตรียมตอบคุณครูว่ากลุ่ม${studentProfile.group} ของเราได้เบาะแสและคำตอบตรงกับเพื่อนหรือไม่!
+              <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:18px; text-align:center;">
+                <div style="font-size:2.4rem; margin-bottom:6px;">👂🎙️</div>
+                <div style="font-weight:700; color:var(--gold); font-size:1.1rem; margin-bottom:4px;">
+                  เงยหน้ามองเวทีแถลงข่าวบนจอโปรเจกเตอร์!
+                </div>
+                <p style="margin:0; color:#cbd5e1;">
+                  ร่วมฟังเพื่อนแถลงปิดคดีทั้ง 3 คดี และช่วยคุณครูตรวจสอบว่ากลุ่ม${studentProfile.group} ของเราคิดตรงกับเพื่อนหรือไม่!
                 </p>
               </div>
             `}
@@ -2087,7 +2235,7 @@
         return;
       }
 
-      // 5. STAGE A (ภารกิจตัดสินใจ)
+      // 5. STAGE A (ONE QUESTION AT A TIME KAHOOT STYLE)
       if (stage === "A") {
         if (aSub) {
           renderStudentIdCard(container, me);
@@ -2095,35 +2243,41 @@
         }
 
         const questionsForMe = getStudentShuffledA();
+        const curIdx = Math.min(studentASubStep, questionsForMe.length - 1);
+        const q = questionsForMe[curIdx];
 
         container.innerHTML = `
           <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-              <h2 style="color:var(--gold); margin:0;">🎯 ด่านสุดท้าย : ภารกิจตัดสินใจ</h2>
-              <span class="stu-pill" style="background:var(--success);">จบภารกิจรับบัตรนักสืบ</span>
-            </div>
-            <p style="color:#cbd5e1; margin-bottom:16px;">
-              ในฐานะสุดยอดนักสืบดนตรีไทย จงตัดสินใจเลือกใช้วงดนตรีไทยให้เหมาะสมกับลักษณะงานและโทนเสียงทั้ง 3 สถานการณ์ต่อไปนี้:
-            </p>
-
-            ${questionsForMe.map((q, idx) => `
-              <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:16px; margin-bottom:14px;">
-                <div style="font-weight:700; color:var(--gold); margin-bottom:4px;">ข้อที่ ${idx + 1}: ${q.scenarioTitle}</div>
-                <div style="font-size:0.92rem; color:#cbd5e1; margin-bottom:12px;">${q.desc}</div>
-                <div class="grid-2" style="grid-template-columns: repeat(3, 1fr);">
-                  ${ENSEMBLE_CHOICES.map(ec => `
-                    <button type="button" class="btn ${studentAnswersA[q.id] === ec ? 'btn-primary' : 'btn-secondary'}" onclick="selectStudentA('${q.id}', '${ec}')">
-                      ${studentAnswersA[q.id] === ec ? '✓ ' : ''}${ec}
-                    </button>
-                  `).join("")}
+            <div class="mission-guide-banner">
+              <div>
+                <div style="font-family:var(--font-head); font-weight:800; color:#34d399; font-size:1.05rem;">
+                  🎯 ด่านสุดท้าย : ภารกิจตัดสินใจ (ข้อที่ ${curIdx + 1} / ${questionsForMe.length})
+                </div>
+                <div style="font-size:0.86rem; color:#e2e8f0;">
+                  ตัดสินใจเลือกวงดนตรีไทยให้เหมาะกับงานครบ 3 ข้อ เพื่อรับใบรายงานผลนักสืบประจำตัว!
                 </div>
               </div>
-            `).join("")}
+            </div>
 
-            <div style="text-align:center; margin-top:16px;">
-              <button id="btn-submit-a" class="btn btn-primary" style="width:100%; max-width:420px; padding:14px; font-size:1.05rem;" onclick="submitStudentA()">
-                🏆 ส่งคำตอบสุดท้าย & รับบัตรประจำตัวนักสืบ
-              </button>
+            <div style="background:#0f172a; border:2px solid var(--gold); border-radius:14px; padding:18px; margin-bottom:14px;">
+              <div style="font-size:0.82rem; color:var(--gold); font-weight:700; margin-bottom:4px;">สถานการณ์ที่ ${curIdx + 1} จาก 3</div>
+              <div style="font-family:var(--font-head); font-weight:800; color:#ffffff; font-size:1.2rem; margin-bottom:8px;">
+                ${q.scenarioTitle}
+              </div>
+              <div style="font-size:0.98rem; color:#cbd5e1; margin-bottom:16px;">
+                ${q.desc}
+              </div>
+
+              ${isSubmittingNow ? `
+                <div style="text-align:center; padding:20px; color:var(--gold); font-weight:800; font-size:1.1rem;">
+                  ⏳ กำลังส่งคำตอบและออกใบรายงานผลนักสืบของคุณ...
+                </div>
+              ` : ENSEMBLE_OPTIONS.map(opt => `
+                <button type="button" class="kahoot-big-choice ${opt.colorClass}" onclick="chooseStudentAQuestion('${q.id}', '${opt.value}', ${questionsForMe.length})">
+                  <span>${opt.icon} เลือกใช้ "${opt.label}"</span>
+                  <span>เลือก ➔</span>
+                </button>
+              `).join("")}
             </div>
           </div>
         `;
@@ -2136,32 +2290,25 @@
       }
     }
 
-    function updateStudentPLiveBox(caseNum) {
+    function updateStudentKWaitingCount(caseNum) {
+      if (!studentProfile) return;
+      const box = document.getElementById("stu-k-wait-box");
+      if (!box) return;
+      const gAll = (roomState.students || []).filter(s => s.group === studentProfile.group);
+      const gDone = gAll.filter(s => s["k" + caseNum + "Submitted"]);
+      box.innerHTML = `⏳ ทีมกลุ่ม${studentProfile.group} ส่งเบาะแสแล้ว <strong>${gDone.length} / ${gAll.length} คน</strong><br><span style="font-size:0.85rem; color:#cbd5e1;">รอคุณครูพาเข้าสู่ด่านที่ 2 (สรุปชื่อวง) สักครู่ครับ...</span>`;
+    }
+
+    function updateStudentPLiveWidgets(caseNum) {
       if (!studentProfile) return;
       const caseKey = "case" + caseNum;
       const g = studentProfile.group;
       const cluesMap = (roomState.groupClues && roomState.groupClues[g] && roomState.groupClues[g][caseKey]) || {};
       const votesList = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][caseKey]) || [];
 
-      const basketEl = document.getElementById("stu-p-live-basket");
-      if (basketEl) {
-        const catBuckets = { "ดีด": [], "สี": [], "ตีทำนอง": [], "เป่า": [], "จังหวะ": [] };
-        Object.keys(cluesMap).forEach(instName => {
-          const cat = LOCAL_CAT_MAP[instName] || "จังหวะ";
-          catBuckets[cat].push(`${instName} (${cluesMap[instName]} คน)`);
-        });
-        basketEl.innerHTML = `
-          <div class="clue-basket">
-            <div style="font-weight:700; color:var(--gold); margin-bottom:6px;">
-              📊 ตารางรวมเบาะแสเครื่องดนตรีของ "กลุ่ม${g}" (สมาชิก ${votesList.length} คน):
-            </div>
-            <div class="clue-row"><span class="clue-cat" style="color:#facc15;">🟡 1. เครื่องดีด:</span> <span>${catBuckets["ดีด"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-            <div class="clue-row"><span class="clue-cat" style="color:#60a5fa;">🔵 2. เครื่องสี:</span> <span>${catBuckets["สี"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-            <div class="clue-row"><span class="clue-cat" style="color:#f87171;">🔴 3. ตีทำนอง:</span> <span>${catBuckets["ตีทำนอง"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-            <div class="clue-row"><span class="clue-cat" style="color:#34d399;">🟢 4. เครื่องเป่า:</span> <span>${catBuckets["เป่า"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-            <div class="clue-row"><span class="clue-cat" style="color:#e2e8f0;">⚪ 5. จังหวะ:</span> <span>${catBuckets["จังหวะ"].join(", ") || "-ไม่มี- (0 คน)"}</span></div>
-          </div>
-        `;
+      const chartEl = document.getElementById("stu-p-live-chart");
+      if (chartEl) {
+        chartEl.innerHTML = buildFiveCatBarChartHTML(cluesMap, votesList.length || 1, true);
       }
 
       const voteStatusEl = document.getElementById("stu-p-live-vote-status");
@@ -2173,39 +2320,56 @@
 
         const tally = { "วงปี่พาทย์": [], "วงเครื่องสาย": [], "วงมโหรี": [], "ยังไม่โหวต": [] };
         votesList.forEach(v => {
-          if (v.ensemble && tally[v.ensemble]) {
-            tally[v.ensemble].push(`เลขที่ ${v.number}`);
-          } else {
-            tally["ยังไม่โหวต"].push(`เลขที่ ${v.number}`);
-          }
+          if (v.ensemble && tally[v.ensemble]) tally[v.ensemble].push(`เลขที่ ${v.number}`);
+          else tally["ยังไม่โหวต"].push(`เลขที่ ${v.number}`);
         });
 
+        const curVote = studentVoteP[caseNum];
+
         voteStatusEl.innerHTML = `
-          <div class="vote-alert ${isUnanimous ? 'success' : ''}">
+          <div style="background:${isUnanimous ? 'rgba(16,185,129,0.18)' : 'rgba(245,158,11,0.14)'}; border:2px solid ${isUnanimous ? '#10b981' : '#f59e0b'}; border-radius:14px; padding:16px;">
             ${isUnanimous ? `
-              <div style="font-weight:800; color:#34d399; font-size:1.1rem;">
-                🎉 มติเอกฉันท์สำเร็จ 100%! (${totalMembers}/${totalMembers} คน)
-              </div>
-              <div style="font-size:0.95rem; margin-top:4px;">
-                🔒 ล็อกซองคำตัดสินคดีที่ ${caseNum} ของกลุ่มเรียบร้อยแล้ว! รอคุณครูเปิดคดีถัดไปได้เลยครับ
+              <div style="text-align:center;">
+                <div style="font-size:2.6rem;">🎉🔒</div>
+                <div style="font-weight:800; color:#34d399; font-size:1.2rem;">
+                  ผ่านด่านที่ 2! มติเอกฉันท์กลุ่ม${g} สำเร็จ 100% (${totalMembers}/${totalMembers} คน)
+                </div>
+                <div style="font-size:0.95rem; color:#e2e8f0; margin-top:6px;">
+                  กลุ่มของคุณฟันธง: <strong style="color:var(--gold);">${validVotes[0]?.ensemble || curVote.ensemble}</strong><br>
+                  👀 เงยหน้าดูจอคุณครูเพื่อไปคดีถัดไปได้เลย!
+                </div>
               </div>
             ` : `
-              <div style="font-weight:700; color:#fbbf24; margin-bottom:6px;">
-                ⏳ สถานะการโหวตของกลุ่ม${g} (โหวตแล้ว ${validVotes.length}/${totalMembers} คน — ต้องตรงกันทุกคน):
+              <div style="font-weight:800; color:#fbbf24; font-size:1.05rem; margin-bottom:6px;">
+                ⏳ รอให้คนในกลุ่มเลือกตรงกันครบทุกคน (โหวตแล้ว ${validVotes.length}/${totalMembers} คน)
               </div>
-              <div style="font-size:0.88rem; color:#e2e8f0; line-height:1.6;">
+              <div style="font-size:0.88rem; color:#e2e8f0; line-height:1.65; background:#090d16; padding:10px 12px; border-radius:10px; margin-bottom:10px;">
                 • <strong>วงปี่พาทย์:</strong> ${tally["วงปี่พาทย์"].length} คน ${tally["วงปี่พาทย์"].length ? '(' + tally["วงปี่พาทย์"].join(", ") + ')' : ''}<br>
                 • <strong>วงเครื่องสาย:</strong> ${tally["วงเครื่องสาย"].length} คน ${tally["วงเครื่องสาย"].length ? '(' + tally["วงเครื่องสาย"].join(", ") + ')' : ''}<br>
                 • <strong>วงมโหรี:</strong> ${tally["วงมโหรี"].length} คน ${tally["วงมโหรี"].length ? '(' + tally["วงมโหรี"].join(", ") + ')' : ''}<br>
-                ${tally["ยังไม่โหวต"].length ? `• <span style="color:#f87171;">ยังไม่กดยืนยัน: ${tally["ยังไม่โหวต"].join(", ")}</span>` : ''}
+                ${tally["ยังไม่โหวต"].length ? `• <span style="color:#f87171;">กำลังรอเลขที่: ${tally["ยังไม่โหวต"].join(", ")} กดโหวต</span>` : ''}
               </div>
-              <div style="font-size:0.85rem; color:var(--gold); margin-top:6px;">
-                💬 ปรึกษาเพื่อนในโต๊ะให้เลือกทั้ง "โครงสร้าง" และ "ชื่อวง" ตรงกันครบทุกคน แล้วกดยืนยันมติกลุ่มครับ!
-              </div>
+              <button class="btn btn-secondary" style="width:100%;" onclick="changeStudentPVote(${caseNum})">
+                🔄 กดเปลี่ยนคำตอบของฉัน (เพื่อให้ตรงกับมติกลุ่ม)
+              </button>
             `}
           </div>
         `;
       }
+    }
+
+    /********************************************************************
+     * 8. INDIVIDUAL FEEDBACK & DOWNLOADABLE PNG REPORT CARD FOR STUDENT
+     ********************************************************************/
+    function getAutomatedFeedback(scoreK, scoreP, scoreA) {
+      if (scoreK >= 7 && scoreP >= 4 && scoreA >= 2) {
+        return "🌟 ยอดเยี่ยมมาก! คุณมีทักษะการสังเกตเครื่องดนตรีไทยแม่นยำ ร่วมระดมสมองสังเคราะห์โครงสร้างวงกับเพื่อนได้ดีเยี่ยม และเลือกใช้วงดนตรีตามโอกาสได้อย่างเหมาะสม";
+      }
+      const tips = [];
+      if (scoreK < 7) tips.push("ทบทวนรูปร่างและชื่อเครื่องดนตรีในแต่ละหมวดเพิ่มเติมอีกนิด");
+      if (scoreP < 4) tips.push("ฝึกสังเกตจุดต่างระหว่างวงปี่พาทย์ เครื่องสาย และมโหรีจากแผนภูมิ 5 หมวด");
+      if (scoreA < 2) tips.push("ทบทวนความเหมาะสมของโทนเสียงแต่ละวงกับลักษณะงานพิธี");
+      return "💡 พยายามได้ดีมาก! คำแนะนำเพื่อพัฒนาต่อยอด: " + tips.join(" และ ");
     }
 
     function renderStudentIdCard(container, me) {
@@ -2214,56 +2378,187 @@
       const aScore = me.scoreA ?? 0;
       const totalScore = kScore + pScore + aScore;
       const passAll = (kScore >= 7 && pScore >= 4 && aScore >= 2);
+      const feedbackText = getAutomatedFeedback(kScore, pScore, aScore);
+
+      const gVotes = (roomState.groupVotes && roomState.groupVotes[studentProfile.group]) || {};
+      const gAns1 = (gVotes.case1 && gVotes.case1[0] && gVotes.case1[0].ensemble) || "-";
+      const gAns2 = (gVotes.case2 && gVotes.case2[0] && gVotes.case2[0].ensemble) || "-";
+      const gAns3 = (gVotes.case3 && gVotes.case3[0] && gVotes.case3[0].ensemble) || "-";
 
       container.innerHTML = `
         <div class="card" style="text-align:center;">
-          <div style="font-size:2.4rem; margin-bottom:4px;">🎉</div>
-          <h2 style="color:var(--gold); margin-bottom:4px;">ปฏิบัติการเสร็จสมบูรณ์!</h2>
-          <p style="color:#cbd5e1; font-size:0.92rem; margin-top:0; margin-bottom:16px;">นี่คือบัตรประจำตัวสุดยอดนักสืบดนตรีไทยของคุณ</p>
+          <div style="font-size:2.4rem; margin-bottom:2px;">🎉</div>
+          <h2 style="color:var(--gold); margin-bottom:4px;">ภารกิจเสร็จสมบูรณ์!</h2>
+          <p style="color:#cbd5e1; font-size:0.9rem; margin-top:0; margin-bottom:14px;">
+            บันทึกใบรายงานผลนักสืบดนตรีไทยประจำตัวของคุณลงเครื่องได้เลย
+          </p>
 
           <div class="id-card" id="my-detective-card">
             <div class="id-card-header">
-              <div style="text-align:left;">
-                <div style="font-size:0.75rem; color:var(--gold); letter-spacing:1px; font-weight:700;">THAI MUSIC DETECTIVE BUREAU</div>
-                <div style="font-family:var(--font-head); font-size:1.25rem; font-weight:800;">บัตรผ่านภารกิจนักสืบดนตรีไทย</div>
+              <div>
+                <div style="font-size:0.72rem; color:var(--gold); letter-spacing:1px; font-weight:700;">THAI MUSIC DETECTIVE REPORT</div>
+                <div style="font-family:var(--font-head); font-size:1.2rem; font-weight:800;">ใบรายงานผลการเรียนรู้รายบุคคล</div>
               </div>
-              <div class="id-badge-icon">🕵️‍♂️</div>
+              <div style="font-size:2rem;">🕵️‍♂️</div>
             </div>
 
-            <div style="text-align:left; font-size:0.95rem; line-height:1.7; background:rgba(0,0,0,0.25); padding:10px 14px; border-radius:10px;">
+            <div style="font-size:0.92rem; line-height:1.65; background:rgba(0,0,0,0.3); padding:10px 12px; border-radius:10px; margin-bottom:10px;">
               <div><strong>ชื่อ-สกุล:</strong> ${studentProfile.name}</div>
-              <div><strong>ชั้น:</strong> ${studentProfile.classRoom} | <strong>เลขที่:</strong> ${studentProfile.number} | <strong>ทีม:</strong> กลุ่ม${studentProfile.group}</div>
-              <div><strong>รหัสห้องปฏิบัติการ (PIN):</strong> ${studentProfile.pin}</div>
+              <div><strong>ชั้น:</strong> ${studentProfile.classRoom} | <strong>เลขที่:</strong> ${studentProfile.number} | <strong>ทีม:</strong> กลุ่ม${studentProfile.group} (ห้อง ${studentProfile.pin})</div>
             </div>
 
             <div class="score-grid-3">
               <div class="score-box">
-                <div style="font-size:0.78rem; color:#cbd5e1;">ภารกิจที่ 1 (ล่าเบาะแส)</div>
+                <div style="font-size:0.74rem; color:#cbd5e1;">1. ชี้เบาะแส (K)</div>
                 <div class="score-val">${kScore} / 10</div>
+                <span class="pass-tag ${kScore >= 7 ? 'pass-ok' : 'pass-no'}">${kScore >= 7 ? 'ผ่าน' : 'ฝึกเพิ่ม'}</span>
               </div>
               <div class="score-box">
-                <div style="font-size:0.78rem; color:#cbd5e1;">ภารกิจที่ 2 (ถอดรหัสวง)</div>
+                <div style="font-size:0.74rem; color:#cbd5e1;">2. ถอดรหัสวง (P)</div>
                 <div class="score-val">${pScore} / 6</div>
+                <span class="pass-tag ${pScore >= 4 ? 'pass-ok' : 'pass-no'}">${pScore >= 4 ? 'ผ่าน' : 'ฝึกเพิ่ม'}</span>
               </div>
               <div class="score-box">
-                <div style="font-size:0.78rem; color:#cbd5e1;">ภารกิจที่ 3 (ตัดสินใจ)</div>
+                <div style="font-size:0.74rem; color:#cbd5e1;">3. ตัดสินใจ (A)</div>
                 <div class="score-val">${aScore} / 3</div>
+                <span class="pass-tag ${aScore >= 2 ? 'pass-ok' : 'pass-no'}">${aScore >= 2 ? 'ผ่าน' : 'ฝึกเพิ่ม'}</span>
               </div>
             </div>
 
-            <div style="margin-top:10px; padding-top:10px; border-top:1px dashed #475569; display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:0.9rem; color:var(--ink);">คะแนนรวมภารกิจ: <strong style="color:var(--gold);">${totalScore} / 19 คะแนน</strong></span>
-              <span class="pass-tag ${passAll ? 'pass-ok' : 'pass-no'}" style="font-size:0.85rem; padding:4px 12px;">
+            <div style="font-size:0.82rem; color:#cbd5e1; background:#090d16; padding:8px 10px; border-radius:8px; margin-bottom:8px;">
+              <strong>ผลมติกลุ่ม${studentProfile.group}:</strong> คดีที่ 1: ${gAns1} | คดีที่ 2: ${gAns2} | คดีที่ 3: ${gAns3}
+            </div>
+
+            <div style="font-size:0.82rem; color:#fef3c7; background:rgba(245,158,11,0.12); border-left:3px solid var(--gold); padding:8px 10px; border-radius:6px; margin-bottom:10px;">
+              ${feedbackText}
+            </div>
+
+            <div style="padding-top:8px; border-top:1px dashed #475569; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.9rem;">คะแนนรวม: <strong style="color:var(--gold); font-size:1.1rem;">${totalScore} / 19</strong></span>
+              <span class="pass-tag ${passAll ? 'pass-ok' : 'pass-no'}" style="font-size:0.84rem; padding:4px 12px;">
                 ${passAll ? '🏆 สุดยอดนักสืบดนตรีไทย' : '⭐ นักสืบฝึกหัด'}
               </span>
             </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <button class="btn btn-success" style="width:100%; max-width:420px; padding:14px; font-size:1.05rem;" onclick="generateStudentReportPNG()">
+              💾 บันทึกภาพใบรายงานผลลงมือถือ (.PNG)
+            </button>
           </div>
         </div>
       `;
     }
 
+    // วาดใบรายงานผลรายบุคคลลง Canvas เป็นรูปภาพ .PNG คมชัดสูง ให้เด็กเซฟลงมือถือได้ทันที
+    function generateStudentReportPNG() {
+      if (!studentProfile) return;
+      playSound("fanfare");
+      const me = roomState.students.find(s => s.studentId === studentProfile.studentId) || {};
+      const kScore = me.scoreK ?? 0;
+      const pScore = me.scoreP ?? 0;
+      const aScore = me.scoreA ?? 0;
+      const totalScore = kScore + pScore + aScore;
+      const passAll = (kScore >= 7 && pScore >= 4 && aScore >= 2);
+      const feedbackText = getAutomatedFeedback(kScore, pScore, aScore);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 800;
+      canvas.height = 560;
+      const ctx = canvas.getContext("2d");
+
+      // Background
+      const grad = ctx.createLinearGradient(0, 0, 800, 560);
+      grad.addColorStop(0, "#0f172a");
+      grad.addColorStop(1, "#1e293b");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 800, 560);
+
+      // Gold Border
+      ctx.strokeStyle = "#f59e0b";
+      ctx.lineWidth = 8;
+      ctx.strokeRect(16, 16, 768, 528);
+
+      // Header
+      ctx.fillStyle = "#f59e0b";
+      ctx.font = "bold 28px Kanit, sans-serif";
+      ctx.fillText("🕵️‍♂️ ใบรายงานผลการเรียนรู้ : ปฏิบัติการนักสืบดนตรีไทย", 44, 68);
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "18px Sarabun, sans-serif";
+      ctx.fillText("รายวิชาดนตรี ม.1 เรื่อง การจำแนกวงดนตรีไทยตามลักษณะการประสมวง", 44, 100);
+
+      // Student Info Box
+      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      ctx.fillRect(44, 120, 712, 85);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 22px Sarabun, sans-serif";
+      ctx.fillText(`ชื่อ-สกุล: ${studentProfile.name}`, 64, 155);
+      ctx.font = "20px Sarabun, sans-serif";
+      ctx.fillStyle = "#cbd5e1";
+      ctx.fillText(`ชั้น: ${studentProfile.classRoom}   |   เลขที่: ${studentProfile.number}   |   ทีมสืบสวน: กลุ่ม${studentProfile.group}   |   รหัสห้อง: ${studentProfile.pin}`, 64, 188);
+
+      // 3 Score Boxes
+      const boxes = [
+        { title: "ด้าน K (ชี้เบาะแสเดี่ยว)", val: `${kScore} / 10`, pass: kScore >= 7 },
+        { title: "ด้าน P (ถอดรหัสวงกลุ่ม)", val: `${pScore} / 6`, pass: pScore >= 4 },
+        { title: "ด้าน A (ตัดสินใจเลือกวง)", val: `${aScore} / 3`, pass: aScore >= 2 }
+      ];
+      boxes.forEach((b, idx) => {
+        const bx = 44 + idx * 244;
+        ctx.fillStyle = "#090d16";
+        ctx.fillRect(bx, 225, 224, 125);
+        ctx.strokeStyle = b.pass ? "#10b981" : "#ef4444";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(bx, 225, 224, 125);
+
+        ctx.fillStyle = "#cbd5e1";
+        ctx.font = "bold 17px Kanit, sans-serif";
+        ctx.fillText(b.title, bx + 18, 258);
+
+        ctx.fillStyle = "#f59e0b";
+        ctx.font = "bold 36px Kanit, sans-serif";
+        ctx.fillText(b.val, bx + 55, 305);
+
+        ctx.fillStyle = b.pass ? "#34d399" : "#f87171";
+        ctx.font = "bold 16px Sarabun, sans-serif";
+        ctx.fillText(b.pass ? "✅ ผ่านเกณฑ์" : "📌 ควรทบทวนเพิ่ม", bx + 55, 335);
+      });
+
+      // Feedback Box
+      ctx.fillStyle = "rgba(245, 158, 11, 0.14)";
+      ctx.fillRect(44, 370, 712, 85);
+      ctx.fillStyle = "#fef3c7";
+      ctx.font = "bold 18px Sarabun, sans-serif";
+      const words = feedbackText;
+      ctx.fillText(words.slice(0, 68), 60, 405);
+      if (words.length > 68) {
+        ctx.fillText(words.slice(68, 140), 60, 435);
+      }
+
+      // Footer Total
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 24px Kanit, sans-serif";
+      ctx.fillText(`คะแนนรวมทั้งหมด: ${totalScore} / 19 คะแนน`, 44, 505);
+
+      ctx.fillStyle = passAll ? "#34d399" : "#fbbf24";
+      ctx.font = "bold 24px Kanit, sans-serif";
+      ctx.fillText(passAll ? "🏆 ผลประเมิน: ผ่านเกณฑ์ครบ K-P-A" : "⭐ ผลประเมิน: นักสืบฝึกหัด", 430, 505);
+
+      const dataUrl = canvas.toDataURL("image/png");
+      document.getElementById("generated-png-img").src = dataUrl;
+      const dlLink = document.getElementById("download-png-link");
+      dlLink.href = dataUrl;
+      dlLink.download = `ใบรายงานผล_${studentProfile.name}_เลขที่${studentProfile.number}.png`;
+      document.getElementById("png-preview-modal").classList.add("show");
+    }
+
+    function closePngModal() {
+      document.getElementById("png-preview-modal").classList.remove("show");
+    }
+
     /********************************************************************
-     * 8. TEACHER FLOW (NO VIDEO RESET, GIANT NEXT BUTTON, FORCE UNANIMOUS, CSV EXPORT)
+     * 9. TEACHER FLOW (FLOATING DOCK, 3-2-1 COUNTDOWN, REALISTIC PRESS STAGE, GROUP P REPORT)
      ********************************************************************/
     function openTeacherModal() {
       document.getElementById("teacher-pass").value = "";
@@ -2286,7 +2581,10 @@
       teacherRenderedSig = "";
       document.getElementById("student-view").style.display = "none";
       document.getElementById("teacher-view").style.display = "block";
+      document.getElementById("teacher-top-pin-box").style.display = "inline-flex";
       document.getElementById("btn-bgm").style.display = "inline-flex";
+      document.getElementById("btn-test-sound").style.display = "inline-flex";
+      document.getElementById("btn-config-top").style.display = "inline-flex";
       document.getElementById("btn-switch-student").style.display = "inline-flex";
       document.getElementById("btn-teacher-menu").style.display = "none";
       refreshRoomState();
@@ -2297,7 +2595,10 @@
       studentRenderedSig = "";
       document.getElementById("teacher-view").style.display = "none";
       document.getElementById("student-view").style.display = "block";
+      document.getElementById("teacher-top-pin-box").style.display = "none";
       document.getElementById("btn-bgm").style.display = "none";
+      document.getElementById("btn-test-sound").style.display = "none";
+      document.getElementById("btn-config-top").style.display = "none";
       document.getElementById("btn-switch-student").style.display = "none";
       document.getElementById("btn-teacher-menu").style.display = studentProfile ? "none" : "inline-flex";
       renderCurrentView(true);
@@ -2336,6 +2637,8 @@
       document.getElementById("teacher-pin-input").value = newPin;
       currentPin = newPin;
       teacherFolderOpened = { 1: false, 2: false, 3: false };
+      roomState.pressAssignments = {};
+      roomState.revealedCases = { case1: false, case2: false, case3: false };
       teacherRenderedSig = "";
       stopTeacherTimer();
       playSound("fanfare");
@@ -2354,13 +2657,36 @@
 
     async function teacherSetStage(newStage) {
       playSound("tick");
+      const prevStage = roomState.stage;
       roomState.stage = newStage;
       teacherRenderedSig = "";
-      // Auto start recommended timer when entering P or A
-      if (newStage === "1P" || newStage === "2P" || newStage === "3P" || newStage === "A") {
-        startTeacherTimer(90);
+
+      const meta = STAGE_META[newStage] || STAGE_META["LOBBY"];
+
+      // Trigger 3-2-1 Mission Intro Countdown when entering a new mission stage
+      if (newStage !== "LOBBY" && newStage !== "SUMMARY" && newStage !== prevStage) {
+        if (newStage === "1K" || newStage === "2K" || newStage === "3K") {
+          const cNum = Number(newStage[0]);
+          teacherFolderOpened[cNum] = true;
+          teacherMediaMode[cNum] = "VIDEO";
+          runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
+            startTeacherTimer(120);
+            renderTeacherStage(true);
+          });
+        } else if (newStage === "1P" || newStage === "2P" || newStage === "3P" || newStage === "A") {
+          runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
+            startTeacherTimer(90);
+            renderTeacherStage(true);
+          });
+        } else if (newStage === "PRESS") {
+          runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
+            renderTeacherStage(true);
+          });
+        }
+      } else {
+        renderTeacherStage(true);
       }
-      renderTeacherStage(true);
+
       await callGasApi({ action: "setStage", pin: currentPin, stage: newStage });
       await refreshRoomState();
     }
@@ -2379,40 +2705,27 @@
       teacherSetStage(STAGE_ORDER[prevIdx]);
     }
 
-    function openSecretFolder(caseNum) {
-      playSound("folder");
-      teacherFolderOpened[caseNum] = true;
-      teacherMediaMode[caseNum] = "VIDEO";
-      startTeacherTimer(120);
-      renderTeacherStage(true);
-    }
-
     function switchCaseMedia(caseNum, mode) {
       playSound("tick");
       teacherMediaMode[caseNum] = mode;
-      if (mode === "IMAGE") {
-        resumeBGMAfterClip();
-      }
+      if (mode === "IMAGE") resumeBGMAfterClip();
       renderTeacherStage(true);
     }
 
-    // เมื่อคลิปเล่นจบ ให้สลับเป็นภาพนิ่งเต็มวงอัตโนมัติ (ครูไม่ต้องเดินมากดสลับเอง)
     function onCaseVideoEnded(caseNum) {
       resumeBGMAfterClip();
       teacherMediaMode[caseNum] = "IMAGE";
       renderTeacherStage(true);
     }
 
-    // ปุ่มช่วยชีวิตครู: อนุมัติมติกลุ่มตามเสียงข้างมาก (กรณีมีนักเรียนในกลุ่มเน็ตหลุด/แบตหมด)
     async function teacherForceApproveGroupP(caseNum, groupName) {
       const caseKey = "case" + caseNum;
       const votes = (roomState.groupVotes && roomState.groupVotes[groupName] && roomState.groupVotes[groupName][caseKey]) || [];
       const valid = votes.filter(v => v.structure && v.ensemble);
-      let targetStruct = CASES_DATA[caseNum].structureAns;
+      let targetStruct = CASES_DATA[caseNum].structureVal;
       let targetEns = CASES_DATA[caseNum].shortAns;
 
       if (valid.length > 0) {
-        // Use majority vote from active members
         targetStruct = valid[0].structure;
         targetEns = valid[0].ensemble;
       }
@@ -2423,7 +2736,7 @@
       playSound("fanfare");
       const banner = document.getElementById("sync-banner");
       if (banner) {
-        banner.textContent = `⏳ กำลังซิงก์มติเอกฉันท์ให้กลุ่ม${groupName} ทุกคน...`;
+        banner.textContent = `⏳ กำลังอนุมัติมติเอกฉันท์ให้กลุ่ม${groupName}...`;
         banner.style.display = "block";
       }
 
@@ -2439,23 +2752,31 @@
       }
 
       if (banner) {
-        banner.textContent = `✅ อนุมัติมติกลุ่ม${groupName} สำเร็จเรียบร้อย!`;
-        setTimeout(() => { banner.style.display = "none"; }, 3000);
+        banner.textContent = `✅ อนุมัติมติกลุ่ม${groupName} สำเร็จ!`;
+        setTimeout(() => { banner.style.display = "none"; }, 2500);
       }
       await refreshRoomState();
     }
 
+    // Fixed Press Conference Randomizer: Updates UI immediately in 0.1s + Syncs to Cloud
     async function teacherRandomizePress() {
       playSound("drumroll");
+      const g = ["ดีด", "สี", "ตี", "เป่า"].sort(() => Math.random() - 0.5);
+      roomState.pressAssignments = { case1: g[0], case2: g[1], case3: g[2] };
+      teacherRenderedSig = "";
+      renderTeacherStage(true);
+
+      setTimeout(() => {
+        playSound("fanfare");
+        launchConfetti();
+      }, 650);
+
       const resp = await callGasApi({ action: "randomizePress", pin: currentPin });
       if (resp && resp.assignments) {
         roomState.pressAssignments = resp.assignments;
-      } else {
-        const g = ["ดีด", "สี", "ตี", "เป่า"].sort(() => Math.random() - 0.5);
-        roomState.pressAssignments = { case1: g[0], case2: g[1], case3: g[2] };
+        teacherRenderedSig = "";
+        renderTeacherStage(true);
       }
-      setTimeout(() => playSound("fanfare"), 700);
-      renderTeacherStage(true);
     }
 
     async function teacherRevealCase(caseKey) {
@@ -2463,8 +2784,20 @@
       launchConfetti();
       if (!roomState.revealedCases) roomState.revealedCases = {};
       roomState.revealedCases[caseKey] = true;
+      teacherRenderedSig = "";
       renderTeacherStage(true);
       await callGasApi({ action: "setStage", pin: currentPin, stage: "PRESS", revealCase: caseKey });
+    }
+
+    async function teacherRevealAllCases() {
+      playSound("fanfare");
+      launchConfetti();
+      roomState.revealedCases = { case1: true, case2: true, case3: true };
+      teacherRenderedSig = "";
+      renderTeacherStage(true);
+      await callGasApi({ action: "setStage", pin: currentPin, stage: "PRESS", revealCase: "case1" });
+      await callGasApi({ action: "setStage", pin: currentPin, stage: "PRESS", revealCase: "case2" });
+      await callGasApi({ action: "setStage", pin: currentPin, stage: "PRESS", revealCase: "case3" });
     }
 
     function resolveMediaUrl(relPath) {
@@ -2473,33 +2806,24 @@
       return base + relPath;
     }
 
-    // อัปเดตแถบสถานะยักษ์ด้านบนสุดของครู + ไฟกะพริบเตือนเมื่อเด็กส่งงานครบ
-    function updateTeacherTopBanner() {
+    function updateTeacherFloatingDock() {
       const stage = roomState.stage || "LOBBY";
       const students = roomState.students || [];
       const meta = STAGE_META[stage] || STAGE_META["LOBBY"];
 
-      const stepBadge = document.getElementById("teacher-step-badge");
-      const stageTitle = document.getElementById("teacher-stage-title");
-      const progPill = document.getElementById("teacher-progress-pill");
+      document.querySelectorAll(".dock-stage-pill").forEach(btn => btn.classList.remove("active"));
+      const activePill = document.getElementById("dock-" + stage);
+      if (activePill) activePill.classList.add("active");
+
       const nextBtn = document.getElementById("btn-giant-next");
-      const jumpSel = document.getElementById("teacher-jump-select");
+      if (!nextBtn) return;
+      nextBtn.textContent = meta.nextLabel;
 
-      if (stepBadge) stepBadge.textContent = meta.step;
-      if (stageTitle) stageTitle.textContent = meta.title;
-      if (nextBtn) nextBtn.textContent = meta.nextLabel;
-      if (jumpSel && jumpSel.value !== stage) jumpSel.value = stage;
-
-      let statusText = `👥 สายสืบในห้องทั้งหมด ${students.length} คน`;
       let isAllReady = false;
-
       if (stage === "1K" || stage === "2K" || stage === "3K") {
         const cNum = Number(stage[0]);
         const doneCount = students.filter(s => s["k" + cNum + "Submitted"]).length;
         isAllReady = students.length > 0 && doneCount === students.length;
-        statusText = isAllReady
-          ? `✅ นักเรียนส่งเบาะแสคดีที่ ${cNum} ครบ ${doneCount}/${students.length} คนแล้ว! กดปุ่มไปด่านถัดไปได้เลย`
-          : `📊 ส่งเบาะแสคดีที่ ${cNum} แล้ว: ${doneCount} / ${students.length} คน`;
       } else if (stage === "1P" || stage === "2P" || stage === "3P") {
         const cNum = Number(stage[0]);
         const cKey = "case" + cNum;
@@ -2516,27 +2840,13 @@
           }
         });
         isAllReady = activeGroups > 0 && unanimousGroups === activeGroups;
-        statusText = isAllReady
-          ? `🎉 มติเอกฉันท์ครบทั้ง ${unanimousGroups}/${activeGroups} กลุ่มแล้ว! กดปุ่มไปต่อได้เลย`
-          : `🤝 กลุ่มที่ได้มติเอกฉันท์แล้ว: ${unanimousGroups} / ${activeGroups || 4} กลุ่ม`;
       } else if (stage === "A") {
         const doneA = students.filter(s => s.aSubmitted).length;
         isAllReady = students.length > 0 && doneA === students.length;
-        statusText = isAllReady
-          ? `✅ นักเรียนส่งคำตอบครบ ${doneA}/${students.length} คนแล้ว! กดดูสรุปผลได้เลย`
-          : `📊 ส่งคำตอบภารกิจตัดสินใจแล้ว: ${doneA} / ${students.length} คน`;
       }
 
-      if (progPill) {
-        progPill.textContent = statusText;
-        if (isAllReady) progPill.classList.add("all-done");
-        else progPill.classList.remove("all-done");
-      }
-
-      if (nextBtn) {
-        if (isAllReady) nextBtn.classList.add("btn-ready-pulse");
-        else nextBtn.classList.remove("btn-ready-pulse");
-      }
+      if (isAllReady) nextBtn.classList.add("btn-ready-pulse");
+      else nextBtn.classList.remove("btn-ready-pulse");
     }
 
     function buildTeacherKGroupStatusHTML(caseNum) {
@@ -2547,12 +2857,12 @@
         const gPending = gAll.filter(s => !s["k" + caseNum + "Submitted"]);
         const allSent = gAll.length > 0 && gPending.length === 0;
         return `
-          <div style="background:#0f172a; padding:12px; border-radius:10px; border:2px solid ${allSent ? '#10b981' : '#334155'};">
-            <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1rem;">
+          <div style="background:#0f172a; padding:10px 12px; border-radius:10px; border:2px solid ${allSent ? '#10b981' : '#334155'};">
+            <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.95rem;">
               <span>กลุ่ม${g}</span>
               <span style="color:${allSent ? '#34d399' : 'var(--gold)'};">${gDone.length}/${gAll.length} คน</span>
             </div>
-            <div style="font-size:0.82rem; color:#94a3b8; margin-top:4px;">
+            <div style="font-size:0.78rem; color:#94a3b8; margin-top:3px;">
               ${allSent ? '✅ ส่งครบทุกคนแล้ว!' : (gPending.length ? `⏳ รอเลขที่: ${gPending.map(p => p.number).join(", ")}` : 'ยังไม่มีสมาชิก')}
             </div>
           </div>
@@ -2562,63 +2872,44 @@
 
     function renderTeacherStage(forceRebuild = false) {
       const stage = roomState.stage || "LOBBY";
-      updateTeacherTopBanner();
+      updateTeacherFloatingDock();
 
       const container = document.getElementById("teacher-stage-display");
       const students = roomState.students || [];
+      const meta = STAGE_META[stage] || STAGE_META["LOBBY"];
 
-      // CRITICAL FIX FOR VIDEO RESTART BUG:
-      // In 1K, 2K, 3K, if the stage, opened state, and mediaMode (VIDEO/IMAGE) haven't changed,
-      // DO NOT touch the video player DOM! Only update the group submission counts below it.
+      // 1. STAGE 1K, 2K, 3K (ISOLATED VIDEO DOM SO IT NEVER RESTARTS + FITS 100% ON 1 SCREEN)
       if (stage === "1K" || stage === "2K" || stage === "3K") {
         const caseNum = Number(stage[0]);
-        const isOpened = teacherFolderOpened[caseNum];
         const mMode = teacherMediaMode[caseNum];
-        const sig = `${stage}|open:${isOpened}|mode:${mMode}|pin:${currentPin}`;
+        const sig = `${stage}|mode:${mMode}|pin:${currentPin}`;
 
         if (!forceRebuild && teacherRenderedSig === sig) {
           const liveGrid = document.getElementById("teacher-k-live-groups");
-          if (liveGrid) {
-            liveGrid.innerHTML = buildTeacherKGroupStatusHTML(caseNum);
-          }
+          if (liveGrid) liveGrid.innerHTML = buildTeacherKGroupStatusHTML(caseNum);
           return;
         }
         teacherRenderedSig = sig;
 
         const cData = CASES_DATA[caseNum];
-        if (!isOpened) {
-          container.innerHTML = `
-            <div class="folder-envelope" onclick="openSecretFolder(${caseNum})">
-              <div class="top-secret-stamp">TOP SECRET : CASE #${caseNum}</div>
-              <h2 style="font-size:2.2rem; color:#fff; margin-bottom:8px;">📁 ${cData.title}</h2>
-              <p style="color:#fef3c7; font-size:1.1rem; margin-bottom:20px;">
-                ภารกิจที่ 1 : ล่าเบาะแสเครื่องดนตรีไทย (เวลาแนะนำ 2 นาที)
-              </p>
-              <button class="btn btn-primary" style="font-size:1.15rem; padding:14px 28px;">
-                🔓 คลิกเพื่อเปิดซองแฟ้มคดีที่ ${caseNum} (เล่นคลิป & จับเวลา)
-              </button>
-            </div>
-          `;
-          return;
-        }
-
         const resolvedImg = resolveMediaUrl(cData.image);
 
         container.innerHTML = `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+          <div class="card" style="padding:14px 18px;">
+            <div class="mission-guide-banner gold" style="margin-bottom:10px;">
               <div>
-                <h2 style="color:var(--gold); margin:0;">📁 ${cData.title} : สื่อเบาะแสประจำคดี</h2>
-                <span style="color:var(--muted); font-size:0.9rem;">เมื่อคลิปเล่นจบ ระบบจะสลับเป็นภาพนิ่งเต็มวงค้างไว้ให้อัตโนมัติ</span>
+                <span style="background:var(--gold); color:#0f172a; font-weight:800; padding:2px 10px; border-radius:99px; font-size:0.8rem; margin-right:8px;">${meta.step}</span>
+                <strong style="font-family:var(--font-head); font-size:1.25rem; color:#ffffff;">${meta.title}</strong>
+                <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
               </div>
-              <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn ${mMode === 'VIDEO' ? 'btn-primary' : 'btn-secondary'}" onclick="switchCaseMedia(${caseNum}, 'VIDEO')">
-                  ▶️ เล่นคลิปสั้นฟังเสียง
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn ${mMode === 'VIDEO' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchCaseMedia(${caseNum}, 'VIDEO')">
+                  ▶️ เล่นคลิปฟังเสียง
                 </button>
-                <button class="btn ${mMode === 'IMAGE' ? 'btn-primary' : 'btn-secondary'}" onclick="switchCaseMedia(${caseNum}, 'IMAGE')">
+                <button class="btn ${mMode === 'IMAGE' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchCaseMedia(${caseNum}, 'IMAGE')">
                   🖼️ ดูภาพนิ่งเต็มวง
                 </button>
-                <button class="btn btn-secondary" onclick="openZoomModal('${resolvedImg}', '${cData.title}')">
+                <button class="btn btn-secondary btn-sm" onclick="openZoomModal('${resolvedImg}', '${cData.title}')">
                   🔍 ขยายภาพเต็มจอ
                 </button>
               </div>
@@ -2633,10 +2924,9 @@
             </div>
 
             <div class="credit-caption">
-              📌 ${cData.creditHidden} &nbsp;|&nbsp; 💡 <em>คลิกที่ภาพนิ่งเพื่อขยายเต็มจอให้แถวหลังเห็นชัดๆ ได้ครับ</em>
+              📌 ${cData.creditHidden} &nbsp;|&nbsp; 💡 <em>เมื่อคลิปจบจะสลับเป็นภาพนิ่งให้อัตโนมัติ (คลิกที่รูปเพื่อขยายเต็มจอได้)</em>
             </div>
 
-            <!-- Live Group Submission Counters (Updated every 3.5s without resetting video) -->
             <div id="teacher-k-live-groups" class="grid-4">
               ${buildTeacherKGroupStatusHTML(caseNum)}
             </div>
@@ -2645,7 +2935,8 @@
         return;
       }
 
-      teacherRenderedSig = `${stage}|pin:${currentPin}`;
+      const pressSig = stage === "PRESS" ? (JSON.stringify(roomState.pressAssignments || {}) + JSON.stringify(roomState.revealedCases || {})) : "";
+      teacherRenderedSig = `${stage}|pin:${currentPin}|pr:${pressSig}`;
 
       // 0. LOBBY
       if (stage === "LOBBY") {
@@ -2655,51 +2946,43 @@
         });
 
         container.innerHTML = `
+          <div class="mission-guide-banner gold">
+            <div>
+              <strong style="font-family:var(--font-head); font-size:1.2rem; color:var(--gold);">🟢 ${meta.title}</strong>
+              <div style="font-size:0.95rem; color:#e2e8f0;">${meta.instruction}</div>
+            </div>
+          </div>
+
           <div class="lobby-hero">
-            <div class="pin-display">
-              <div class="pin-label">🔑 รหัสห้องสืบสวน (GAME PIN)</div>
+            <div style="text-align:center;">
+              <div style="font-size:0.95rem; color:var(--gold); font-weight:700; letter-spacing:1px;">🔑 รหัสห้องสืบสวน (GAME PIN)</div>
               <div class="pin-code">${currentPin}</div>
               <div style="color:#cbd5e1; font-size:1.05rem; margin-top:6px;">
-                สายสืบลงทะเบียนแล้วทั้งหมด: <strong style="color:var(--gold); font-size:1.35rem;">${students.length} คน</strong>
+                สายสืบเข้าห้องแล้ว: <strong style="color:var(--gold); font-size:1.35rem;">${students.length} คน</strong>
               </div>
             </div>
             <div class="qr-box">
               <div id="qr-canvas-holder"></div>
-              <div style="font-size:0.84rem; font-weight:700;">📱 สแกนเข้าหน่วยสืบสวน</div>
+              <div style="font-size:0.82rem; font-weight:700;">📱 สแกนเข้าหน่วยสืบสวน</div>
             </div>
           </div>
 
           <div class="grid-4">
             <div class="group-box group-deed">
-              <div class="group-header">
-                <span style="color:#facc15;">🟡 กลุ่มดีด</span>
-                <span class="stu-pill">${byGroup["ดีด"].length} คน</span>
-              </div>
-              <div>${byGroup["ดีด"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.85rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
+              <div class="group-header"><span style="color:#facc15;">🟡 กลุ่มดีด</span><span class="stu-pill">${byGroup["ดีด"].length} คน</span></div>
+              <div>${byGroup["ดีด"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
             </div>
-
             <div class="group-box group-see">
-              <div class="group-header">
-                <span style="color:#60a5fa;">🔵 กลุ่มสี</span>
-                <span class="stu-pill">${byGroup["สี"].length} คน</span>
-              </div>
-              <div>${byGroup["สี"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.85rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
+              <div class="group-header"><span style="color:#38bdf8;">🔵 กลุ่มสี</span><span class="stu-pill">${byGroup["สี"].length} คน</span></div>
+              <div>${byGroup["สี"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
             </div>
-
             <div class="group-box group-tee">
-              <div class="group-header">
-                <span style="color:#f87171;">🔴 กลุ่มตี</span>
-                <span class="stu-pill">${byGroup["ตี"].length} คน</span>
-              </div>
-              <div>${byGroup["ตี"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.85rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
+              <div class="group-header"><span style="color:#f87171;">🔴 กลุ่มตี</span><span class="stu-pill">${byGroup["ตี"].length} คน</span></div>
+              <div>${byGroup["ตี"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
             </div>
-
             <div class="group-box group-pao">
-              <div class="group-header">
-                <span style="color:#34d399;">🟢 กลุ่มเป่า</span>
-                <span class="stu-pill">${byGroup["เป่า"].length} คน</span>
-              </div>
-              <div>${byGroup["เป่า"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.85rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
+              <div class="group-header"><span style="color:#34d399;">🟢 กลุ่มเป่า</span><span class="stu-pill">${byGroup["เป่า"].length} คน</span></div>
+              <div>${byGroup["เป่า"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
             </div>
           </div>
         `;
@@ -2707,7 +2990,7 @@
         return;
       }
 
-      // 2. STAGE 1P, 2P, 3P (ถอดรหัสการประสมวง + ปุ่มครูช่วยอนุมัติมติกลุ่มกรณีเด็กเน็ตหลุด)
+      // 2. STAGE 1P, 2P, 3P (SHOWS 5-CATEGORY BAR CHART FOR ALL 4 GROUPS ON PROJECTOR!)
       if (stage === "1P" || stage === "2P" || stage === "3P") {
         const caseNum = Number(stage[0]);
         const caseKey = "case" + caseNum;
@@ -2728,12 +3011,10 @@
                 <div class="group-header">
                   <span>กลุ่ม${g} (${total} คน)</span>
                   <span class="pass-tag ${unanimous ? 'pass-ok' : 'pass-no'}">
-                    ${unanimous ? '🎉 มติเอกฉันท์แล้ว' : `⏳ โหวตแล้ว ${valid.length}/${total}`}
+                    ${unanimous ? '🎉 มติเอกฉันท์แล้ว' : `⏳ โหวต ${valid.length}/${total}`}
                   </span>
                 </div>
-                <div style="font-size:0.85rem; color:#cbd5e1; margin-bottom:10px;">
-                  <strong>เบาะแสที่กลุ่มพบ:</strong> ${Object.keys(clues).map(k => `${k}(${clues[k]})`).join(", ") || "-"}
-                </div>
+                ${buildFiveCatBarChartHTML(clues, total, false)}
               </div>
 
               ${unanimous ? `
@@ -2742,13 +3023,12 @@
                 </div>
               ` : `
                 <div>
-                  <div style="font-size:0.82rem; color:#fbbf24; margin-bottom:8px;">
-                    กำลังปรึกษาให้ตรงกันครบทุกคน...
-                    ${pending.length ? `<br><span style="color:#f87171;">รอเลขที่: ${pending.map(p => p.number).join(", ")}</span>` : ''}
+                  <div style="font-size:0.8rem; color:#fbbf24; margin-bottom:6px;">
+                    ${pending.length ? `⏳ รอเลขที่: ${pending.map(p => p.number).join(", ")}` : '⚠️ มีคนเลือกไม่ตรงกัน กำลังคุยกันในกลุ่ม'}
                   </div>
                   ${total > 0 ? `
-                    <button class="btn btn-secondary btn-sm" style="width:100%; font-size:0.78rem;" onclick="teacherForceApproveGroupP(${caseNum}, '${g}')">
-                      ✅ ครูอนุมัติมติกลุ่มนี้ (กรณีเพื่อนเน็ตหลุด)
+                    <button class="btn btn-secondary btn-sm" style="width:100%; font-size:0.76rem;" onclick="teacherForceApproveGroupP(${caseNum}, '${g}')">
+                      ✅ ครูอนุมัติมติกลุ่มนี้ (กรณีเน็ตหลุด)
                     </button>
                   ` : ''}
                 </div>
@@ -2759,58 +3039,66 @@
 
         container.innerHTML = `
           <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+            <div class="mission-guide-banner gold">
               <div>
-                <h2 style="color:var(--gold); margin:0;">🔓 ถอดรหัสการประสมวง (${cData.title})</h2>
-                <span style="color:var(--muted); font-size:0.9rem;">เมื่อทุกกลุ่มขึ้นสีเขียว "มติเอกฉันท์แล้ว" ปุ่มสีทองด้านบนจะกะพริบเป็นสีเขียวเพื่อพาไปด่านถัดไปครับ</span>
+                <span style="background:var(--gold); color:#0f172a; font-weight:800; padding:2px 10px; border-radius:99px; font-size:0.8rem; margin-right:8px;">${meta.step}</span>
+                <strong style="font-family:var(--font-head); font-size:1.25rem; color:#ffffff;">${meta.title}</strong>
+                <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
               </div>
-              <button class="btn btn-secondary" onclick="openZoomModal('${resolveMediaUrl(cData.image)}', '${cData.title}')">
+              <button class="btn btn-secondary btn-sm" onclick="openZoomModal('${resolveMediaUrl(cData.image)}', '${cData.title}')">
                 🖼️ เปิดดูภาพวงประกอบ
               </button>
             </div>
 
-            <div class="grid-4">${groupCardsHtml}</div>
+            <div class="grid-2">${groupCardsHtml}</div>
           </div>
         `;
         return;
       }
 
-      // 3. STAGE PRESS (ห้องแถลงข่าวปิดคดี 3 คดี)
+      // 3. STAGE PRESS (REALISTIC PRESS CONFERENCE STAGE WITH SPOTLIGHTS, PODIUM, SCRIPT ON PROJECTOR & INSTANT BUTTONS)
       if (stage === "PRESS") {
         const assign = roomState.pressAssignments || {};
         const revealed = roomState.revealedCases || {};
 
         const casesHtml = [1, 2, 3].map(cNum => {
           const cKey = "case" + cNum;
-          const cData = CASES_DATA[caseNum];
-          const assignedGroup = assign[cKey] ? `กลุ่ม${assign[cKey]}` : "รอสุ่มกลุ่ม...";
+          const cData = CASES_DATA[cNum];
+          const gName = assign[cKey] || "";
+          const assignedGroup = gName ? `กลุ่ม${gName}` : "กดปุ่มสุ่มกลุ่มด้านบน";
           const isRev = !!revealed[cKey];
 
-          const gVotes = (assign[cKey] && roomState.groupVotes && roomState.groupVotes[assign[cKey]] && roomState.groupVotes[assign[cKey]][cKey]) || [];
-          const groupAns = (gVotes[0] && gVotes[0].ensemble) ? gVotes[0].ensemble : "-";
+          const gVotes = (gName && roomState.groupVotes && roomState.groupVotes[gName] && roomState.groupVotes[gName][cKey]) || [];
+          const groupStruct = gVotes[0]?.structure ? (STRUCTURE_LABEL_MAP[gVotes[0].structure] || gVotes[0].structure) : "...";
+          const groupAns = gVotes[0]?.ensemble || "...";
+          const gClues = (gName && roomState.groupClues && roomState.groupClues[gName] && roomState.groupClues[gName][cKey]) || {};
+          const topClues = Object.keys(gClues).slice(0, 5).join(", ") || "...";
 
           return `
-            <div class="card" style="background:rgba(15,23,42,0.92); border:2px solid ${isRev ? '#10b981' : 'var(--gold)'}; margin:0;">
-              <div style="font-family:var(--font-head); font-size:1.2rem; font-weight:700; color:var(--gold); margin-bottom:6px;">
-                📁 แฟ้มคดีที่ ${cNum}
+            <div class="card" style="background:rgba(15,23,42,0.94); border:2px solid ${isRev ? '#10b981' : 'var(--gold)'}; margin:0; position:relative; z-index:2;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-family:var(--font-head); font-size:1.15rem; font-weight:800; color:var(--gold);">📁 แฟ้มคดีที่ ${cNum}</span>
+                <span class="stu-pill" style="background:#1d4ed8; font-weight:700;">🎙️ ผู้แถลง: ${assignedGroup}</span>
               </div>
-              <div style="font-size:1.05rem; margin-bottom:10px;">
-                🎙️ <strong>ผู้แถลงปิดคดี:</strong> <span style="color:#38bdf8; font-weight:800;">${assignedGroup}</span>
-              </div>
-              <div style="font-size:0.9rem; color:#cbd5e1; margin-bottom:12px;">
-                มติของกลุ่มที่ล็อกไว้: <strong>${groupAns}</strong>
+
+              <!-- Speech Script on Projector so student can stand & read confidently -->
+              <div style="background:#090d16; border:1px solid #334155; border-radius:10px; padding:10px; font-size:0.84rem; line-height:1.6; color:#e2e8f0; margin-bottom:10px;">
+                <strong style="color:#38bdf8;">💬 สคริปต์แถลงปิดคดีที่ ${cNum}:</strong><br>
+                1. "เบาะแสหลักที่พบคือ <strong>${topClues}</strong>"<br>
+                2. "สังเคราะห์โครงสร้างได้ว่า <strong>${groupStruct}</strong>"<br>
+                3. "จึงฟันธงปิดคดีนี้ว่าคือ <strong style="color:var(--gold);">${groupAns}</strong> ครับ/ค่ะ!"
               </div>
 
               ${isRev ? `
-                <div style="background:rgba(16,185,129,0.18); border:1px solid #10b981; border-radius:10px; padding:12px; text-align:center;">
-                  <img src="${resolveMediaUrl(cData.image)}" alt="${cData.fullAns}" style="width:100%; height:130px; object-fit:cover; border-radius:8px; margin-bottom:8px;">
-                  <div style="font-weight:800; color:#34d399; font-size:1.15rem;">✅ เฉลย: ${cData.fullAns}</div>
-                  <div style="font-size:0.82rem; color:#e2e8f0; margin-top:4px;">โครงสร้าง: ${cData.structureAns}</div>
-                  <div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">${cData.creditFull}</div>
+                <div style="background:rgba(16,185,129,0.2); border:2px solid #10b981; border-radius:10px; padding:10px; text-align:center;">
+                  <img src="${resolveMediaUrl(cData.image)}" alt="${cData.fullAns}" style="width:100%; height:115px; object-fit:cover; border-radius:8px; margin-bottom:6px; cursor:zoom-in;" onclick="openZoomModal('${resolveMediaUrl(cData.image)}', '${cData.fullAns}')">
+                  <div style="font-weight:800; color:#34d399; font-size:1.1rem;">✅ เฉลย: ${cData.fullAns}</div>
+                  <div style="font-size:0.8rem; color:#e2e8f0;">${cData.structureLabel}</div>
+                  <div style="font-size:0.72rem; color:var(--muted); margin-top:4px;">${cData.creditFull}</div>
                 </div>
               ` : `
-                <button class="btn btn-success" style="width:100%;" onclick="teacherRevealCase('${cKey}')">
-                  🔓 เปิดซองเฉลยคดีที่ ${cNum}
+                <button class="btn btn-success" style="width:100%; padding:12px;" onclick="teacherRevealCase('${cKey}')">
+                  🔓 เปิดซองเฉลยคดีที่ ${cNum} (จุดพลุ)
                 </button>
               `}
             </div>
@@ -2819,25 +3107,36 @@
 
         container.innerHTML = `
           <div class="press-stage">
-            <div class="press-backdrop">
-              <div style="color:var(--gold); font-weight:700; letter-spacing:2px; font-size:0.9rem;">💡 THAI MUSIC DETECTIVE PRESS CONFERENCE 💡</div>
-              <h2 style="font-size:2rem; color:#ffffff; margin:4px 0 12px;">🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย (3 คดี)</h2>
-              <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-                <button class="btn btn-primary" style="font-size:1.05rem; padding:12px 22px;" onclick="teacherRandomizePress()">
+            <div class="spotlight-left"></div>
+            <div class="spotlight-right"></div>
+
+            <div style="text-align:center; position:relative; z-index:2; border-bottom:2px dashed rgba(245,158,11,0.4); padding-bottom:14px; margin-bottom:16px;">
+              <div style="display:inline-block; background:rgba(245,158,11,0.2); border:1px solid var(--gold); color:var(--gold-light); padding:3px 14px; border-radius:99px; font-weight:800; font-size:0.82rem; letter-spacing:1.5px;">
+                📸 PRESS CONFERENCE : THAI MUSIC DETECTIVE BUREAU 📸
+              </div>
+              <h2 style="font-size:1.85rem; color:#ffffff; margin:6px 0 10px; text-shadow:0 4px 15px rgba(0,0,0,0.6);">
+                🎙️ เวทีแถลงข่าวคลี่คลายคดีดนตรีไทย (3 แฟ้มคดี)
+              </h2>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-primary" style="font-size:1rem; padding:10px 20px;" onclick="teacherRandomizePress()">
                   🎲 กดสุ่มกลุ่มแถลงปิดคดี (3 คดี)
                 </button>
-                <button class="btn btn-secondary" onclick="startTeacherTimer(60)">
-                  ⏱️ จับเวลาพูด 1 นาที
+                <button class="btn btn-success" style="font-size:0.95rem; padding:10px 18px;" onclick="teacherRevealAllCases()">
+                  🔓 เปิดซองเฉลยพร้อมกันทั้ง 3 คดี
                 </button>
               </div>
             </div>
 
-            <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+            <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); position:relative; z-index:2;">
               ${casesHtml}
             </div>
 
-            <div class="press-podium">
-              🎙️ 🎙️ 🎙️ โพเดียมแถลงข่าวปิดคดี (ถามกลุ่มอื่นหลังเพื่อนพูดจบ: "กลุ่มอื่นได้คำตอบตรงกับเพื่อนไหม?")
+            <!-- Realistic Podium with Microphones Graphic -->
+            <div class="press-podium-graphic">
+              <div style="font-size:1.5rem; line-height:1; margin-bottom:4px;">🎙️ &nbsp; 🕵️‍♂️ &nbsp; 🎙️</div>
+              <div style="font-family:var(--font-head); font-weight:800; color:var(--gold-light); font-size:0.95rem;">
+                โพเดียมแถลงข่าวศูนย์สืบสวนดนตรีไทย (ถามกลุ่มอื่น: "กลุ่มอื่นได้คำตอบตรงกับเพื่อนไหมครับ?")
+              </div>
             </div>
           </div>
         `;
@@ -2851,27 +3150,30 @@
 
         container.innerHTML = `
           <div class="card">
-            <div style="margin-bottom:14px;">
-              <h2 style="color:var(--gold); margin:0;">🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจ (เลือกวงดนตรีออกงาน)</h2>
-              <span style="color:var(--muted);">นักเรียนแต่ละคนเลือกใช้วงดนตรีไทยให้เหมาะสมกับ 3 สถานการณ์งานบนมือถือของตนเอง (ลำดับข้อสุ่มไม่ตรงกัน)</span>
+            <div class="mission-guide-banner gold">
+              <div>
+                <span style="background:var(--gold); color:#0f172a; font-weight:800; padding:2px 10px; border-radius:99px; font-size:0.8rem; margin-right:8px;">${meta.step}</span>
+                <strong style="font-family:var(--font-head); font-size:1.25rem; color:#ffffff;">${meta.title}</strong>
+                <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
+              </div>
             </div>
 
-            <div style="background:#0f172a; padding:16px; border-radius:12px; margin-bottom:16px; border:1px solid var(--gold);">
+            <div style="background:#0f172a; padding:14px 16px; border-radius:12px; margin-bottom:14px; border:1px solid var(--gold);">
               <div>
-                <strong>📊 สถานะการส่งคำตอบภารกิจตัดสินใจ:</strong> ส่งแล้ว <strong style="color:var(--gold); font-size:1.25rem;">${doneA.length} / ${students.length} คน</strong>
+                <strong>📊 สถานะการส่งคำตอบด่านสุดท้าย:</strong> ส่งครบแล้ว <strong style="color:var(--gold); font-size:1.25rem;">${doneA.length} / ${students.length} คน</strong>
               </div>
               ${pendingA.length ? `
-                <div style="font-size:0.85rem; color:#f87171; margin-top:6px;">
-                  ⏳ รอเลขที่: ${pendingA.map(p => `${p.number} (${p.name})`).join(", ")}
+                <div style="font-size:0.85rem; color:#f87171; margin-top:4px;">
+                  ⏳ กำลังรอเลขที่: ${pendingA.map(p => `${p.number} (${p.name})`).join(", ")}
                 </div>
-              ` : (students.length ? `<div style="font-size:0.95rem; color:#34d399; margin-top:4px; font-weight:700;">✅ ส่งครบทุกคนแล้ว! กดปุ่มสีเขียวด้านบนเพื่อดูสรุปผลคะแนนทั้งห้องได้เลยครับ</div>` : '')}
+              ` : (students.length ? `<div style="font-size:0.95rem; color:#34d399; margin-top:4px; font-weight:700;">✅ ส่งครบทุกคนแล้ว! กดปุ่มสีเขียวด้านล่างเพื่อดูรายงานสรุปผลได้เลยครับ</div>` : '')}
             </div>
 
             <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
               ${ATTITUDE_QUESTIONS_BASE.map((q, idx) => `
-                <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:16px;">
-                  <div style="color:var(--gold); font-weight:700; margin-bottom:6px;">สถานการณ์ตัวอย่างที่ ${idx + 1}: ${q.scenarioTitle}</div>
-                  <div style="font-size:0.95rem; color:#cbd5e1;">${q.desc}</div>
+                <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:14px;">
+                  <div style="color:var(--gold); font-weight:700; margin-bottom:6px;">สถานการณ์ที่ ${idx + 1}: ${q.scenarioTitle}</div>
+                  <div style="font-size:0.92rem; color:#cbd5e1;">${q.desc}</div>
                 </div>
               `).join("")}
             </div>
@@ -2880,7 +3182,7 @@
         return;
       }
 
-      // 5. STAGE SUMMARY (ตารางสรุปผล K-P-A + ปุ่มดาวน์โหลด Excel/CSV + ข้อความหลังแผน ว.PA)
+      // 5. STAGE SUMMARY (COMPLETE WITH GROUP P SYNTHESIS REPORT + INDIVIDUAL REPORT CARDS + PA TEXT + EXCEL CSV)
       if (stage === "SUMMARY") {
         const totalStu = students.length;
         const passKList = students.filter(s => (s.scoreK ?? 0) >= 7);
@@ -2900,13 +3202,103 @@
    • ผ่านเกณฑ์: ${passKList.length} คน (คิดเป็นร้อยละ ${pct(passKList.length)})
    • ไม่ผ่านเกณฑ์: ${failKList.length} คน (คิดเป็นร้อยละ ${pct(failKList.length)})${failKList.length ? ' -> เลขที่ ' + failKList.map(s => s.number).join(', ') : ''}
 
-2. ด้านทักษะกระบวนการ (P - เกณฑ์ผ่าน ≥ 4/6 คะแนน):
+2. ด้านทักษะกระบวนการกลุ่ม (P - เกณฑ์ผ่าน ≥ 4/6 คะแนน):
    • ผ่านเกณฑ์: ${passPList.length} คน (คิดเป็นร้อยละ ${pct(passPList.length)})
    • ไม่ผ่านเกณฑ์: ${failPList.length} คน (คิดเป็นร้อยละ ${pct(failPList.length)})${failPList.length ? ' -> เลขที่ ' + failPList.map(s => s.number).join(', ') : ''}
 
-3. ด้านเจตคติ (A - เกณฑ์ผ่าน ≥ 2/3 คะแนน):
+3. ด้านเจตคติและการนำไปใช้ (A - เกณฑ์ผ่าน ≥ 2/3 คะแนน):
    • ผ่านเกณฑ์: ${passAList.length} คน (คิดเป็นร้อยละ ${pct(passAList.length)})
    • ไม่ผ่านเกณฑ์: ${failAList.length} คน (คิดเป็นร้อยละ ${pct(failAList.length)})${failAList.length ? ' -> เลขที่ ' + failAList.map(s => s.number).join(', ') : ''}`;
+
+        // Build Group P Synthesis Report (4 Groups x 3 Cases with Bar Charts & Consensus Trace)
+        const groupSynthesisHtml = showGroupPReport ? `
+          <div class="card" id="group-p-report-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+              <div>
+                <h3 style="color:var(--gold); margin:0;">📊 ใบรายงานผลการระดมสมองและสังเคราะห์ข้อมูลรายกลุ่ม (ด้าน P - 4 กลุ่ม)</h3>
+                <span style="font-size:0.85rem; color:var(--muted);">ร่องรอยหลักฐานการรวบรวมเบาะแส การสังเคราะห์โครงสร้างวง และมติเอกฉันท์ของแต่ละกลุ่ม (สำหรับแนบภาคผนวก ว.PA)</span>
+              </div>
+              <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">🖨️ สั่งพิมพ์ / Save as PDF</button>
+            </div>
+
+            <div class="grid-2">
+              ${["ดีด", "สี", "ตี", "เป่า"].map(g => {
+                const gMembers = students.filter(s => s.group === g);
+                const gScoreP = gMembers[0]?.scoreP ?? 0;
+                return `
+                  <div class="group-box" style="border-color:var(--gold);">
+                    <div class="group-header">
+                      <span style="font-size:1.1rem; color:var(--gold);">🛡️ รายงานการสังเคราะห์ผล : กลุ่ม${g} (สมาชิก ${gMembers.length} คน)</span>
+                      <span class="pass-tag ${gScoreP >= 4 ? 'pass-ok' : 'pass-no'}">คะแนนกลุ่ม P: ${gScoreP} / 6</span>
+                    </div>
+                    <div style="font-size:0.8rem; color:#cbd5e1; margin-bottom:10px;">
+                      <strong>สมาชิกในกลุ่ม:</strong> ${gMembers.map(m => `เลขที่ ${m.number} ${m.name}`).join(", ") || "-"}
+                    </div>
+
+                    ${[1, 2, 3].map(cNum => {
+                      const cKey = "case" + cNum;
+                      const clues = (roomState.groupClues && roomState.groupClues[g] && roomState.groupClues[g][cKey]) || {};
+                      const votes = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][cKey]) || [];
+                      const v0 = votes[0] || {};
+                      const structLabel = STRUCTURE_LABEL_MAP[v0.structure] || v0.structure || "ไม่ได้ระบุ";
+                      const ensLabel = v0.ensemble || "ไม่ได้ระบุ";
+                      const isCorrect = ensLabel === CASES_DATA[cNum].shortAns;
+
+                      return `
+                        <div style="background:rgba(0,0,0,0.25); border:1px solid #334155; border-radius:10px; padding:10px; margin-bottom:8px;">
+                          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.88rem; color:#38bdf8; margin-bottom:6px;">
+                            <span>📁 แฟ้มคดีที่ ${cNum} (เฉลย: ${CASES_DATA[cNum].shortAns})</span>
+                            <span style="color:${isCorrect ? '#34d399' : '#f87171'};">${isCorrect ? '✓ สังเคราะห์ถูกต้อง' : '✗ คลาดเคลื่อน'}</span>
+                          </div>
+                          ${buildFiveCatBarChartHTML(clues, gMembers.length || 1, false)}
+                          <div style="font-size:0.82rem; line-height:1.55; color:#e2e8f0;">
+                            • <strong>ผลการสังเคราะห์โครงสร้างวง:</strong> ${structLabel}<br>
+                            • <strong>มติเอกฉันท์ฟันธงชื่อวง:</strong> <strong style="color:var(--gold);">${ensLabel}</strong>
+                          </div>
+                        </div>
+                      `;
+                    }).join("")}
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        ` : "";
+
+        // Build Individual Report Cards for All Students (With Automated Feedback)
+        const allCardsHtml = showAllCardsPreview ? `
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 style="color:var(--gold); margin:0;">🪪 ใบรายงานผลการเรียนรู้รายบุคคลของนักเรียนทั้งห้อง (${students.length} คน)</h3>
+              <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">🖨️ สั่งพิมพ์ / Save as PDF</button>
+            </div>
+            <div class="all-id-grid">
+              ${students.slice().sort((a, b) => Number(a.number) - Number(b.number)).map(s => {
+                const fb = getAutomatedFeedback(s.scoreK, s.scoreP, s.scoreA);
+                return `
+                  <div class="id-card" style="margin:0;">
+                    <div class="id-card-header">
+                      <div>
+                        <div style="font-size:0.68rem; color:var(--gold);">THAI MUSIC DETECTIVE REPORT</div>
+                        <div style="font-weight:800; font-size:1rem;">${s.name} (เลขที่ ${s.number})</div>
+                      </div>
+                      <span class="pass-tag ${(s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? 'pass-ok' : 'pass-no'}">รวม ${s.total}/19</span>
+                    </div>
+                    <div style="font-size:0.82rem; margin-bottom:8px;">ชั้น ${s.classRoom} | ทีม: กลุ่ม${s.group} | ห้อง: ${currentPin}</div>
+                    <div class="score-grid-3">
+                      <div class="score-box"><div style="font-size:0.72rem;">K (10)</div><div class="score-val">${s.scoreK}</div></div>
+                      <div class="score-box"><div style="font-size:0.72rem;">P (6)</div><div class="score-val">${s.scoreP}</div></div>
+                      <div class="score-box"><div style="font-size:0.72rem;">A (3)</div><div class="score-val">${s.scoreA}</div></div>
+                    </div>
+                    <div style="font-size:0.76rem; color:#fef3c7; background:rgba(245,158,11,0.1); padding:6px 8px; border-radius:6px;">
+                      ${fb}
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        ` : "";
 
         const rowsHtml = students.slice().sort((a, b) => Number(a.number) - Number(b.number)).map(s => `
           <tr>
@@ -2922,39 +3314,24 @@
           </tr>
         `).join("");
 
-        const allCardsHtml = showAllCardsPreview ? `
-          <div class="all-id-grid">
-            ${students.map(s => `
-              <div class="id-card" style="margin:0;">
-                <div class="id-card-header">
-                  <div>
-                    <div style="font-size:0.7rem; color:var(--gold);">THAI MUSIC DETECTIVE</div>
-                    <div style="font-weight:800;">${s.name} (เลขที่ ${s.number})</div>
-                  </div>
-                  <span>🕵️‍♂️</span>
-                </div>
-                <div style="font-size:0.85rem; margin-bottom:8px;">ชั้น ${s.classRoom} | ทีม: กลุ่ม${s.group} | ห้อง: ${currentPin}</div>
-                <div class="score-grid-3">
-                  <div class="score-box"><div style="font-size:0.75rem;">K (10)</div><div class="score-val">${s.scoreK}</div></div>
-                  <div class="score-box"><div style="font-size:0.75rem;">P (6)</div><div class="score-val">${s.scoreP}</div></div>
-                  <div class="score-box"><div style="font-size:0.75rem;">A (3)</div><div class="score-val">${s.scoreA}</div></div>
-                </div>
-              </div>
-            `).join("")}
-          </div>
-        ` : "";
-
         container.innerHTML = `
           <div class="card">
-            <h2 style="color:var(--gold); margin-bottom:12px;">📊 กล่องข้อความสรุปผลการประเมินประจำคาบเรียน (สำหรับบันทึกหลังแผน ว.PA)</h2>
+            <h2 style="color:var(--gold); margin-bottom:10px;">📊 สรุปผลการประเมินประจำคาบเรียน & ดาวน์โหลดหลักฐานร่องรอย ว.PA</h2>
             <div class="pa-report-box" id="pa-summary-text">${reportText}</div>
-            <div class="no-print" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+            <div class="no-print" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
               <button class="btn btn-primary" onclick="copyPaSummary()">📋 คัดลอกข้อความสรุปหลังแผน</button>
-              <button class="btn btn-success" onclick="exportRoomScoresCSV()">📥 ดาวน์โหลดตารางคะแนนห้องนี้ (Excel / .CSV)</button>
-              <button class="btn btn-blue" onclick="toggleAllDetectiveCards()">🪪 แสดง/ซ่อน บัตรนักสืบของนักเรียนทั้งห้อง (แนบภาคผนวก)</button>
+              <button class="btn btn-success" onclick="exportRoomScoresCSV()">📥 ดาวน์โหลดตารางคะแนน (Excel / .CSV)</button>
+              <button class="btn ${showGroupPReport ? 'btn-blue' : 'btn-secondary'}" onclick="toggleGroupPReport()">
+                📊 ${showGroupPReport ? 'ซ่อน' : 'แสดง'}ใบรายงานการสังเคราะห์ผลรายกลุ่ม (ด้าน P)
+              </button>
+              <button class="btn ${showAllCardsPreview ? 'btn-blue' : 'btn-secondary'}" onclick="toggleAllDetectiveCards()">
+                🪪 ${showAllCardsPreview ? 'ซ่อน' : 'แสดง'}ใบรายงานผลรายบุคคลทั้งห้อง (${students.length} คน)
+              </button>
             </div>
-            ${allCardsHtml}
           </div>
+
+          ${groupSynthesisHtml}
+          ${allCardsHtml}
 
           <div class="card">
             <h3 style="color:var(--gold); margin-bottom:12px;">🏆 ตารางคะแนน K - P - A รายบุคคล (แท็บ ห้อง_${currentPin} ใน Google Sheets)</h3>
@@ -2995,10 +3372,9 @@
       });
     }
 
-    // ดาวน์โหลดไฟล์ตารางคะแนนเป็น .CSV (เปิดด้วย Excel อ่านภาษาไทยได้ 100% ด้วย UTF-8 BOM)
     function exportRoomScoresCSV() {
       const students = (roomState.students || []).slice().sort((a, b) => Number(a.number) - Number(b.number));
-      const headers = ["รหัสห้อง (PIN)", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม", "คะแนน K (เต็ม 10)", "คะแนน P (เต็ม 6)", "คะแนน A (เต็ม 3)", "คะแนนรวม (เต็ม 19)", "ผลประเมิน K", "ผลประเมิน P", "ผลประเมิน A", "สรุปผลรวม"];
+      const headers = ["รหัสห้อง (PIN)", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม", "คะแนน K (เต็ม 10)", "คะแนน P (เต็ม 6)", "คะแนน A (เต็ม 3)", "คะแนนรวม (เต็ม 19)", "ผลประเมิน K", "ผลประเมิน P", "ผลประเมิน A", "สรุปผลรวม", "ข้อเสนอแนะรายบุคคล"];
       const rows = [headers];
 
       students.forEach(s => {
@@ -3006,6 +3382,7 @@
         const passP = (s.scoreP >= 4) ? "ผ่าน" : "ไม่ผ่าน";
         const passA = (s.scoreA >= 2) ? "ผ่าน" : "ไม่ผ่าน";
         const passAll = (s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? "ผ่านเกณฑ์" : "ซ่อมเสริม";
+        const fb = getAutomatedFeedback(s.scoreK, s.scoreP, s.scoreA);
         rows.push([
           currentPin,
           s.number,
@@ -3019,7 +3396,8 @@
           passK,
           passP,
           passA,
-          passAll
+          passAll,
+          `"${fb.replace(/"/g, '""')}"`
         ]);
       });
 
@@ -3036,8 +3414,15 @@
       playSound("fanfare");
     }
 
+    function toggleGroupPReport() {
+      showGroupPReport = !showGroupPReport;
+      teacherRenderedSig = "";
+      renderTeacherStage(true);
+    }
+
     function toggleAllDetectiveCards() {
       showAllCardsPreview = !showAllCardsPreview;
+      teacherRenderedSig = "";
       renderTeacherStage(true);
     }
 
