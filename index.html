@@ -893,8 +893,10 @@
     }
     .zoom-modal-card {
       position: relative;
-      max-width: 96vw;
-      max-height: 94vh;
+      width: 98vw;
+      height: 96vh;
+      max-width: 98vw;
+      max-height: 96vh;
       background: #000;
       border: 2px solid var(--gold);
       border-radius: 14px;
@@ -902,8 +904,8 @@
       text-align: center;
     }
     .zoom-modal-card img {
-      max-width: 92vw;
-      max-height: 82vh;
+      max-width: 96vw;
+      max-height: 87vh;
       object-fit: contain;
       display: block;
       margin: 0 auto;
@@ -1412,6 +1414,7 @@
     let teacherMediaMode = { 1: "IMAGE", 2: "IMAGE", 3: "IMAGE" };
     let teacherRenderedSig = "";
     let studentRenderedSig = "";
+    let pendingMissionStage = null;
 
     let studentSelectedK = { 1: [], 2: [], 3: [] };
     let studentVoteP = {
@@ -2055,16 +2058,15 @@
       }
 
       const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
-      if (me) me["k" + caseNum + "Submitted"] = true;
-
-      playSound("fanfare");
-      await callGasApi({
+      const submitResp = await callGasApi({
         action: "submitK",
         pin: studentProfile.pin,
         studentId: studentProfile.studentId,
         caseNum: caseNum,
         selected: JSON.stringify(selected)
       });
+      if (!submitResp || submitResp.status !== "ok") { isSubmittingNow = false; alert(submitResp?.message || "ส่งไม่สำเร็จ กรุณาลองอีกครั้ง"); renderStudentStage(true); return; }
+      playSound("fanfare");
       isSubmittingNow = false;
       studentRenderedSig = "";
       await refreshRoomState();
@@ -2081,12 +2083,13 @@
     async function chooseStudentPEnsembleAndSubmit(caseNum, ensVal) {
       if (isSubmittingNow) return;
       playSound("pop");
+      if (!confirm("ยืนยันคำตอบชื่อวง: " + ensVal + " ?")) return;
       studentVoteP[caseNum].ensemble = ensVal;
       studentPSubStep[caseNum] = 3;
       renderStudentStage(true);
 
       isSubmittingNow = true;
-      await callGasApi({
+      const pResp = await callGasApi({
         action: "submitP",
         pin: studentProfile.pin,
         studentId: studentProfile.studentId,
@@ -2094,6 +2097,7 @@
         structure: studentVoteP[caseNum].structure,
         ensemble: ensVal
       });
+      if (!pResp || pResp.status !== "ok") { studentPSubStep[caseNum] = 2; alert(pResp?.message || "ส่งมติไม่สำเร็จ"); }
       isSubmittingNow = false;
       await refreshRoomState();
     }
@@ -2117,16 +2121,14 @@
         isSubmittingNow = true;
         renderStudentStage(true);
         const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
-        if (me) me.aSubmitted = true;
-
-        playSound("fanfare");
-        launchConfetti();
-        await callGasApi({
+        const aResp = await callGasApi({
           action: "submitA",
           pin: studentProfile.pin,
           studentId: studentProfile.studentId,
           answers: JSON.stringify(studentAnswersA)
         });
+        if (!aResp || aResp.status !== "ok") { alert(aResp?.message || "ส่งคำตอบไม่สำเร็จ"); studentASubStep = totalQuestions - 1; }
+        else { playSound("fanfare"); launchConfetti(); }
         isSubmittingNow = false;
         studentRenderedSig = "";
         await refreshRoomState();
@@ -2148,7 +2150,7 @@
       const aSub = stage === "A" ? !!me.aSubmitted : false;
       const pressKey = JSON.stringify(roomState.pressAssignments || {}) + JSON.stringify(roomState.revealedCases || {});
 
-      const newSig = `${stage}|k:${kSub}|tab:${activeKTab}|pStep:${pSubStep}|aStep:${studentASubStep}|a:${aSub}|pr:${pressKey}|sc:${me.total || 0}`;
+      const newSig = `${stage}|phase:${roomState.phase || "PLAYING"}|k:${kSub}|tab:${activeKTab}|pStep:${pSubStep}|aStep:${studentASubStep}|a:${aSub}|pr:${pressKey}|sc:${me.total || 0}`;
 
       if (!forceRebuild && newSig === studentRenderedSig) {
         if (stage === "1P" || stage === "2P" || stage === "3P") {
@@ -2162,6 +2164,16 @@
         return;
       }
       studentRenderedSig = newSig;
+
+      if (stage !== "LOBBY" && stage !== "SUMMARY" && roomState.phase === "PREPARE") {
+        const m = STAGE_META[stage] || {};
+        container.innerHTML = `<div class="card" style="text-align:center;padding:28px 18px;border:2px solid var(--gold)">
+          <div style="font-size:3rem">📋</div><h2 style="color:var(--gold)">เตรียมภารกิจ: ${m.step || stage}</h2>
+          <h3>${m.title || "เตรียมตัว"}</h3><p style="font-size:1.1rem;line-height:1.8">${m.instruction || "ฟังคำอธิบายจากคุณครู"}</p>
+          ${stage.endsWith("K") ? `<div style="font-size:1.3rem;font-weight:800;padding:14px;border:1px solid #64748b;border-radius:12px">🎸 ดีด &nbsp; 🎻 สี &nbsp; 🥁 ตี &nbsp; 🎶 เป่า</div><p>แตะหมวดก่อน แล้วเลือกชื่อเครื่องดนตรีและกดส่งเบาะแส</p>` : stage.endsWith("P") ? `<p>เลือกโครงสร้างวงก่อน จากนั้นเลือกชื่อวงดนตรี แล้วตรวจสอบคำตอบ</p>` : `<p>อ่านคำถาม เลือกคำตอบ แล้วกดยืนยันตามขั้นตอน</p>`}
+          <p style="color:var(--gold);font-weight:800;margin-top:22px">⏳ รอคุณครูกดเริ่ม 3–2–1</p></div>`;
+        return;
+      }
 
       if (stage === "LOBBY") {
         const gCount = roomState.students.filter(s => s.group === studentProfile.group).length;
@@ -2320,7 +2332,10 @@
         });
 
         const gVotes = (roomState.groupVotes && roomState.groupVotes[studentProfile.group]) || {};
-        const myCaseVote = (myAssignedCase && gVotes["case" + myAssignedCase] && gVotes["case" + myAssignedCase][0]) || {};
+        const caseVotes = (myAssignedCase && gVotes["case" + myAssignedCase]) || [];
+      const caseVoted = caseVotes.filter(v=>v.structure && v.ensemble);
+      const caseUnanimous = caseVotes.length > 0 && caseVoted.length === caseVotes.length && caseVoted.every(v=>v.structure===caseVoted[0].structure && v.ensemble===caseVoted[0].ensemble);
+      const myCaseVote = caseUnanimous ? caseVoted[0] : {structure:"",ensemble:"ยังไม่มีมติเอกฉันท์"};
         const myClues = (myAssignedCase && roomState.groupClues && roomState.groupClues[studentProfile.group] && roomState.groupClues[studentProfile.group]["case" + myAssignedCase]) || {};
         const structReadable = STRUCTURE_LABEL_MAP[myCaseVote.structure] || myCaseVote.structure || "...";
 
@@ -2766,41 +2781,33 @@
     }
 
     async function teacherSetStage(newStage) {
-      playSound("tick");
-      const prevStage = roomState.stage;
+      if (!currentPin) return alert("กรุณาเลือกห้องก่อน");
+      const isMission = !["LOBBY", "SUMMARY"].includes(newStage);
+      const phase = isMission ? "PREPARE" : "PLAYING";
+      const resp = await callGasApi({action:"setStage",pin:currentPin,stage:newStage,phase});
+      if (!resp || resp.status !== "ok") return alert("เปลี่ยนด่านไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อ");
       roomState.stage = newStage;
+      roomState.phase = phase;
+      pendingMissionStage = isMission ? newStage : null;
+      isCinemaMode = false;
       teacherRenderedSig = "";
+      await refreshRoomState();
+    }
 
-      const meta = STAGE_META[newStage] || STAGE_META["LOBBY"];
-
-      // Trigger 3-2-1 Mission Intro Countdown when entering a new mission stage
-      if (newStage !== "LOBBY" && newStage !== "SUMMARY" && newStage !== prevStage) {
-        if (newStage === "1K" || newStage === "2K" || newStage === "3K") {
-          const cNum = Number(newStage[0]);
-          teacherFolderOpened[cNum] = true;
-          teacherMediaMode[cNum] = "VIDEO";
-          isCinemaMode = true; // Automatically launch cinema overlay full screen!
-          runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
-            startTeacherTimer(120);
-            renderTeacherStage(true);
-          });
-        } else if (newStage === "1P" || newStage === "2P" || newStage === "3P" || newStage === "A") {
-          isCinemaMode = false;
-          runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
-            startTeacherTimer(90);
-            renderTeacherStage(true);
-          });
-        } else if (newStage === "PRESS") {
-          isCinemaMode = false;
-          runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
-            renderTeacherStage(true);
-          });
-        }
-      } else {
+    async function teacherStartMission() {
+      const stage = roomState.stage;
+      if (!stage || roomState.phase !== "PREPARE") return;
+      const resp = await callGasApi({action:"setStage",pin:currentPin,stage,phase:"PLAYING"});
+      if (!resp || resp.status !== "ok") return alert("เริ่มภารกิจไม่สำเร็จ");
+      roomState.phase = "PLAYING";
+      pendingMissionStage = null;
+      const meta = STAGE_META[stage] || {};
+      runMissionCountdown(meta.step || stage,meta.title || "เริ่มภารกิจ",meta.instruction || "",()=>{
+        if (stage.endsWith("K")) startTeacherTimer(120);
+        else if (stage.endsWith("P") || stage === "A") startTeacherTimer(90);
+        teacherRenderedSig = "";
         renderTeacherStage(true);
-      }
-
-      await callGasApi({ action: "setStage", pin: currentPin, stage: newStage });
+      });
       await refreshRoomState();
     }
 
@@ -2812,7 +2819,7 @@
     function teacherNextStage() {
       const cur = roomState.stage || "LOBBY";
       const idx = STAGE_ORDER.indexOf(cur);
-      const nextIdx = (idx + 1) < STAGE_ORDER.length ? (idx + 1) : 0;
+      const nextIdx = (idx + 1) < STAGE_ORDER.length ? (idx + 1) : idx;
       teacherSetStage(STAGE_ORDER[nextIdx]);
     }
 
@@ -2879,10 +2886,7 @@
     // Fixed Press Conference Randomizer: Updates UI immediately in 0.1s + Syncs to Cloud
     async function teacherRandomizePress() {
       playSound("drumroll");
-      const g = ["ดีด", "สี", "ตี", "เป่า"].sort(() => Math.random() - 0.5);
-      roomState.pressAssignments = { case1: g[0], case2: g[1], case3: g[2] };
-      teacherRenderedSig = "";
-      renderTeacherStage(true);
+      // Wait for the server assignment; avoid showing a different random result locally.
 
       setTimeout(() => {
         playSound("fanfare");
@@ -2890,7 +2894,7 @@
       }, 650);
 
       const resp = await callGasApi({ action: "randomizePress", pin: currentPin });
-      if (resp && resp.assignments) {
+      if (resp && resp.status === "ok" && resp.assignments) {
         roomState.pressAssignments = resp.assignments;
         teacherRenderedSig = "";
         renderTeacherStage(true);
@@ -2904,6 +2908,9 @@
       roomState.revealedCases[caseKey] = true;
       teacherRenderedSig = "";
       renderTeacherStage(true);
+      const cNum = Number(caseKey.replace("case", ""));
+      const cData = CASES_DATA[cNum];
+      if (cData) openZoomModal(resolveMediaUrl(cData.image), "เฉลย: " + cData.fullAns);
       await callGasApi({ action: "setStage", pin: currentPin, stage: "PRESS", revealCase: caseKey });
     }
 
@@ -2995,6 +3002,17 @@
       const container = document.getElementById("teacher-stage-display");
       const students = roomState.students || [];
       const meta = STAGE_META[stage] || STAGE_META["LOBBY"];
+
+      if (stage !== "LOBBY" && stage !== "SUMMARY" && roomState.phase === "PREPARE") {
+        teacherRenderedSig = "";
+        container.innerHTML = `<div class="card" style="text-align:center;padding:36px 20px;border:2px solid var(--gold)">
+          <div style="font-size:3rem">📋</div><h2 style="color:var(--gold)">อธิบายภารกิจก่อนเริ่ม</h2>
+          <h2>${meta.title || stage}</h2><p style="font-size:1.3rem;line-height:1.9">${meta.instruction || "อธิบายวิธีเล่นให้นักเรียนเข้าใจ"}</p>
+          ${stage.endsWith("K") ? `<p style="font-size:1.5rem">🎸 ดีด &nbsp; 🎻 สี &nbsp; 🥁 ตี &nbsp; 🎶 เป่า</p><p>เลือกหมวด → เลือกเครื่องดนตรี → ส่งเบาะแส</p>` : stage.endsWith("P") ? `<p>เลือกโครงสร้างวง → เลือกชื่อวง → ส่งมติ</p>` : ""}
+          <button class="btn btn-success" style="font-size:1.5rem;padding:18px 36px;margin-top:24px" onclick="teacherStartMission()">▶ เริ่มนับถอยหลัง 3–2–1</button>
+          <p style="color:var(--muted);margin-top:14px">นักเรียนทุกคนเห็นหน้าเตรียมพร้อมและยังไม่สามารถส่งคำตอบ</p></div>`;
+        return;
+      }
 
       // 1. STAGE 1K, 2K, 3K (ISOLATED VIDEO DOM SO IT NEVER RESTARTS + FITS 100% ON 1 SCREEN)
       if (stage === "1K" || stage === "2K" || stage === "3K") {
@@ -3196,10 +3214,12 @@
           const isRev = !!revealed[cKey];
 
           const gVotes = (gName && roomState.groupVotes && roomState.groupVotes[gName] && roomState.groupVotes[gName][cKey]) || [];
-          const groupStruct = gVotes[0]?.structure ? (STRUCTURE_LABEL_MAP[gVotes[0].structure] || gVotes[0].structure) : "...";
-          const groupAns = gVotes[0]?.ensemble || "...";
+          const voted = gVotes.filter(v => v.structure && v.ensemble);
+          const unanimous = gVotes.length > 0 && voted.length === gVotes.length && voted.every(v => v.structure === voted[0].structure && v.ensemble === voted[0].ensemble);
+          const groupStruct = unanimous ? (STRUCTURE_LABEL_MAP[voted[0].structure] || voted[0].structure) : "ยังไม่มีมติเอกฉันท์";
+          const groupAns = unanimous ? voted[0].ensemble : "ยังไม่มีมติเอกฉันท์";
           const gClues = (gName && roomState.groupClues && roomState.groupClues[gName] && roomState.groupClues[gName][cKey]) || {};
-          const topClues = Object.keys(gClues).slice(0, 5).join(", ") || "...";
+          const topClues = Object.entries(gClues).sort((a,b)=>b[1]-a[1]).slice(0, 5).map(([name])=>name).join(", ") || "...";
 
           return `
             <div class="card" style="background:rgba(15,23,42,0.94); border:2px solid ${isRev ? '#10b981' : 'var(--gold)'}; margin:0; position:relative; z-index:2;">
@@ -3225,7 +3245,7 @@
                 </div>
               ` : `
                 <button class="btn btn-success" style="width:100%; padding:12px;" onclick="teacherRevealCase('${cKey}')">
-                  🔓 เปิดซองเฉลยคดีที่ ${cNum} (จุดพลุ)
+                  🔓 เปิดซองเฉลยคดีที่ ${cNum}
                 </button>
               `}
             </div>
@@ -3399,6 +3419,8 @@
             <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน K: ผ่านเกณฑ์ ${passKList.length} / ${students.length} คน (คิดเป็นร้อยละ ${pct(passKList.length)}%)</div>
           </div>
         ` : "";
+
+        const groupSynthesisHtml = showGroupPReport ? `<div class="card"><h3 style="color:var(--gold)">🤝 สรุปทักษะกระบวนการกลุ่ม (P)</h3><div class="table-wrap"><table><thead><tr><th>กลุ่ม</th><th>สมาชิก</th><th>คะแนน P เฉลี่ย / 6</th></tr></thead><tbody>${["ดีด","สี","ตี","เป่า"].map(g=>{const m=students.filter(s=>s.group===g);return `<tr><td>${g}</td><td>${m.length}</td><td>${m.length?(m.reduce((sum,s)=>sum+Number(s.scoreP||0),0)/m.length).toFixed(2):"-"}</td></tr>`}).join("")}</tbody></table></div></div>` : "";
 
         const reportAHtml = showReportA ? `
           <div class="card no-print">
