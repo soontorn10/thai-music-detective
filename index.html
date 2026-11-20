@@ -523,6 +523,13 @@
       font-size: 1.3rem;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     }
+    .cinema-submit { position:absolute;bottom:8px;left:12px;right:12px;z-index:260; }
+    .teacher-submission-status { display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#14243b;border:2px solid #f59e0b;border-radius:12px;padding:9px 16px;color:#fff;font-size:clamp(1rem,1.5vw,1.35rem);font-weight:800; }
+    .teacher-submission-status.complete { background:#064e3b;border-color:#34d399; }
+    .closing-slide { padding:50px 24px 28px;overflow:auto;gap:22px;background:#0c1424;box-sizing:border-box; }
+    .closing-ensembles { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:min(1250px,100%); }
+    .closing-ensembles>div { border:2px solid;border-radius:16px;padding:25px 15px;text-align:center;font-size:clamp(1.2rem,2vw,2rem);line-height:1.5;font-weight:800;color:#fff; }
+    @media(max-width:650px){.closing-ensembles{grid-template-columns:1fr}.closing-slide{justify-content:flex-start}}
     .cinema-clue-badge {
       background: rgba(239, 68, 68, 0.85);
       border: 1px solid #ef4444;
@@ -1472,6 +1479,7 @@
 
     let teacherMediaMode = { 1: "IMAGE", 2: "IMAGE", 3: "IMAGE" };
     let teacherRenderedSig = "";
+    let showClosingSlide = false;
     let studentRenderedSig = "";
     let pendingMissionStage = null;
 
@@ -1737,10 +1745,10 @@
       document.getElementById("btn-bgm").innerHTML = "🔇 เพลงประกอบ: ปิด";
     }
 
-    function setBGMVolume(level) {
+    function setBGMVolume(level, persist = true) {
       const audio = document.getElementById("game-background-audio");
-      if (audio) audio.volume = Math.max(0, Math.min(1, Number(level) / 100));
-      try { localStorage.setItem("TMD_BGM_VOLUME", String(level)); } catch(e) {}
+      if (audio) audio.volume = Math.max(0, Math.min(1, Number(level) / 100)) * (roomState.stage === "A" ? 0.35 : 1);
+      if (persist) try { localStorage.setItem("TMD_BGM_VOLUME", String(level)); } catch(e) {}
     }
 
     function syncBGMForStage() {
@@ -1748,7 +1756,8 @@
       if (!audio) return;
       audio.loop = true; // ไฟล์ 2 นาทีวนต่อเนื่องโดยอัตโนมัติ
       const stage = roomState.stage || "LOBBY";
-      const shouldPause = bgmPausedByVideo || /PRESS$/.test(stage) || stage === "A" || stage === "REVEAL";
+      const shouldPause = bgmPausedByVideo || /PRESS$/.test(stage) || stage === "REVEAL";
+      setBGMVolume(document.getElementById("bgm-volume")?.value || 65, false);
       if (!bgmPlaying || shouldPause) {
         audio.pause();
         document.getElementById("btn-bgm").textContent = bgmPlaying ? "⏸️ พักเพลงประกอบ" : "🔇 เพลงประกอบ: ปิด";
@@ -2884,6 +2893,7 @@
         if (!resp || resp.status !== "ok") throw new Error(resp?.message || "เปลี่ยนด่านไม่สำเร็จ");
         roomState.stage = newStage;
         roomState.phase = phase;
+        showClosingSlide = false;
         pendingMissionStage = needsIntro ? newStage : null;
         isCinemaMode = false;
         stopTeacherTimer();
@@ -3057,6 +3067,18 @@
       else nextBtn.classList.remove("btn-ready-pulse");
     }
 
+    function buildTeacherSubmissionStatus(stage, showGroups = false) {
+      const students = roomState.students || [];
+      const done = students.filter(s => /^[123]K$/.test(stage) ? s["k" + stage[0] + "Submitted"] :
+        /^[123]P$/.test(stage) ? (s.pAnswers?.["case" + stage[0]]?.structure && s.pAnswers?.["case" + stage[0]]?.ensemble) : s.aSubmitted).length;
+      const complete = students.length > 0 && done === students.length;
+      const groups = showGroups ? ["ดีด","สี","ตี","เป่า"].map(g => {
+        const members = students.filter(s => s.group === g);
+        return members.length ? `กลุ่ม${g} ${members.filter(s => s["k" + stage[0] + "Submitted"]).length}/${members.length}` : '';
+      }).filter(Boolean).join(' · ') : '';
+      return `<div class="teacher-submission-status ${complete ? 'complete' : ''}"><span>${complete ? '✅' : '📥'} ส่งแล้ว ${done}/${students.length} คน</span>${groups ? `<span style="font-size:.85em">${groups}</span>` : ''}<span>${complete ? 'ส่งครบทุกคนแล้ว' : students.length ? `⏳ รออีก ${students.length - done} คน` : 'รอนักเรียนเข้าห้อง'}</span></div>`;
+    }
+
     function buildTeacherKGroupStatusHTML(caseNum) {
       const students = roomState.students || [];
       return ["ดีด", "สี", "ตี", "เป่า"].map(g => {
@@ -3087,6 +3109,11 @@
         return (ai<0?999:ai) - (bi<0?999:bi);
       });
       return { clues:items.join(" · ") || "(รอข้อมูลเบาะแส)", count:items.length };
+    }
+
+    function toggleTeacherClosingSlide() {
+      showClosingSlide = !showClosingSlide;
+      renderTeacherStage(true);
     }
 
     function renderTeacherStage(forceRebuild = false) {
@@ -3156,6 +3183,8 @@
         if (!forceRebuild && teacherRenderedSig === sig) {
           const liveGrid = document.getElementById("teacher-k-live-groups");
           if (liveGrid) liveGrid.innerHTML = buildTeacherKGroupStatusHTML(caseNum);
+          const cinemaStatus = document.getElementById("teacher-k-cinema-status");
+          if (cinemaStatus) cinemaStatus.innerHTML = buildTeacherSubmissionStatus(stage, true);
           return;
         }
         teacherRenderedSig = sig;
@@ -3178,6 +3207,7 @@
                 `}
               </div>
               <div style="color:#fff; padding:10px; font-size:1.2rem;">${mMode === 'VIDEO' ? '▶ หากคลิปไม่เล่นอัตโนมัติ ให้ครูกดปุ่มเล่นบนคลิป · เมื่อคลิปจบจะแสดงภาพเบาะแส' : '🖼️ ภาพเบาะแส · ให้สายสืบเลือกเครื่องดนตรีที่เห็นบนมือถือ'}</div>
+              <div id="teacher-k-cinema-status" class="cinema-submit">${buildTeacherSubmissionStatus(stage, true)}</div>
             </div>
           `;
           return;
@@ -3220,6 +3250,7 @@
             <div id="teacher-k-live-groups" class="grid-4">
               ${buildTeacherKGroupStatusHTML(caseNum)}
             </div>
+            ${buildTeacherSubmissionStatus(stage)}
           </div>
         `;
         return;
@@ -3294,7 +3325,7 @@
         const groupStatusHtml = ["ดีด", "สี", "ตี", "เป่า"].map(g => {
           const votes = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][caseKey]) || [];
           const valid = votes.filter(v => v.structure && v.ensemble);
-          const total = votes.length;
+          const total = students.filter(s => s.group === g).length;
           const unanimous = total > 0 && valid.length === total &&
             valid.every(v => v.ensemble === valid[0].ensemble);
 
@@ -3317,6 +3348,8 @@
                 <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
               </div>
             </div>
+
+            ${buildTeacherSubmissionStatus(stage)}
 
             <!-- 2-Column layout: Reference Board on left, Group statuses on right -->
             <div class="grid-2" style="grid-template-columns: 1.2fr 0.8fr; gap:14px; margin-bottom:14px;">
@@ -3343,13 +3376,12 @@
 
       // 4. STAGE A: จอครูเป็นบอร์ดภารกิจ นักเรียนอ่านข้อสอบบนมือถือ
       if (stage === "A") {
-        const doneA = students.filter(s => s.aSubmitted);
         const pendingA = students.filter(s => !s.aSubmitted);
         container.innerHTML = `
           <div class="card teacher-a-board">
             <div class="teacher-a-heading">
               <div><h1 style="color:#fbbf24;font-size:clamp(1.7rem,2.5vw,2.65rem);margin:0">🎯 ภารกิจตัดสินใจ</h1><div style="font-size:clamp(.9rem,1.1vw,1.15rem);color:#cbd5e1">อ่านสถานการณ์บนจอหรือมือถือ เลือกวงให้ครบทั้ง 3 ข้อ แล้วกดยืนยันส่ง</div></div>
-              <div class="a-progress" style="background:#064e3b;border:2px solid #34d399;border-radius:14px;padding:9px 20px;color:#fff;font-weight:900;font-size:clamp(1.2rem,2vw,2rem)">✅ ส่งแล้ว ${doneA.length}/${students.length} คน</div>
+              <div class="a-progress">${buildTeacherSubmissionStatus(stage)}</div>
             </div>
             <div class="teacher-a-cases">
               ${ATTITUDE_TEACHER_PROMPTS.map((q,i)=>`<div class="teacher-a-case"><h3>ข้อ ${i+1} · ${q.title}</h3><p>${q.text}</p></div>`).join("")}
@@ -3362,6 +3394,19 @@
 
       // 5. STAGE SUMMARY (EXQUISITE LEADERBOARD PODIUMS + MENU DOWNLOADS)
       if (stage === "SUMMARY") {
+        if (showClosingSlide) {
+          container.innerHTML = `<div class="cinema-overlay closing-slide">
+            <div class="cinema-overlay-header"><strong class="cinema-title">🕵️ ปิดคดีนักสืบดนตรีไทย · สรุป 1 นาที</strong><button class="btn btn-secondary btn-sm" onclick="toggleTeacherClosingSlide()">✕ กลับหน้าผลคะแนน</button></div>
+            <h1 style="font-size:clamp(2rem,3.8vw,3.8rem);color:#fbbf24;text-align:center;margin:0">🔍 สิ่งที่ค้นพบจาก 3 คดี</h1>
+            <div class="closing-ensembles">
+              <div style="background:#341d25;border-color:#ef4444"><div style="color:#fca5a5">🟥 วงปี่พาทย์</div>เครื่องตี + ปี่</div>
+              <div style="background:#142f4e;border-color:#3b82f6"><div style="color:#93c5fd">🟦 วงเครื่องสาย</div>เครื่องดีด + เครื่องสี<br>+ ขลุ่ยเพียงออ</div>
+              <div style="background:#3d3116;border-color:#eab308"><div style="color:#fde68a">🟨 วงมโหรี</div>เครื่องดีด + เครื่องสี<br>+ เครื่องตี + เครื่องเป่า</div>
+            </div>
+            <div style="width:min(1250px,100%);background:#182942;border:2px solid #fbbf24;border-radius:18px;padding:24px;text-align:center;box-sizing:border-box"><div style="color:#fbbf24;font-size:1.35rem;font-weight:800">💬 คำถามชวนคิด</div><strong style="color:#fff;font-size:clamp(1.6rem,2.9vw,3rem);line-height:1.5">เราจะนำความรู้เรื่องวงดนตรีไทยไปใช้ในชีวิตจริงอย่างไร?</strong></div>
+          </div>`;
+          return;
+        }
         const totalStu = students.length;
         const passKList = students.filter(hasPassedK);
         const failKList = students.filter(s => hasCompletedK(s) && !hasPassedK(s));
@@ -3531,6 +3576,7 @@
         ` : "";
 
         container.innerHTML = `
+          <div style="text-align:center;margin-bottom:12px"><button class="btn btn-primary" style="font-size:1.2rem;padding:12px 24px" onclick="toggleTeacherClosingSlide()">🔍 เปิดสไลด์ปิดคดี 1 นาที</button></div>
           <!-- EXQUISITE TEAM PODIUMS / LEADERBOARDS -->
           <div class="card" style="text-align:center; padding:18px;">
             <h2 style="color:var(--gold); margin-bottom:4px; font-family:var(--font-head);">🏆 แท่นโพเดียมประกาศเกียรติยศทีมสืบสวนยอดเยี่ยมประจำห้อง</h2>
