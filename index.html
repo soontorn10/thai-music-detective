@@ -893,10 +893,8 @@
     }
     .zoom-modal-card {
       position: relative;
-      width: 98vw;
-      height: 96vh;
-      max-width: 98vw;
-      max-height: 96vh;
+      max-width: 96vw;
+      max-height: 94vh;
       background: #000;
       border: 2px solid var(--gold);
       border-radius: 14px;
@@ -904,8 +902,8 @@
       text-align: center;
     }
     .zoom-modal-card img {
-      max-width: 96vw;
-      max-height: 87vh;
+      max-width: 92vw;
+      max-height: 82vh;
       object-fit: contain;
       display: block;
       margin: 0 auto;
@@ -1355,22 +1353,22 @@
 
     const ATTITUDE_QUESTIONS_BASE = [
       {
-        id: "q2",
-        scenarioTitle: "งานเลี้ยงรับรองแขก หรือบรรเลงขับกล่อมภายในอาคาร/ห้องขนาดเล็ก",
-        desc: "พื้นที่ค่อนข้างจำกัด ต้องการวงดนตรีที่ให้เสียง เบา นุ่มนวล หวาน และฟังสบาย ไม่รบกวนการพูดคุย ควรเลือกใช้วงใด?",
-        correct: "วงเครื่องสาย"
-      },
-      {
         id: "q3",
-        scenarioTitle: "งานพระราชพิธี หรืองานมงคลสมรสใหญ่",
-        desc: "ต้องการวงดนตรีที่ให้เสียง ไพเราะกลมกล่อม และผสมผสานครบทุกตระกูลเครื่องดนตรีอย่างสมบูรณ์แบบ ควรเลือกใช้วงใด?",
+        scenarioTitle: "🎼 การแสดงดนตรีไทยในงานโรงเรียน",
+        desc: "โรงเรียนจัดงานเปิดบ้านวิชาการ ต้องการจัดการแสดงดนตรีไทยให้ผู้ปกครองและนักเรียนชม โดยอยากได้วงที่มีเครื่องดนตรีครบทั้ง 4 ประเภท ได้แก่ ดีด สี ตี และเป่า บรรเลงผสมผสานกันอย่างไพเราะกลมกลืน นักเรียนควรเลือกวงดนตรีไทยประเภทใดจึงจะเหมาะสมที่สุด?",
         correct: "วงมโหรี"
       },
       {
         id: "q1",
-        scenarioTitle: "งานพิธีไหว้ครู หรือการแสดงโขนกลางแจ้ง",
-        desc: "ต้องการวงดนตรีที่ให้พลังเสียง ดังกังวาน หนักแน่น และมีความขลังศักดิ์สิทธิ์ ควรเลือกใช้วงใด?",
+        scenarioTitle: "🪔 พิธีไหว้ครูดนตรีไทย",
+        desc: "โรงเรียนจัดพิธีไหว้ครูดนตรีไทย เพื่อแสดงความเคารพต่อครูบาอาจารย์และบูชาสิ่งศักดิ์สิทธิ์ตามความเชื่อ โดยต้องการบรรเลงเพลงหน้าพาทย์ประกอบพิธีให้ถูกต้องตามประเพณี นักเรียนควรเลือกวงดนตรีไทยประเภทใดจึงจะเหมาะสมที่สุด?",
         correct: "วงปี่พาทย์"
+      },
+      {
+        id: "q2",
+        scenarioTitle: "🎶 ดนตรีไทยในห้องประชุม",
+        desc: "โรงเรียนจัดงานเลี้ยงรับรองแขกในห้องประชุมขนาดเล็ก ต้องการวงดนตรีไทยบรรเลงคลอเบา ๆ ให้เสียงนุ่มนวล ไพเราะ มีเสียงซอและขลุ่ยคลอทำนอง โดยไม่เน้นเสียงระนาดหรือฆ้องวง นักเรียนควรเลือกวงดนตรีไทยประเภทใดจึงจะเหมาะสมที่สุด?",
+        correct: "วงเครื่องสาย"
       }
     ];
 
@@ -1433,6 +1431,7 @@
     let showReportP = false;
     let showReportA = false;
     let showReportAll = false;
+    let paReportTextCache = "";
 
     let isSubmittingNow = false;
     let lastStudentCount = 0;
@@ -1919,7 +1918,8 @@
      ********************************************************************/
     function getStudentShuffledA() {
       if (!studentShuffledA) {
-        studentShuffledA = ATTITUDE_QUESTIONS_BASE.slice().sort(() => Math.random() - 0.5);
+        // จอครูและจอนักเรียนต้องเห็นคำถามลำดับเดียวกัน: มโหรี → ปี่พาทย์ → เครื่องสาย
+        studentShuffledA = ATTITUDE_QUESTIONS_BASE.slice();
       }
       return studentShuffledA;
     }
@@ -2089,7 +2089,7 @@
       renderStudentStage(true);
 
       isSubmittingNow = true;
-      const pResp = await callGasApi({
+      await callGasApi({
         action: "submitP",
         pin: studentProfile.pin,
         studentId: studentProfile.studentId,
@@ -2097,7 +2097,6 @@
         structure: studentVoteP[caseNum].structure,
         ensemble: ensVal
       });
-      if (!pResp || pResp.status !== "ok") { studentPSubStep[caseNum] = 2; alert(pResp?.message || "ส่งมติไม่สำเร็จ"); }
       isSubmittingNow = false;
       await refreshRoomState();
     }
@@ -2120,16 +2119,21 @@
       } else {
         isSubmittingNow = true;
         renderStudentStage(true);
-        const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
-        const aResp = await callGasApi({
+        const resp = await callGasApi({
           action: "submitA",
           pin: studentProfile.pin,
           studentId: studentProfile.studentId,
           answers: JSON.stringify(studentAnswersA)
         });
-        if (!aResp || aResp.status !== "ok") { alert(aResp?.message || "ส่งคำตอบไม่สำเร็จ"); studentASubStep = totalQuestions - 1; }
-        else { playSound("fanfare"); launchConfetti(); }
         isSubmittingNow = false;
+        if (!resp || resp.status !== "ok") {
+          alert("ยังส่งคำตอบ A ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วกดยืนยันคำตอบอีกครั้ง");
+          return renderStudentStage(true);
+        }
+        const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
+        if (me) me.aSubmitted = true;
+        playSound("fanfare");
+        launchConfetti();
         studentRenderedSig = "";
         await refreshRoomState();
       }
@@ -2332,10 +2336,7 @@
         });
 
         const gVotes = (roomState.groupVotes && roomState.groupVotes[studentProfile.group]) || {};
-        const caseVotes = (myAssignedCase && gVotes["case" + myAssignedCase]) || [];
-      const caseVoted = caseVotes.filter(v=>v.structure && v.ensemble);
-      const caseUnanimous = caseVotes.length > 0 && caseVoted.length === caseVotes.length && caseVoted.every(v=>v.structure===caseVoted[0].structure && v.ensemble===caseVoted[0].ensemble);
-      const myCaseVote = caseUnanimous ? caseVoted[0] : {structure:"",ensemble:"ยังไม่มีมติเอกฉันท์"};
+        const myCaseVote = (myAssignedCase && gVotes["case" + myAssignedCase] && gVotes["case" + myAssignedCase][0]) || {};
         const myClues = (myAssignedCase && roomState.groupClues && roomState.groupClues[studentProfile.group] && roomState.groupClues[studentProfile.group]["case" + myAssignedCase]) || {};
         const structReadable = STRUCTURE_LABEL_MAP[myCaseVote.structure] || myCaseVote.structure || "...";
 
@@ -2486,13 +2487,76 @@
     /********************************************************************
      * 8. INDIVIDUAL FEEDBACK & DOWNLOADABLE PNG REPORT CARD FOR STUDENT
      ********************************************************************/
-    function getAutomatedFeedback(scoreK, scoreP, scoreA) {
-      if (scoreK >= 7 && scoreP >= 4 && scoreA >= 2) {
+    const K_CASE_LIMITS = {
+      case1: { min: 6, full: 8, label: "ปี่พาทย์" },
+      case2: { min: 5, full: 6, label: "เครื่องสาย" },
+      case3: { min: 7, full: 9, label: "มโหรี" }
+    };
+
+    function getKCaseInfo(student, caseNumber) {
+      const key = "case" + caseNumber;
+      const rule = K_CASE_LIMITS[key];
+      return Object.assign({ submitted: false, raw: 0, correct: 0, wrong: 0, passed: false }, rule, student?.kCases?.[key] || {});
+    }
+
+    function hasCompletedK(student) {
+      return [1, 2, 3].every(n => getKCaseInfo(student, n).submitted);
+    }
+
+    function hasPassedK(student) {
+      return hasCompletedK(student) && [1, 2, 3].every(n => getKCaseInfo(student, n).passed);
+    }
+
+    function hasCompletedP(student) {
+      return student?.pSubmittedAll === true;
+    }
+
+    function hasCompletedA(student) {
+      return student?.aSubmitted === true;
+    }
+
+    function hasPassedP(student) {
+      return hasCompletedP(student) && Number(student?.scoreP || 0) >= 4;
+    }
+
+    function hasPassedA(student) {
+      return hasCompletedA(student) && Number(student?.scoreA || 0) >= 2;
+    }
+
+    function isFullyAssessed(student) {
+      return hasCompletedK(student) && hasCompletedP(student) && hasCompletedA(student);
+    }
+
+    function getAssessmentResult(student, aspect) {
+      const completed = aspect === "K" ? hasCompletedK(student) : aspect === "P" ? hasCompletedP(student) : hasCompletedA(student);
+      if (!completed) return "ยังไม่ส่งครบ";
+      const passed = aspect === "K" ? hasPassedK(student) : aspect === "P" ? hasPassedP(student) : hasPassedA(student);
+      return passed ? "ผ่าน" : "ไม่ผ่าน";
+    }
+
+    function getPGroupCaseResult(groupName, caseNumber) {
+      const key = "case" + caseNumber;
+      const members = (roomState.students || []).filter(s => s.group === groupName);
+      const votes = roomState.groupVotes?.[groupName]?.[key] || [];
+      const submitted = votes.filter(v => String(v.ensemble || "").trim());
+      const unanimous = members.length > 0 && submitted.length === members.length &&
+        submitted.every(v => v.ensemble === submitted[0].ensemble);
+      return {
+        name: unanimous ? submitted[0].ensemble : "ยังไม่มีมติร่วมกัน",
+        submitted: submitted.length,
+        memberCount: members.length,
+        unanimous: unanimous,
+        correct: unanimous && submitted[0].ensemble === CASES_DATA[caseNumber].shortAns
+      };
+    }
+
+    function getAutomatedFeedback(scoreK, scoreP, scoreA, kPassed = false) {
+      if (kPassed && scoreP >= 4 && scoreA >= 2) {
         return "🌟 ยอดเยี่ยมมาก! คุณมีทักษะการสังเกตเครื่องดนตรีไทยแม่นยำ ร่วมระดมสมองสังเคราะห์โครงสร้างวงกับเพื่อนได้ดีเยี่ยม และเลือกใช้วงดนตรีตามโอกาสได้อย่างเหมาะสม";
       }
       const tips = [];
-      if (scoreK < 7) tips.push("ทบทวนรูปร่างและชื่อเครื่องดนตรี in แต่ละหมวดเพิ่มเติม");
-      if (scoreP < 4) tips.push("ฝึกสังเกตจุดต่างระว่างวงปี่พาทย์ เครื่องสาย และมโหรี");
+      if (!kPassed) tips.push("ทบทวนเครื่องดนตรีแต่ละวงให้ผ่านครบ ปี่พาทย์ 6/8 เครื่องสาย 5/6 และมโหรี 7/9");
+      if (scoreP < 4) tips.push("ฝึกจำแนกชื่อวงปี่พาทย์ เครื่องสาย และมโหรีให้ถูกอย่างน้อย 2 วง");
       if (scoreA < 2) tips.push("ทบทวนความเหมาะสมของโทนเสียงวงดนตรีไทยกับประเภทลักษณะงาน");
       return "💡 พยายามได้ดีมาก! คำแนะนำ: " + tips.join(" และ ");
     }
@@ -2502,13 +2566,13 @@
       const pScore = me.scoreP ?? 0;
       const aScore = me.scoreA ?? 0;
       const totalScore = kScore + pScore + aScore;
-      const passAll = (kScore >= 7 && pScore >= 4 && aScore >= 2);
-      const feedbackText = getAutomatedFeedback(kScore, pScore, aScore);
-
-      const gVotes = (roomState.groupVotes && roomState.groupVotes[studentProfile.group]) || {};
-      const gAns1 = (gVotes.case1 && gVotes.case1[0] && gVotes.case1[0].ensemble) || "-";
-      const gAns2 = (gVotes.case2 && gVotes.case2[0] && gVotes.case2[0].ensemble) || "-";
-      const gAns3 = (gVotes.case3 && gVotes.case3[0] && gVotes.case3[0].ensemble) || "-";
+      const passAll = isFullyAssessed(me) && hasPassedK(me) && hasPassedP(me) && hasPassedA(me);
+      const feedbackText = isFullyAssessed(me)
+        ? getAutomatedFeedback(kScore, pScore, aScore, hasPassedK(me))
+        : "⏳ ยังมีภารกิจที่ส่งไม่ครบ โปรดรอการสรุปผลหลังส่งคำตอบครบทุกด้าน";
+      const gAns1 = getPGroupCaseResult(studentProfile.group, 1).name;
+      const gAns2 = getPGroupCaseResult(studentProfile.group, 2).name;
+      const gAns3 = getPGroupCaseResult(studentProfile.group, 3).name;
 
       container.innerHTML = `
         <div class="card" style="text-align:center;">
@@ -2536,18 +2600,23 @@
               <div class="score-box">
                 <div style="font-size:0.74rem; color:#cbd5e1;">1. ชี้เบาะแส (K)</div>
                 <div class="score-val">${kScore} / 10</div>
-                <span class="pass-tag ${kScore >= 7 ? 'pass-ok' : 'pass-no'}">${kScore >= 7 ? 'ผ่าน' : 'ฝึกเพิ่ม'}</span>
+                <span class="pass-tag ${hasPassedK(me) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(me, "K")}</span>
               </div>
               <div class="score-box">
                 <div style="font-size:0.74rem; color:#cbd5e1;">2. ถอดรหัสวง (P)</div>
                 <div class="score-val">${pScore} / 6</div>
-                <span class="pass-tag ${pScore >= 4 ? 'pass-ok' : 'pass-no'}">${pScore >= 4 ? 'ผ่าน' : 'ฝึกเพิ่ม'}</span>
+                <span class="pass-tag ${hasPassedP(me) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(me, "P")}</span>
               </div>
               <div class="score-box">
                 <div style="font-size:0.74rem; color:#cbd5e1;">3. ตัดสินใจ (A)</div>
                 <div class="score-val">${aScore} / 3</div>
-                <span class="pass-tag ${aScore >= 2 ? 'pass-ok' : 'pass-no'}">${aScore >= 2 ? 'ผ่าน' : 'ฝึกเพิ่ม'}</span>
+                <span class="pass-tag ${hasPassedA(me) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(me, "A")}</span>
               </div>
+            </div>
+
+            <div style="font-size:0.78rem; color:#dbeafe; padding:8px 10px; border:1px solid #334155; border-radius:8px; margin-bottom:8px;">
+              <strong>เกณฑ์ K ผ่านแยกรายวง:</strong>
+              ${[1, 2, 3].map(n => { const k = getKCaseInfo(me, n); return `${k.label} ${k.correct}/${k.full} (หักเลือกผิด ${k.wrong} รายการ) ${k.submitted ? (k.passed ? '✅' : '❌') : '⏳'}`; }).join(" | ")}
             </div>
 
             <div style="font-size:0.82rem; color:#cbd5e1; background:#090d16; padding:8px 10px; border-radius:8px; margin-bottom:8px;">
@@ -2584,8 +2653,10 @@
       const pScore = me.scoreP ?? 0;
       const aScore = me.scoreA ?? 0;
       const totalScore = kScore + pScore + aScore;
-      const passAll = (kScore >= 7 && pScore >= 4 && aScore >= 2);
-      const feedbackText = getAutomatedFeedback(kScore, pScore, aScore);
+      const passAll = isFullyAssessed(me) && hasPassedK(me) && hasPassedP(me) && hasPassedA(me);
+      const feedbackText = isFullyAssessed(me)
+        ? getAutomatedFeedback(kScore, pScore, aScore, hasPassedK(me))
+        : "ยังมีภารกิจที่ส่งไม่ครบ โปรดสอบถามคุณครูเพื่อส่งคำตอบให้ครบก่อนบันทึกผล";
 
       const canvas = document.createElement("canvas");
       canvas.width = 800;
@@ -2607,7 +2678,7 @@
       // Header
       ctx.fillStyle = "#f59e0b";
       ctx.font = "bold 28px Kanit, sans-serif";
-      ctx.fillText("🕵️‍♂️ ใบรายงานผลการเรียนรู้ : ปฏิบัติการนักสืบดนตรีไทย", 44, 68);
+      ctx.fillText("🕵️‍♂️ ใบรายงานผลการเรียนรู้ : ปฏิบัติการนักสืบดนตรีไทย", 44, 68, 712);
 
       ctx.fillStyle = "#94a3b8";
       ctx.font = "18px Sarabun, sans-serif";
@@ -2618,16 +2689,16 @@
       ctx.fillRect(44, 120, 712, 85);
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 22px Sarabun, sans-serif";
-      ctx.fillText(`ชื่อ-สกุล: ${studentProfile.name}`, 64, 155);
+      ctx.fillText(`ชื่อ-สกุล: ${studentProfile.name}`, 64, 155, 670);
       ctx.font = "20px Sarabun, sans-serif";
       ctx.fillStyle = "#cbd5e1";
-      ctx.fillText(`ชั้น: ${studentProfile.classRoom}   |   เลขที่: ${studentProfile.number}   |   ทีมสืบสวน: กลุ่ม${studentProfile.group}   |   รหัสห้อง: ${studentProfile.pin}`, 64, 188);
+      ctx.fillText(`ชั้น: ${studentProfile.classRoom}   |   เลขที่: ${studentProfile.number}   |   ทีมสืบสวน: กลุ่ม${studentProfile.group}   |   รหัสห้อง: ${studentProfile.pin}`, 64, 188, 670);
 
       // 3 Score Boxes
       const boxes = [
-        { title: "ด้าน K (ชี้เบาะแสเดี่ยว)", val: `${kScore} / 10`, pass: kScore >= 7 },
-        { title: "ด้าน P (ถอดรหัสวงกลุ่ม)", val: `${pScore} / 6`, pass: pScore >= 4 },
-        { title: "ด้าน A (ตัดสินใจเลือกวง)", val: `${aScore} / 3`, pass: aScore >= 2 }
+        { title: "ด้าน K (3 วงผ่านครบ)", val: `${kScore} / 10`, pass: hasPassedK(me), status: getAssessmentResult(me, "K") },
+        { title: "ด้าน P (จำแนกวง 2/3)", val: `${pScore} / 6`, pass: hasPassedP(me), status: getAssessmentResult(me, "P") },
+        { title: "ด้าน A (เลือกวง 2/3)", val: `${aScore} / 3`, pass: hasPassedA(me), status: getAssessmentResult(me, "A") }
       ];
       boxes.forEach((b, idx) => {
         const bx = 44 + idx * 244;
@@ -2639,7 +2710,7 @@
 
         ctx.fillStyle = "#cbd5e1";
         ctx.font = "bold 17px Kanit, sans-serif";
-        ctx.fillText(b.title, bx + 18, 258);
+        ctx.fillText(b.title, bx + 18, 258, 188);
 
         ctx.fillStyle = "#f59e0b";
         ctx.font = "bold 36px Kanit, sans-serif";
@@ -2647,7 +2718,7 @@
 
         ctx.fillStyle = b.pass ? "#34d399" : "#f87171";
         ctx.font = "bold 16px Sarabun, sans-serif";
-        ctx.fillText(b.pass ? "✅ ผ่านเกณฑ์" : "📌 ควรทบทวนเพิ่ม", bx + 55, 335);
+        ctx.fillText(b.status, bx + 55, 335, 155);
       });
 
       // Feedback Box
@@ -2655,20 +2726,30 @@
       ctx.fillRect(44, 370, 712, 85);
       ctx.fillStyle = "#fef3c7";
       ctx.font = "bold 18px Sarabun, sans-serif";
-      const words = feedbackText;
-      ctx.fillText(words.slice(0, 68), 60, 405);
-      if (words.length > 68) {
-        ctx.fillText(words.slice(68, 140), 60, 435);
+      const chars = Array.from(feedbackText);
+      let line = "";
+      let lineNumber = 0;
+      for (let i = 0; i < chars.length; i++) {
+        const next = line + chars[i];
+        if (ctx.measureText(next).width > 670 && line) {
+          ctx.fillText(line, 60, 405 + lineNumber * 28, 670);
+          lineNumber++;
+          line = chars[i];
+          if (lineNumber >= 2) break;
+        } else {
+          line = next;
+        }
       }
+      if (lineNumber < 2 && line) ctx.fillText(line, 60, 405 + lineNumber * 28, 670);
 
       // Footer Total
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 24px Kanit, sans-serif";
-      ctx.fillText(`คะแนนรวมทั้งหมด: ${totalScore} / 19 คะแนน`, 44, 505);
+      ctx.fillText(`คะแนนรวมทั้งหมด: ${totalScore} / 19 คะแนน`, 44, 505, 365);
 
       ctx.fillStyle = passAll ? "#34d399" : "#fbbf24";
       ctx.font = "bold 24px Kanit, sans-serif";
-      ctx.fillText(passAll ? "🏆 ผลประเมิน: ผ่านเกณฑ์ครบ K-P-A" : "⭐ ผลประเมิน: นักสืบฝึกหัด", 430, 505);
+      ctx.fillText(passAll ? "🏆 ผ่านเกณฑ์ครบ K-P-A" : (isFullyAssessed(me) ? "⭐ ควรทบทวนเพิ่มเติม" : "⏳ รอประเมินให้ครบ"), 430, 505, 326);
 
       const dataUrl = canvas.toDataURL("image/png");
       document.getElementById("generated-png-img").src = dataUrl;
@@ -2804,7 +2885,8 @@
       const meta = STAGE_META[stage] || {};
       runMissionCountdown(meta.step || stage,meta.title || "เริ่มภารกิจ",meta.instruction || "",()=>{
         if (stage.endsWith("K")) startTeacherTimer(120);
-        else if (stage.endsWith("P") || stage === "A") startTeacherTimer(90);
+        else if (stage.endsWith("P")) startTeacherTimer(90);
+        else if (stage === "A") startTeacherTimer(60);
         teacherRenderedSig = "";
         renderTeacherStage(true);
       });
@@ -2886,7 +2968,10 @@
     // Fixed Press Conference Randomizer: Updates UI immediately in 0.1s + Syncs to Cloud
     async function teacherRandomizePress() {
       playSound("drumroll");
-      // Wait for the server assignment; avoid showing a different random result locally.
+      const g = ["ดีด", "สี", "ตี", "เป่า"].sort(() => Math.random() - 0.5);
+      roomState.pressAssignments = { case1: g[0], case2: g[1], case3: g[2] };
+      teacherRenderedSig = "";
+      renderTeacherStage(true);
 
       setTimeout(() => {
         playSound("fanfare");
@@ -2894,7 +2979,7 @@
       }, 650);
 
       const resp = await callGasApi({ action: "randomizePress", pin: currentPin });
-      if (resp && resp.status === "ok" && resp.assignments) {
+      if (resp && resp.assignments) {
         roomState.pressAssignments = resp.assignments;
         teacherRenderedSig = "";
         renderTeacherStage(true);
@@ -3343,12 +3428,15 @@
       // 5. STAGE SUMMARY (EXQUISITE LEADERBOARD PODIUMS + MENU DOWNLOADS)
       if (stage === "SUMMARY") {
         const totalStu = students.length;
-        const passKList = students.filter(s => (s.scoreK ?? 0) >= 7);
-        const failKList = students.filter(s => (s.scoreK ?? 0) < 7);
-        const passPList = students.filter(s => (s.scoreP ?? 0) >= 4);
-        const failPList = students.filter(s => (s.scoreP ?? 0) < 4);
-        const passAList = students.filter(s => (s.scoreA ?? 0) >= 2);
-        const failAList = students.filter(s => (s.scoreA ?? 0) < 2);
+        const passKList = students.filter(hasPassedK);
+        const failKList = students.filter(s => hasCompletedK(s) && !hasPassedK(s));
+        const pendingKList = students.filter(s => !hasCompletedK(s));
+        const passPList = students.filter(hasPassedP);
+        const failPList = students.filter(s => hasCompletedP(s) && !hasPassedP(s));
+        const pendingPList = students.filter(s => !hasCompletedP(s));
+        const passAList = students.filter(hasPassedA);
+        const failAList = students.filter(s => hasCompletedA(s) && !hasPassedA(s));
+        const pendingAList = students.filter(s => !hasCompletedA(s));
 
         const pct = (n) => totalStu > 0 ? ((n / totalStu) * 100).toFixed(2) : "0.00";
         const sampleClassroom = (students[0] && students[0].classRoom) ? students[0].classRoom : "ม.1";
@@ -3356,17 +3444,23 @@
         const reportText = `📊 สรุปผลการประเมินประจำคาบเรียน (รหัสห้อง: ${currentPin} | ชั้น ${sampleClassroom})
 ผู้เรียนทั้งหมด: ${totalStu} คน
 ──────────────────────────────────────────────────────────
-1. ด้านความรู้ (K - เกณฑ์ผ่าน ≥ 7/10 คะแนน):
+1. ด้านความรู้ (K - ผ่านทุกวง: ปี่พาทย์ ≥6/8, เครื่องสาย ≥5/6, มโหรี ≥7/9; คิดคะแนนสุทธิหัก 0.5 ต่อการเลือกผิด):
    • ผ่านเกณฑ์: ${passKList.length} คน (คิดเป็นร้อยละ ${pct(passKList.length)})
    • ไม่ผ่านเกณฑ์: ${failKList.length} คน (คิดเป็นร้อยละ ${pct(failKList.length)})${failKList.length ? ' -> เลขที่ ' + failKList.map(s => s.number).join(', ') : ''}
+   • ยังไม่ส่งครบ: ${pendingKList.length} คน${pendingKList.length ? ' -> เลขที่ ' + pendingKList.map(s => s.number).join(', ') : ''}
 
-2. ด้านทักษะกระบวนการกลุ่ม (P - เกณฑ์ผ่าน ≥ 4/6 คะแนน):
+2. ด้านทักษะ (P - จำแนกชื่อวงถูกอย่างน้อย 2/3 วงตามมติกลุ่ม, คะแนน ≥4/6):
    • ผ่านเกณฑ์: ${passPList.length} คน (คิดเป็นร้อยละ ${pct(passPList.length)})
    • ไม่ผ่านเกณฑ์: ${failPList.length} คน (คิดเป็นร้อยละ ${pct(failPList.length)})${failPList.length ? ' -> เลขที่ ' + failPList.map(s => s.number).join(', ') : ''}
+   • ยังไม่ส่งครบ: ${pendingPList.length} คน${pendingPList.length ? ' -> เลขที่ ' + pendingPList.map(s => s.number).join(', ') : ''}
 
-3. ด้านเจตคติและการนำไปใช้ (A - เกณฑ์ผ่าน ≥ 2/3 คะแนน):
+3. ด้านการนำความรู้ไปใช้ (A - เลือกวงเหมาะสมถูกอย่างน้อย 2/3 ข้อ):
    • ผ่านเกณฑ์: ${passAList.length} คน (คิดเป็นร้อยละ ${pct(passAList.length)})
-   • ไม่ผ่านเกณฑ์: ${failAList.length} คน (คิดเป็นร้อยละ ${pct(failAList.length)})${failAList.length ? ' -> เลขที่ ' + failAList.map(s => s.number).join(', ') : ''}`;
+   • ไม่ผ่านเกณฑ์: ${failAList.length} คน (คิดเป็นร้อยละ ${pct(failAList.length)})${failAList.length ? ' -> เลขที่ ' + failAList.map(s => s.number).join(', ') : ''}
+   • ยังไม่ส่งครบ: ${pendingAList.length} คน${pendingAList.length ? ' -> เลขที่ ' + pendingAList.map(s => s.number).join(', ') : ''}
+
+หมายเหตุ: ร้อยละคำนวณจากนักเรียนทั้งหมด ${totalStu} คน และแยกผู้ยังไม่ส่งออกจากผู้ไม่ผ่านเกณฑ์`;
+        paReportTextCache = reportText;
 
         // Calculate Team Averages to Sort Leaderboard
         const teamStats = ["ดีด", "สี", "ตี", "เป่า"].map(g => {
@@ -3396,6 +3490,9 @@
                     <th>ชื่อ - นามสกุล</th>
                     <th>ชั้น</th>
                     <th>กลุ่ม</th>
+                    <th>ปี่พาทย์ (เกณฑ์ 6/8)</th>
+                    <th>เครื่องสาย (เกณฑ์ 5/6)</th>
+                    <th>มโหรี (เกณฑ์ 7/9)</th>
                     <th>คะแนน K (เต็ม 10)</th>
                     <th>ร้อยละ (%)</th>
                     <th>ผลประเมิน</th>
@@ -3408,23 +3505,24 @@
                       <td><strong>${s.name}</strong></td>
                       <td>${s.classRoom}</td>
                       <td>กลุ่ม${s.group}</td>
+                      ${[1, 2, 3].map(n => { const k = getKCaseInfo(s, n); return `<td>${k.submitted ? `${k.correct}/${k.full} (สุทธิ ${k.raw}) ${k.passed ? '✅' : '❌'}` : 'ยังไม่ส่ง'}</td>`; }).join("")}
                       <td><strong>${s.scoreK}</strong> / 10</td>
                       <td>${s.scoreK * 10}%</td>
-                      <td><span class="pass-tag ${s.scoreK >= 7 ? 'pass-ok' : 'pass-no'}">${s.scoreK >= 7 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
+                      <td><span class="pass-tag ${hasPassedK(s) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(s, "K")}</span></td>
                     </tr>
                   `).join("")}
                 </tbody>
               </table>
             </div>
-            <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน K: ผ่านเกณฑ์ ${passKList.length} / ${students.length} คน (คิดเป็นร้อยละ ${pct(passKList.length)}%)</div>
+            <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน K: ผ่าน ${passKList.length} / ${students.length} คน (${pct(passKList.length)}%), ยังไม่ส่งครบ ${pendingKList.length} คน</div>
           </div>
         ` : "";
 
-        const groupSynthesisHtml = showGroupPReport ? `<div class="card"><h3 style="color:var(--gold)">🤝 สรุปทักษะกระบวนการกลุ่ม (P)</h3><div class="table-wrap"><table><thead><tr><th>กลุ่ม</th><th>สมาชิก</th><th>คะแนน P เฉลี่ย / 6</th></tr></thead><tbody>${["ดีด","สี","ตี","เป่า"].map(g=>{const m=students.filter(s=>s.group===g);return `<tr><td>${g}</td><td>${m.length}</td><td>${m.length?(m.reduce((sum,s)=>sum+Number(s.scoreP||0),0)/m.length).toFixed(2):"-"}</td></tr>`}).join("")}</tbody></table></div></div>` : "";
+        const groupSynthesisHtml = showGroupPReport ? `<div class="card"><h3 style="color:var(--gold)">🤝 สรุปการจำแนกวง (P) รายกลุ่ม</h3><p style="color:var(--muted)">กลุ่มลงมติชื่อวงตรงกันและถูกต้องอย่างน้อย 2 จาก 3 วงจึงผ่าน</p><div class="table-wrap"><table><thead><tr><th>กลุ่ม</th><th>สมาชิก</th><th>คดี 1 ปี่พาทย์</th><th>คดี 2 เครื่องสาย</th><th>คดี 3 มโหรี</th><th>ผลกลุ่ม</th></tr></thead><tbody>${["ดีด","สี","ตี","เป่า"].map(g=>{const m=students.filter(s=>s.group===g);const cases=[1,2,3].map(n=>getPGroupCaseResult(g,n));const correct=cases.filter(c=>c.correct).length;return `<tr><td>${g}</td><td>${m.length}</td>${cases.map(c=>`<td>${c.name} ${c.correct?'✅':(c.unanimous?'❌':'⏳')}</td>`).join("")}<td>${m.length ? `${correct}/3 วง — ${correct>=2?'ผ่าน':'ยังไม่ผ่าน'}` : '-'}</td></tr>`}).join("")}</tbody></table></div></div>` : "";
 
         const reportAHtml = showReportA ? `
           <div class="card no-print">
-            <h3 style="color:var(--gold); margin-bottom:12px;">🎯 รายงานผลแยกด้านเจตคติและการนำไปใช้ (A) - รายบุคคล</h3>
+            <h3 style="color:var(--gold); margin-bottom:12px;">🎯 รายงานการนำความรู้ไปใช้ (A) - รายบุคคล</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -3433,6 +3531,9 @@
                     <th>ชื่อ - นามสกุล</th>
                     <th>ชั้น</th>
                     <th>กลุ่ม</th>
+                    <th>ข้อ 1 (มโหรี)</th>
+                    <th>ข้อ 2 (ปี่พาทย์)</th>
+                    <th>ข้อ 3 (เครื่องสาย)</th>
                     <th>คะแนน A (เต็ม 3)</th>
                     <th>ร้อยละ (%)</th>
                     <th>ผลประเมิน</th>
@@ -3445,15 +3546,16 @@
                       <td><strong>${s.name}</strong></td>
                       <td>${s.classRoom}</td>
                       <td>กลุ่ม${s.group}</td>
+                      ${ATTITUDE_QUESTIONS_BASE.map(q => `<td>${s.aAnswers?.[q.id] || 'ยังไม่ส่ง'} ${s.aAnswers?.[q.id] ? (s.aAnswers[q.id] === q.correct ? '✅' : '❌') : ''}</td>`).join("")}
                       <td><strong>${s.scoreA}</strong> / 3</td>
                       <td>${Math.round((s.scoreA / 3) * 100)}%</td>
-                      <td><span class="pass-tag ${s.scoreA >= 2 ? 'pass-ok' : 'pass-no'}">${s.scoreA >= 2 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
+                      <td><span class="pass-tag ${hasPassedA(s) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(s, "A")}</span></td>
                     </tr>
                   `).join("")}
                 </tbody>
               </table>
             </div>
-            <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน A: ผ่านเกณฑ์ ${passAList.length} / ${students.length} คน (คิดเป็นร้อยละ ${pct(passAList.length)}%)</div>
+            <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน A: ผ่าน ${passAList.length} / ${students.length} คน (${pct(passAList.length)}%), ยังไม่ส่ง ${pendingAList.length} คน</div>
           </div>
         ` : "";
 
@@ -3463,11 +3565,11 @@
             <td><strong>${s.name}</strong></td>
             <td>${s.classRoom}</td>
             <td>กลุ่ม${s.group}</td>
-            <td><strong>${s.scoreK}</strong> / 10 <span class="pass-tag ${s.scoreK >= 7 ? 'pass-ok' : 'pass-no'}">${s.scoreK >= 7 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
-            <td><strong>${s.scoreP}</strong> / 6 <span class="pass-tag ${s.scoreP >= 4 ? 'pass-ok' : 'pass-no'}">${s.scoreP >= 4 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
-            <td><strong>${s.scoreA}</strong> / 3 <span class="pass-tag ${s.scoreA >= 2 ? 'pass-ok' : 'pass-no'}">${s.scoreA >= 2 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
+            <td><strong>${s.scoreK}</strong> / 10 <span class="pass-tag ${hasPassedK(s) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(s, "K")}</span></td>
+            <td><strong>${s.scoreP}</strong> / 6 <span class="pass-tag ${hasPassedP(s) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(s, "P")}</span></td>
+            <td><strong>${s.scoreA}</strong> / 3 <span class="pass-tag ${hasPassedA(s) ? 'pass-ok' : 'pass-no'}">${getAssessmentResult(s, "A")}</span></td>
             <td><strong>${s.total}</strong> / 19</td>
-            <td><span class="pass-tag ${(s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? 'pass-ok' : 'pass-no'}">${(s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? 'ผ่านเกณฑ์' : 'ซ่อมเสริม'}</span></td>
+            <td><span class="pass-tag ${(hasPassedK(s) && hasPassedP(s) && hasPassedA(s)) ? 'pass-ok' : 'pass-no'}">${!isFullyAssessed(s) ? 'รอส่งครบ' : (hasPassedK(s) && hasPassedP(s) && hasPassedA(s) ? 'ผ่านเกณฑ์' : 'ซ่อมเสริม')}</span></td>
           </tr>
         `).join("");
 
@@ -3536,32 +3638,40 @@
             <h3 style="color:var(--gold); margin-bottom:12px; font-family:var(--font-head);">📊 กล่องสถิติร้อยละรวมความสำเร็จ (ด้าน K - P - A)</h3>
             <div class="kpa-badge-grid">
               <div class="kpa-summary-badge" style="cursor:pointer;" onclick="showReportK=!showReportK; renderTeacherStage(true);">
-                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">ด้านความรู้ (K - ผ่าน ≥ 7) 🌐</div>
+                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">ด้านความรู้ (K - ผ่านครบ 3 วง) 🌐</div>
                 <div class="kpa-summary-val">${passKList.length} / ${students.length} คน</div>
                 <div style="font-size:0.82rem; color:var(--success); font-weight:700; margin-top:4px;">ร้อยละความสำเร็จ: ${pct(passKList.length)}%</div>
+                <div style="font-size:0.78rem; color:#fbbf24;">ยังไม่ส่งครบ ${pendingKList.length} คน · แตะดูรายชื่อ</div>
               </div>
               <div class="kpa-summary-badge" style="cursor:pointer;" onclick="toggleGroupPReport()">
-                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">กระบวนการกลุ่ม (P - ผ่าน ≥ 4) 🌐</div>
+                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">จำแนกวง (P - ถูก ≥ 2/3 วง) 🌐</div>
                 <div class="kpa-summary-val">${passPList.length} / ${students.length} คน</div>
                 <div style="font-size:0.82rem; color:var(--success); font-weight:700; margin-top:4px;">ร้อยละความสำเร็จ: ${pct(passPList.length)}%</div>
+                <div style="font-size:0.78rem; color:#fbbf24;">ยังไม่ส่งครบ ${pendingPList.length} คน · แตะดูรายกลุ่ม</div>
               </div>
               <div class="kpa-summary-badge" style="cursor:pointer;" onclick="showReportA=!showReportA; renderTeacherStage(true);">
-                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">เจตคติ / นำไปใช้ (A - ผ่าน ≥ 2) 🌐</div>
+                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">นำความรู้ไปใช้ (A - ถูก ≥ 2/3 ข้อ) 🌐</div>
                 <div class="kpa-summary-val">${passAList.length} / ${students.length} คน</div>
                 <div style="font-size:0.82rem; color:var(--success); font-weight:700; margin-top:4px;">ร้อยละความสำเร็จ: ${pct(passAList.length)}%</div>
+                <div style="font-size:0.78rem; color:#fbbf24;">ยังไม่ส่ง ${pendingAList.length} คน · แตะดูรายชื่อ</div>
               </div>
             </div>
 
             <!-- UNIFIED DOWNLOADING MENU FOR CLEAN DESK -->
             <div style="background:#090d16; border:1px solid #334155; border-radius:12px; padding:14px; text-align:center;">
               <div style="font-family:var(--font-head); font-weight:700; font-size:0.95rem; color:var(--gold); margin-bottom:8px;">
-                📥 แท็บเมนูดาวน์โหลดหลักฐานร่องรอย แนบภาคผนวก ว.PA (แยกด้านชัดเจน)
+                📥 ดาวน์โหลดหลักฐานประกอบการประเมิน K–P–A และสรุปผลหลังแผน
               </div>
               <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
                 <button class="btn btn-primary btn-sm" onclick="copyPaSummary()">📋 คัดลอกสรุปท้ายแผน</button>
-                <button class="btn btn-success btn-sm" onclick="exportRoomScoresCSV()">📥 ดาวน์โหลดตารางคะแนน (.CSV)</button>
+                <button class="btn btn-success btn-sm" onclick="exportKReportCSV()">📗 ดาวน์โหลดรายงาน K (.CSV)</button>
+                <button class="btn btn-success btn-sm" onclick="exportPReportCSV()">🤝 ดาวน์โหลดรายงาน P (.CSV)</button>
+                <button class="btn btn-success btn-sm" onclick="exportPGroupCSV()">👥 ดาวน์โหลดมติกลุ่ม P (.CSV)</button>
+                <button class="btn btn-success btn-sm" onclick="exportAReportCSV()">🎯 ดาวน์โหลดรายงาน A (.CSV)</button>
+                <button class="btn btn-success btn-sm" onclick="exportRoomScoresCSV()">📊 ดาวน์โหลดคะแนนรวม (.CSV)</button>
                 <button class="btn btn-secondary btn-sm" onclick="toggleAllDetectiveCards()">🪪 ${showAllCardsPreview ? 'ซ่อน' : 'แสดง'} บัตร ID รายบุคคลทั้งห้อง</button>
               </div>
+              <div style="color:#94a3b8; font-size:0.8rem; margin-top:8px;">ไฟล์ .CSV เปิดด้วย Excel ได้ และแยกผู้ยังไม่ส่งครบออกจากผู้ไม่ผ่านเกณฑ์</div>
             </div>
           </div>
 
@@ -3603,58 +3713,135 @@
       }
     }
 
-    function copyPaSummary() {
-      const text = document.getElementById("pa-summary-text")?.innerText || "";
-      if (!text) return;
-      navigator.clipboard.writeText(text).then(() => {
-        playSound("fanfare");
-        const banner = document.getElementById("sync-banner");
-        banner.textContent = "✅ คัดลอกข้อความสรุปผล K-P-A สำเร็จแล้ว! นำไปวางในบันทึกหลังแผนการสอนได้ทันทีครับ";
-        banner.style.display = "block";
-        setTimeout(() => banner.style.display = "none", 4000);
+    function showReportNotice(message, isError = false) {
+      const banner = document.getElementById("sync-banner");
+      if (!banner) return alert(message);
+      banner.textContent = message;
+      banner.style.display = "block";
+      banner.style.color = isError ? "#fca5a5" : "#6ee7b7";
+      setTimeout(() => { if (banner.textContent === message) banner.style.display = "none"; }, 6000);
+    }
+
+    async function copyPaSummary() {
+      const report = paReportTextCache || document.getElementById("pa-summary-text")?.textContent || "";
+      if (!report) return showReportNotice("ไม่พบข้อมูลสรุปผล กรุณาเปิดหน้าสรุปผลอีกครั้ง", true);
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(report);
+        } else {
+          const box = document.createElement("textarea");
+          box.value = report;
+          box.style.position = "fixed";
+          box.style.left = "-9999px";
+          document.body.appendChild(box);
+          box.select();
+          const success = document.execCommand("copy");
+          box.remove();
+          if (!success) throw new Error("คัดลอกไม่ได้");
+        }
+        showReportNotice("✅ คัดลอกสรุปผล K–P–A แล้ว สามารถวางในบันทึกหลังแผนได้");
+      } catch (err) {
+        showReportNotice("❌ คัดลอกไม่สำเร็จ กรุณาใช้ HTTPS หรือคัดลอกจากข้อความสรุปบนหน้าจอ", true);
+      }
+    }
+
+    function getSortedReportStudents() {
+      return (roomState.students || []).slice().sort((a, b) => Number(a.number) - Number(b.number));
+    }
+
+    function getStudentFinalResult(student) {
+      if (!isFullyAssessed(student)) return "ยังไม่ส่งครบ";
+      return hasPassedK(student) && hasPassedP(student) && hasPassedA(student) ? "ผ่านเกณฑ์" : "ซ่อมเสริม";
+    }
+
+    // ป้องกันการเลื่อนคอลัมน์จากชื่อที่มีจุลภาค/เครื่องหมายคำพูด และตัวอักษรไทยเพี้ยนใน Excel
+    function escapeCsvValue(value) {
+      let safe = String(value ?? "");
+      if (/^[=+@\-\t\r]/.test(safe)) safe = "'" + safe; // ข้อมูลจากผู้เรียนไม่เป็นสูตร Excel
+      return '"' + safe.replace(/"/g, '""') + '"';
+    }
+
+    function buildCsvContent(headers, rows) {
+      return "\uFEFF" + [headers, ...rows].map(row => row.map(escapeCsvValue).join(",")).join("\r\n");
+    }
+
+    function downloadReportCsv(reportName, headers, rows) {
+      if (!rows.length) return showReportNotice("ยังไม่มีข้อมูลนักเรียนสำหรับสร้างรายงาน", true);
+      showReportNotice("⏳ กำลังเตรียมไฟล์รายงาน " + reportName + " ...");
+      try {
+        const blob = new Blob([buildCsvContent(headers, rows)], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `รายงาน${reportName}_ห้อง_${String(currentPin).replace(/[^0-9a-zA-Z_-]/g, "")}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 8000); // รอให้มือถือเริ่มดาวน์โหลด
+        showReportNotice("✅ เริ่มดาวน์โหลดรายงาน " + reportName + " แล้ว หากไม่พบไฟล์ให้ดูโฟลเดอร์ดาวน์โหลด");
+      } catch (err) {
+        showReportNotice("❌ สร้างไฟล์รายงานไม่สำเร็จ กรุณาลองใหม่: " + err.message, true);
+      }
+    }
+
+    function exportKReportCSV() {
+      const headers = ["PIN", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม"];
+      [1, 2, 3].forEach(n => headers.push(`K${n}_ถูก`, `K${n}_เลือกผิด`, `K${n}_คะแนนสุทธิ`, `K${n}_เกณฑ์`, `K${n}_ผล`));
+      headers.push("คะแนน K เต็ม 10", "ผลประเมิน K");
+      const rows = getSortedReportStudents().map(s => {
+        const row = [currentPin, s.number, s.name, s.classRoom, s.group];
+        [1, 2, 3].forEach(n => {
+          const k = getKCaseInfo(s, n);
+          row.push(k.submitted ? k.correct : "", k.submitted ? k.wrong : "", k.submitted ? k.raw : "", `${k.min}/${k.full}`, k.submitted ? (k.passed ? "ผ่าน" : "ไม่ผ่าน") : "ยังไม่ส่ง");
+        });
+        return [...row, s.scoreK, getAssessmentResult(s, "K")];
       });
+      downloadReportCsv("K_รายบุคคล", headers, rows);
+    }
+
+    function exportPReportCSV() {
+      const headers = ["PIN", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม", "คดี1_ชื่อวงที่เลือก", "คดี2_ชื่อวงที่เลือก", "คดี3_ชื่อวงที่เลือก", "จำนวนวงถูกตามมติกลุ่ม", "คะแนน P เต็ม 6", "ผลประเมิน P"];
+      const rows = getSortedReportStudents().map(s => [currentPin, s.number, s.name, s.classRoom, s.group,
+        ...[1, 2, 3].map(n => s.pAnswers?.["case" + n]?.ensemble || "ยังไม่ส่ง"),
+        hasCompletedP(s) ? Number(s.scoreP || 0) / 2 : "ยังไม่ส่งครบ", s.scoreP, getAssessmentResult(s, "P")]);
+      downloadReportCsv("P_รายบุคคล", headers, rows);
+    }
+
+    function exportPGroupCSV() {
+      const headers = ["PIN", "กลุ่ม", "สมาชิก", "คดี1_มติวง", "คดี1_ผล", "คดี2_มติวง", "คดี2_ผล", "คดี3_มติวง", "คดี3_ผล", "จำนวนวงถูก", "ผลกลุ่ม"];
+      const groups = ["ดีด", "สี", "ตี", "เป่า"];
+      const rows = groups.filter(g => roomState.students?.some(s => s.group === g)).map(g => {
+        const members = roomState.students.filter(s => s.group === g);
+        const cases = [1, 2, 3].map(n => getPGroupCaseResult(g, n));
+        const correct = cases.filter(c => c.correct).length;
+        return [currentPin, g, members.length, ...cases.flatMap(c => [c.name, c.unanimous ? (c.correct ? "ถูก" : "ผิด") : "ยังไม่มีมติ"]),
+          correct, cases.every(c => c.unanimous) ? (correct >= 2 ? "ผ่าน" : "ไม่ผ่าน") : "ยังไม่ส่งครบ"];
+      });
+      downloadReportCsv("P_รายกลุ่ม", headers, rows);
+    }
+
+    function exportAReportCSV() {
+      const headers = ["PIN", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม"];
+      ATTITUDE_QUESTIONS_BASE.forEach((q, i) => headers.push(`ข้อ${i + 1}_คำตอบ`, `ข้อ${i + 1}_ผล`));
+      headers.push("จำนวนตอบถูก", "คะแนน A เต็ม 3", "ผลประเมิน A");
+      const rows = getSortedReportStudents().map(s => {
+        const row = [currentPin, s.number, s.name, s.classRoom, s.group];
+        ATTITUDE_QUESTIONS_BASE.forEach(q => {
+          const ans = s.aAnswers?.[q.id] || "";
+          row.push(ans || "ยังไม่ส่ง", ans ? (ans === q.correct ? "ถูก" : "ผิด") : "ยังไม่ส่ง");
+        });
+        return [...row, hasCompletedA(s) ? s.scoreA : "ยังไม่ส่ง", s.scoreA, getAssessmentResult(s, "A")];
+      });
+      downloadReportCsv("A_รายบุคคล", headers, rows);
     }
 
     function exportRoomScoresCSV() {
-      const students = (roomState.students || []).slice().sort((a, b) => Number(a.number) - Number(b.number));
-      const headers = ["รหัสห้อง (PIN)", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม", "คะแนน K (เต็ม 10)", "คะแนน P (เต็ม 6)", "คะแนน A (เต็ม 3)", "คะแนนรวม (เต็ม 19)", "ผลประเมิน K", "ผลประเมิน P", "ผลประเมิน A", "สรุปผลรวม", "ข้อเสนอแนะรายบุคคล"];
-      const rows = [headers];
-
-      students.forEach(s => {
-        const passK = (s.scoreK >= 7) ? "ผ่าน" : "ไม่ผ่าน";
-        const passP = (s.scoreP >= 4) ? "ผ่าน" : "ไม่ผ่าน";
-        const passA = (s.scoreA >= 2) ? "ผ่าน" : "ไม่ผ่าน";
-        const passAll = (s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? "ผ่านเกณฑ์" : "ซ่อมเสริม";
-        const fb = getAutomatedFeedback(s.scoreK, s.scoreP, s.scoreA);
-        rows.push([
-          currentPin,
-          s.number,
-          `"${(s.name || "").replace(/"/g, '""')}"`,
-          `"${(s.classRoom || "").replace(/"/g, '""')}"`,
-          s.group,
-          s.scoreK,
-          s.scoreP,
-          s.scoreA,
-          s.total,
-          passK,
-          passP,
-          passA,
-          passAll,
-          `"${fb.replace(/"/g, '""')}"`
-        ]);
-      });
-
-      const csvContent = "\uFEFF" + rows.map(r => r.join(",")).join("\r\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `คะแนนนักสืบดนตรีไทย_ห้อง_${currentPin}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      playSound("fanfare");
+      const headers = ["PIN", "เลขที่", "ชื่อ-นามสกุล", "ชั้น", "กลุ่ม", "คะแนน K เต็ม 10", "คะแนน P เต็ม 6", "คะแนน A เต็ม 3", "คะแนนรวมเต็ม 19", "ผล K", "ผล P", "ผล A", "สรุปผลรวม", "ข้อเสนอแนะรายบุคคล"];
+      const rows = getSortedReportStudents().map(s => [currentPin, s.number, s.name, s.classRoom, s.group,
+        s.scoreK, s.scoreP, s.scoreA, s.total,
+        getAssessmentResult(s, "K"), getAssessmentResult(s, "P"), getAssessmentResult(s, "A"),
+        getStudentFinalResult(s), isFullyAssessed(s) ? getAutomatedFeedback(s.scoreK, s.scoreP, s.scoreA, hasPassedK(s)) : "รอข้อมูลให้ครบ"]);
+      downloadReportCsv("คะแนนรวม_KPA", headers, rows);
     }
 
     function toggleGroupPReport() {
