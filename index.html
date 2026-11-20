@@ -947,8 +947,24 @@
     .micro-bar>span {height:100%;display:block;border-radius:20px;}
     @media(max-width:650px){.stu-progress-wrap{padding:8px!important;margin-bottom:8px!important}.stu-p-item{font-size:.65rem!important}.container{padding-left:8px!important;padding-right:8px!important}.mobile-sticky-submit{bottom:0}.compact-mobile-choice{font-size:1rem;padding:10px}}
     .projector-body { font-size:clamp(1.55rem,2.5vw,2.7rem);line-height:1.6;color:#fff; }
-    .case-press-main { background:#090d16;border:3px solid #f59e0b;border-radius:22px;padding:clamp(20px,4vw,50px);text-align:center; }
-    .case-press-main h1 { font-size:clamp(2rem,4vw,4rem);color:#fbbf24;margin:12px 0 25px; }
+    .press-room {position:relative;isolation:isolate;overflow:hidden;min-height:calc(100dvh - 190px);border:3px solid #cfa652;border-radius:20px;background:radial-gradient(ellipse at 51% 16%,#36516a 0%,#142b44 45%,#081423 82%);display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;color:#fff;}
+    .press-room::before {content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(90deg,transparent 0 10%,#e2e8f00c 10.4% 10.6%,transparent 11% 20%),linear-gradient(105deg,transparent 15%,#fff3 33%,transparent 46%),linear-gradient(255deg,transparent 15%,#fff2 33%,transparent 46%);}
+    .press-room::after {content:"";position:absolute;bottom:-58px;left:50%;transform:translateX(-50%);width:min(470px,65%);height:145px;background:linear-gradient(#324c67,#152539);border:5px solid #bfa46a;border-radius:22px 22px 0 0;box-shadow:0 -10px 40px #020617bd;z-index:-1;}
+    .press-room-content {width:100%;max-width:1300px;margin:0 auto;padding:20px 16px 95px;}
+    .press-room-eyebrow {letter-spacing:.18em;font-size:clamp(1.05rem,1.8vw,1.7rem);color:#fef3c7;font-weight:900;}
+    .press-room-heading {font-size:clamp(2rem,4.2vw,4.7rem);font-weight:900;margin:12px 0;color:#fff;text-shadow:0 5px 18px #000a;}
+    .press-room-group {font-size:clamp(2.6rem,6.5vw,7rem);line-height:1.15;color:#fbbf24;font-weight:900;margin:18px auto;text-shadow:0 5px 14px #000a;}
+    .press-room-microphone {font-size:clamp(3rem,5vw,5.5rem);line-height:1.1;filter:drop-shadow(0 4px 15px #000a);}
+    .teacher-a-board {height:calc(100dvh - 210px);min-height:460px;box-sizing:border-box;background:#111827;display:flex;flex-direction:column;gap:10px;padding:16px 24px!important;overflow:hidden;}
+    .teacher-a-heading {display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
+    .teacher-a-cases {display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:8px;min-height:0;flex:1;}
+    .teacher-a-case {background:#18263b;border:2px solid #334155;border-left:7px solid #fbbf24;border-radius:12px;padding:10px 16px;display:flex;flex-direction:column;justify-content:center;min-height:0;}
+    .teacher-a-case h3 {color:#fbbf24;margin:0 0 3px;font-size:clamp(1.04rem,1.55vw,1.7rem);}
+    .teacher-a-case p {color:#fff;margin:0;font-size:clamp(.98rem,1.5vw,1.55rem);line-height:1.35;}
+    .teacher-a-pending {background:#422006;color:#fde68a;border-radius:9px;padding:9px 13px;font-size:clamp(.92rem,1.1vw,1.25rem);}
+    .report-download-panel {display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:9px;margin-top:12px;}
+    .report-download-panel button {min-height:48px;text-align:left;white-space:normal;}
+    @media(max-height:760px){.teacher-a-board{height:calc(100dvh - 170px);min-height:410px;padding:10px 18px!important;gap:6px}.teacher-a-case{padding:6px 12px}.teacher-a-heading h1{font-size:1.7rem!important}.teacher-a-heading .a-progress{font-size:1.15rem!important}}
     .teacher-busy-overlay { position:fixed;inset:0;z-index:99990;background:rgba(3,7,18,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;font-size:1.65rem;color:#fff;font-weight:800;text-align:center;padding:20px; }
     .teacher-busy-overlay.show { display:flex; }
     .busy-spinner { width:76px;height:76px;border:8px solid rgba(255,255,255,.22);border-top-color:#fbbf24;border-radius:50%;animation:busy-spin .8s linear infinite; }
@@ -1290,7 +1306,7 @@
       {
         cat: "จังหวะ",
         title: "⚪ เครื่องประกอบจังหวะ",
-        shortTab: "จังหวะ",
+        shortTab: "ประกอบจังหวะ",
         color: "#cbd5e1",
         items: [
           { name: "ฉิ่ง", label: "ฉิ่ง" },
@@ -1405,6 +1421,13 @@
       }
     ];
 
+    // โจทย์ย่อบนโปรเจกเตอร์เท่านั้น คำถามและคำตอบจริงบนมือถือไม่เปลี่ยน
+    const ATTITUDE_TEACHER_PROMPTS = [
+      {id:"q3", title:"งานเปิดบ้านวิชาการ", text:"โรงเรียนต้องการแสดงดนตรีไทยที่มีเครื่องดีด สี ตี และเป่าครบทั้ง 4 ประเภท ควรเลือกวงใด?"},
+      {id:"q1", title:"พิธีไหว้ครูดนตรีไทย", text:"โรงเรียนต้องการบรรเลงเพลงหน้าพาทย์ประกอบพิธีตามประเพณี ควรเลือกวงใด?"},
+      {id:"q2", title:"ห้องประชุมขนาดเล็ก", text:"ต้องการเสียงซอและขลุ่ยบรรเลงคลอเบา ๆ โดยไม่เน้นเสียงระนาดหรือฆ้อง ควรเลือกวงใด?"}
+    ];
+
     /********************************************************************
      * 2. APPLICATION STATE
      ********************************************************************/
@@ -1459,6 +1482,7 @@
       3: { structure: "", ensemble: "" }
     };
     let studentAnswersA = { q1: "", q2: "", q3: "" };
+    let studentPEditing = {1:false,2:false,3:false};
 
     // TeacherSummary View Toggles
     let showGroupPReport = true;
@@ -1470,6 +1494,7 @@
     let showReportA = false;
     let showReportAll = false;
     let paReportTextCache = "";
+    let showTeacherReportDownloads = false;
 
     let isSubmittingNow = false;
     let lastStudentCount = 0;
@@ -1486,12 +1511,15 @@
     function loadStudentDrafts() {
       studentSelectedK = { 1: [], 2: [], 3: [] };
       studentVoteP = { 1: {structure:"",ensemble:""}, 2: {structure:"",ensemble:""}, 3: {structure:"",ensemble:""} };
+      studentPEditing = {1:false,2:false,3:false};
       studentAnswersA = { q1: "", q2: "", q3: "" };
       try {
         if (studentProfile) {
           const k = localStorage.getItem(studentDraftKey("K"));
+          const p = localStorage.getItem(studentDraftKey("P"));
           const a = localStorage.getItem(studentDraftKey("A"));
           if (k) studentSelectedK = Object.assign(studentSelectedK, JSON.parse(k));
+          if (p) studentVoteP = Object.assign(studentVoteP, JSON.parse(p));
           if (a) studentAnswersA = Object.assign(studentAnswersA, JSON.parse(a));
         }
       } catch (e) {}
@@ -1636,6 +1664,22 @@
           osc.start(now + i * 0.05);
           osc.stop(now + i * 0.05 + 0.045);
         }
+      } else if (type === "victory") {
+        // ชัยชนะโทนสว่างชัดเจน ใช้ตอนสมาชิกส่งครบ / มติสำเร็จบนจอครู
+        [783.99, 987.77, 1174.66, 1567.98].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          const start = now + idx * 0.16;
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(0.001, start);
+          gain.gain.exponentialRampToValueAtTime(0.32, start + 0.025);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + 0.50);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + 0.51);
+        });
       }
     }
 
@@ -1866,6 +1910,7 @@
       const resp = await callGasApi({ action: "getState", pin: currentPin });
       if (requestId !== roomStateRequestId) return;
       if (resp && resp.status === "ok") {
+        if (appMode === "TEACHER") announceTeacherMilestone(roomState, resp);
         if (appMode === "TEACHER") teacherRoomReady = true;
         if (appMode === "TEACHER" && resp.students && resp.students.length > lastStudentCount) {
           playSound("pop");
@@ -1887,6 +1932,30 @@
       } else {
         if (appMode === "TEACHER") teacherRoomReady = false;
         renderCurrentView(false);
+      }
+    }
+
+    function isGroupConsensus(state, group, caseNum) {
+      const votes = state?.groupVotes?.[group]?.["case"+caseNum] || [];
+      return votes.length > 0 && votes.every(v => v.structure && v.ensemble && v.ensemble === votes[0].ensemble);
+    }
+
+    // เทียบสถานะเก่ากับใหม่เพื่อไม่ให้เสียงสำเร็จดังซ้ำเมื่อ polling ทุก 3.5 วินาที
+    function announceTeacherMilestone(before, after) {
+      if (!before || !after || before.pin !== after.pin || before.stage !== after.stage ||
+          before.phase !== "PLAYING" || after.phase !== "PLAYING") return;
+      const stage = after.stage || "";
+      if (/^[123]K$/.test(stage)) {
+        const n = Number(stage[0]);
+        const oldCount = (before.students || []).filter(s=>s["k"+n+"Submitted"]).length;
+        const newStudents = after.students || [];
+        if (newStudents.length && oldCount < newStudents.length && newStudents.every(s=>s["k"+n+"Submitted"])) playSound("victory");
+      } else if (/^[123]P$/.test(stage)) {
+        const n = Number(stage[0]);
+        if (["ดีด","สี","ตี","เป่า"].some(g=>!isGroupConsensus(before,g,n) && isGroupConsensus(after,g,n))) playSound("victory");
+      } else if (stage === "A") {
+        const newStudents = after.students || [];
+        if (newStudents.length && (before.students || []).some(s=>!s.aSubmitted) && newStudents.every(s=>s.aSubmitted)) playSound("victory");
       }
     }
 
@@ -2074,6 +2143,7 @@
       if (isSubmittingNow) return;
       playSound("tick");
       studentVoteP[caseNum].structure = structVal;
+      saveStudentDraft("P", studentVoteP);
       renderStudentStage(true);
     }
 
@@ -2081,6 +2151,7 @@
       if (isSubmittingNow) return;
       playSound("tick");
       studentVoteP[caseNum].ensemble = ensVal;
+      saveStudentDraft("P", studentVoteP);
       renderStudentStage(true);
     }
 
@@ -2105,14 +2176,18 @@
       isSubmittingNow = false;
       if (!resp || resp.status !== "ok") {
         studentPSubStep[caseNum] = 1;
+        studentPEditing[caseNum] = true;
         alert(resp?.message || "ส่งมติกลุ่มไม่สำเร็จ กรุณาลองใหม่");
         return renderStudentStage(true);
       }
+      studentPEditing[caseNum] = false;
+      playSound("fanfare");
       await refreshRoomState();
     }
 
     function changeStudentPVote(caseNum) {
       playSound("tick");
+      studentPEditing[caseNum] = true;
       studentPSubStep[caseNum] = 1;
       renderStudentStage(true);
     }
@@ -2192,15 +2267,17 @@
         const selectedGroup = roomState.pressAssignments?.["case" + pressCase] || "";
         const speech = getPressSpeech(pressCase, selectedGroup);
         const isSpeaker = studentProfile.group === selectedGroup;
-        container.innerHTML = `<div class="card" style="border:2px solid var(--gold);padding:24px;text-align:center;">
-          <div style="font-size:3rem">🎙️</div>
-          <h2 style="color:var(--gold);font-size:1.7rem">แถลงข้อสันนิษฐาน · คดีที่ ${pressCase}</h2>
-          ${isSpeaker ? `<p style="font-size:1.12rem;color:#fff">🎯 กลุ่ม${escapeHtml(selectedGroup)} ของคุณเป็นตัวแทนแถลงข่าว</p>
-            <div style="background:#090d16;padding:20px;border-radius:14px;color:#fff;text-align:left;line-height:1.8;font-size:1.2rem">
-            <div>“จากภารกิจคดีที่ ${pressCase} กลุ่มของเราพบเบาะแส ได้แก่ <strong style="color:#7dd3fc">${escapeHtml(speech.clues)}</strong></div>
-            <div>เมื่อนำไปเทียบกับไกด์นักสืบ กลุ่มของเราจึงสันนิษฐานว่าเป็นวง <strong style="color:#fbbf24">....................</strong> ครับ/ค่ะ”</div>
-            </div>` : `<p style="font-size:1.25rem;line-height:1.8;color:#fff">👂 ฟังตัวแทน<strong style="color:#fbbf24">กลุ่ม${escapeHtml(selectedGroup || 'ที่ครูสุ่ม')}</strong> แถลงเหตุผล แล้วช่วยเสนอความเห็นอย่างสุภาพ</p>`}
-          <p style="font-size:1.05rem;color:#fbbf24;margin-top:22px">🔒 ยังไม่เฉลย รอจนแถลงครบทั้ง 3 คดี</p>
+        container.innerHTML = `<div class="card mobile-compact-card" style="border:3px solid ${isSpeaker?'#34d399':'#fbbf24'};padding:16px;text-align:center;">
+          <div style="font-size:2.5rem">🎙️</div>
+          <h2 style="color:#fbbf24;font-size:1.55rem;margin:5px 0 10px">แถลงข้อสันนิษฐาน · คดีที่ ${pressCase}</h2>
+          ${isSpeaker ? `<div style="background:#064e3b;border-radius:12px;padding:11px;font-size:1.2rem;font-weight:900;color:#fff">🎯 กลุ่ม${escapeHtml(selectedGroup)} ของคุณได้รับเลือก!</div>
+            <div style="background:#090d16;padding:16px;border-radius:14px;color:#fff;text-align:left;line-height:1.72;font-size:1.15rem;margin-top:10px">
+              <div style="color:#7dd3fc;font-weight:900;margin-bottom:7px">📄 ไกด์สคริปต์สำหรับอ่านแถลงข่าว</div>
+              <p style="margin:7px 0">“จากภารกิจคดีที่ ${pressCase} กลุ่มของเราพบเบาะแสเครื่องดนตรี ได้แก่</p>
+              <div style="background:#172554;border-left:5px solid #38bdf8;padding:12px;margin:9px 0;border-radius:8px;font-weight:800;color:#fff;overflow-wrap:anywhere">${escapeHtml(speech.clues)}</div>
+              <p style="margin:7px 0">เมื่อนำเบาะแสมาเปรียบเทียบกับไกด์นักสืบ กลุ่มของเราจึงสันนิษฐานว่าเป็นวง <strong style="color:#fbbf24">....................</strong> ครับ/ค่ะ”</p>
+            </div>` : `<p style="font-size:1.3rem;line-height:1.7;color:#fff">${selectedGroup?'👂 ฟังตัวแทน':'🎲 กำลังรอคุณครูสุ่ม'}<strong style="color:#fbbf24">${selectedGroup?'กลุ่ม'+escapeHtml(selectedGroup):'กลุ่มแถลงข่าว'}</strong>${selectedGroup?' แถลงเหตุผล แล้วร่วมแลกเปลี่ยนอย่างสุภาพ':''}</p>`}
+          <p style="font-size:1rem;color:#fbbf24;margin-top:13px">🔒 ยังไม่เฉลย รอจนแถลงครบทั้ง 3 คดี</p>
         </div>`;
         return;
       }
@@ -2215,7 +2292,7 @@
         container.innerHTML = `<div class="card" style="text-align:center;padding:28px 18px;border:2px solid var(--gold)">
           <div style="font-size:3rem">📋</div><h2 style="color:var(--gold)">เตรียมภารกิจ: ${m.step || stage}</h2>
           <h3>${m.title || "เตรียมตัว"}</h3><p style="font-size:1.1rem;line-height:1.8">${m.instruction || "ฟังคำอธิบายจากคุณครู"}</p>
-          ${stage.endsWith("K") ? `<div style="font-size:1.3rem;font-weight:800;padding:14px;border:1px solid #64748b;border-radius:12px">🎸 ดีด &nbsp; 🎻 สี &nbsp; 🥁 ตี &nbsp; 🎶 เป่า &nbsp; 🪘 จังหวะ</div><p>👆 กดสลับแถบหมวดทั้ง 5 ก่อน แล้วแตะชื่อเครื่องดนตรีที่พบและกดส่งเบาะแส</p>` : stage.endsWith("P") ? `<p>เลือกโครงสร้างวงก่อน จากนั้นเลือกชื่อวงดนตรี แล้วตรวจสอบคำตอบ</p>` : `<p>อ่านคำถาม เลือกคำตอบ แล้วกดยืนยันตามขั้นตอน</p>`}
+          ${stage.endsWith("K") ? `<div style="font-size:1.3rem;font-weight:800;padding:14px;border:1px solid #64748b;border-radius:12px">🎸 ดีด &nbsp; 🎻 สี &nbsp; 🥁 ตี &nbsp; 🎶 เป่า &nbsp; 🪘 ประกอบจังหวะ</div><p>👆 กดสลับแถบหมวดทั้ง 5 ก่อน แล้วแตะชื่อเครื่องดนตรีที่พบและกดส่งเบาะแส</p>` : stage.endsWith("P") ? `<p>เลือกโครงสร้างวงก่อน จากนั้นเลือกชื่อวงดนตรี แล้วตรวจสอบคำตอบ</p>` : `<p>อ่านคำถาม เลือกคำตอบ แล้วกดยืนยันตามขั้นตอน</p>`}
           <p style="color:var(--gold);font-weight:800;margin-top:22px">⏳ รอคุณครูกดเริ่ม 3–2–1</p></div>`;
         return;
       }
@@ -2267,7 +2344,7 @@
                   🔍 คดีที่ ${caseNum} (ด่านที่ 1/2) : บอกชื่อเครื่องดนตรีที่เห็น
                 </div>
                 <div style="font-size:0.86rem; color:#e2e8f0;">
-                  <strong>ขั้นที่ 1:</strong> 👇 กดแถบหมวด ดีด / สี / ตี / เป่า / จังหวะ ด้านล่าง แล้วเลือกเครื่องที่เห็นในคลิปหรือภาพ!
+                  <strong>ขั้นที่ 1:</strong> 👇 กดแถบหมวด ดีด / สี / ตี / เป่า / ประกอบจังหวะ ด้านล่าง แล้วเลือกเครื่องที่เห็นในคลิปหรือภาพ!
                 </div>
               </div>
             </div>
@@ -2278,7 +2355,7 @@
                 const countInCat = grp.items.filter(it => chosen.indexOf(it.name) !== -1).length;
                 return `
                   <button type="button" class="cat-tab-btn ${grp.cat === activeKTab ? 'active' : ''}" style="border-color:${grp.color}" onclick="switchStudentKTab('${grp.cat}')">
-                    <div>${grp.shortTab}</div>
+                    <div>${grp.cat === "จังหวะ" ? "ประกอบ<br>จังหวะ" : grp.shortTab}</div>
                     ${countInCat > 0 ? `<div class="cat-tab-count">เลือก ${countInCat}</div>` : `<div style="font-size:0.68rem; color:var(--muted);">กดดู</div>`}
                   </button>
                 `;
@@ -2320,7 +2397,11 @@
         const curVote = studentVoteP[caseNum];
         const stepNow = studentPSubStep[caseNum] || 1;
         const sentAlready = !!me.pAnswers?.["case" + caseNum]?.ensemble;
-        const showingStatus = stepNow === 3 || (sentAlready && !curVote.ensemble);
+        if (sentAlready && !curVote.ensemble) {
+          curVote.structure = me.pAnswers["case" + caseNum].structure || "";
+          curVote.ensemble = me.pAnswers["case" + caseNum].ensemble || "";
+        }
+        const showingStatus = stepNow === 3 || (sentAlready && !studentPEditing[caseNum]);
         container.innerHTML = `
           <div class="card mobile-compact-card">
             <h2 style="font-size:1.24rem;color:#fbbf24;margin:0 0 7px">📊 คดีที่ ${caseNum} · ระดมสมองกลุ่ม${g}</h2>
@@ -2413,7 +2494,7 @@
         const validVotes = votesList.filter(v => v.structure && v.ensemble);
         const totalMembers = votesList.length || 1;
         const isUnanimous = validVotes.length === totalMembers && totalMembers > 0 &&
-          validVotes.every(v => v.structure === validVotes[0].structure && v.ensemble === validVotes[0].ensemble);
+          validVotes.every(v => v.ensemble === validVotes[0].ensemble);
 
         const tally = { "วงปี่พาทย์": [], "วงเครื่องสาย": [], "วงมโหรี": [], "ยังไม่โหวต": [] };
         votesList.forEach(v => {
@@ -2435,6 +2516,7 @@
                   กลุ่มของคุณฟันธง: <strong style="color:var(--gold);">${validVotes[0]?.ensemble || curVote.ensemble}</strong><br>
                   👀 เงยหน้าดูจอคุณครูเพื่อไปคดีถัดไปได้เลย!
                 </div>
+                <button class="btn btn-secondary" style="width:100%;margin-top:11px" onclick="changeStudentPVote(${caseNum})">✏️ กดเปลี่ยนคำตอบของฉัน (ก่อนครูเปลี่ยนด่าน)</button>
               </div>
             ` : `
               <div style="font-weight:800; color:#fbbf24; font-size:1.05rem; margin-bottom:6px;">
@@ -2559,14 +2641,12 @@
     function getStudentSelectedInCase(student, caseNum) {
       const fromServer = student?.kCases?.["case"+caseNum]?.selected;
       if (Array.isArray(fromServer)) return fromServer;
-      return studentSelectedK[caseNum] || [];
+      // ห้ามนำร่างคำตอบของมือถือครู/นักเรียนคนอื่นไปใส่แฟ้มรายบุคคล
+      return studentProfile?.studentId === student?.studentId ? (studentSelectedK[caseNum] || []) : [];
     }
 
-    // ภาพแฟ้มสรุปรายบุคคล: คำตอบจริง + เฉลยหลังเกม + ความรู้ที่ควรจำ
-    function generateStudentReportPNG() {
-      if (!studentProfile) return;
-      playSound("fanfare");
-      const me = roomState.students.find(s => s.studentId === studentProfile.studentId) || {};
+    // ใช้ตัววาดเดียวกันทั้งดาวน์โหลดบนมือถือและ ZIP ทั้งห้อง ไม่สร้างแฟ้มคนละแบบ
+    function buildStudentDossierCanvas(me, profile) {
       const passAll = isFullyAssessed(me) && hasPassedK(me) && hasPassedP(me) && hasPassedA(me);
       const canvas = document.createElement("canvas");
       canvas.width = 1080;
@@ -2600,8 +2680,8 @@
       write("🕵️ แฟ้มสรุปการเรียนรู้",55,84,48,"#fbbf24",true);
       write("ปฏิบัติการนักสืบดนตรีไทย · ดนตรี ม.1",57,128,29,"#dbeafe");
       rect(50,158,980,108,"#0b1324","#475569");
-      write(`ชื่อ: ${studentProfile.name}`,70,201,33,"#fff",true);
-      write(`ชั้น ${studentProfile.classRoom} · เลขที่ ${studentProfile.number} · กลุ่ม${studentProfile.group} · PIN ${studentProfile.pin}`,70,240,27,"#cbd5e1");
+      write(`ชื่อ: ${profile.name}`,70,201,33,"#fff",true);
+      write(`ชั้น ${profile.classRoom} · เลขที่ ${profile.number} · กลุ่ม${profile.group} · PIN ${profile.pin}`,70,240,27,"#cbd5e1");
 
       [1,2,3].forEach((n,i) => {
         const y=291+i*244;
@@ -2641,6 +2721,15 @@
       write(`คะแนนรวม ${total} / 19`,75,1702,40,"#fbbf24",true);
       write(passAll?"🏆 สุดยอดนักสืบดนตรีไทย":"⭐ นักสืบฝึกหัด · ทบทวนต่อได้",75,1755,34,passAll?"#86efac":"#fff",true);
       write("ความรู้เกิดจากการสังเกต เปรียบเทียบ และอธิบายเหตุผล",75,1802,25,"#cbd5e1");
+      return canvas;
+    }
+
+    // ภาพแฟ้มสรุปรายบุคคล: คำตอบจริง + เฉลยหลังเกม + ความรู้ที่ควรจำ
+    function generateStudentReportPNG() {
+      if (!studentProfile) return;
+      playSound("fanfare");
+      const me = roomState.students.find(s => s.studentId === studentProfile.studentId) || {};
+      const canvas = buildStudentDossierCanvas(me, studentProfile);
       const dataUrl = canvas.toDataURL("image/png");
       document.getElementById("generated-png-img").src = dataUrl;
       const dlLink = document.getElementById("download-png-link");
@@ -2954,7 +3043,7 @@
             activeGroups++;
             const valid = votes.filter(v => v.structure && v.ensemble);
             const unan = valid.length === votes.length &&
-              valid.every(v => v.structure === valid[0].structure && v.ensemble === valid[0].ensemble);
+              valid.every(v => v.ensemble === valid[0].ensemble);
             if (unan) unanimousGroups++;
           }
         });
@@ -3013,7 +3102,7 @@
         container.innerHTML = `<div class="card" style="text-align:center;padding:36px 20px;border:2px solid var(--gold)">
           <div style="font-size:3rem">📋</div><h2 style="color:var(--gold)">อธิบายภารกิจก่อนเริ่ม</h2>
           <h2>${meta.title || stage}</h2><p style="font-size:1.3rem;line-height:1.9">${meta.instruction || "อธิบายวิธีเล่นให้นักเรียนเข้าใจ"}</p>
-          ${stage.endsWith("K") ? `<p style="font-size:clamp(1.5rem,2.2vw,2.4rem)">🎸 ดีด &nbsp; 🎻 สี &nbsp; 🥁 ตี &nbsp; 🎶 เป่า &nbsp; 🪘 จังหวะ</p><p style="font-size:1.6rem">แตะหมวดทั้ง 5 → เลือกเครื่องดนตรี → ส่งเบาะแส</p>` : stage.endsWith("P") ? `<p style="font-size:1.6rem">อ่านกราฟ → ปรึกษาเพื่อน → เลือกโครงสร้าง → เลือกชื่อวง → ยืนยันส่งมติ</p>` : ""}
+          ${stage.endsWith("K") ? `<p style="font-size:clamp(1.5rem,2.2vw,2.4rem)">🎸 ดีด &nbsp; 🎻 สี &nbsp; 🥁 ตี &nbsp; 🎶 เป่า &nbsp; 🪘 ประกอบจังหวะ</p><p style="font-size:1.6rem">แตะหมวดทั้ง 5 → เลือกเครื่องดนตรี → ส่งเบาะแส</p>` : stage.endsWith("P") ? `<p style="font-size:1.6rem">อ่านกราฟ → ปรึกษาเพื่อน → เลือกโครงสร้าง → เลือกชื่อวง → ยืนยันส่งมติ</p>` : ""}
           <button class="btn btn-success" style="font-size:1.5rem;padding:18px 36px;margin-top:24px" onclick="teacherStartMission()">▶ เริ่มนับถอยหลัง 3–2–1</button>
           <p style="color:var(--muted);margin-top:14px">นักเรียนทุกคนเห็นหน้าเตรียมพร้อมและยังไม่สามารถส่งคำตอบ</p></div>`;
         return;
@@ -3023,19 +3112,20 @@
       if (/^[123]PRESS$/.test(stage)) {
         const caseNum = Number(stage[0]);
         const group = roomState.pressAssignments?.["case" + caseNum] || "";
-        const speech = getPressSpeech(caseNum, group);
-        const sig = `${stage}|${group}|${speech.clues}|rolling:${pressRolling}`;
+        const sig = `${stage}|${group}|rolling:${pressRolling}`;
         if (!forceRebuild && teacherRenderedSig === sig) return;
         teacherRenderedSig = sig;
-        container.innerHTML = `<div class="case-press-main">
-          <div style="font-size:2.5rem">🎙️ 🕵️‍♂️ 🎙️</div>
-          <h1>แถลงข้อสันนิษฐาน · คดีที่ ${caseNum}</h1>
-          ${pressRolling ? `<div id="press-roulette-name" style="font-size:clamp(3rem,5vw,6rem);color:#fbbf24;font-weight:900;margin:50px 0">🎲 กลุ่ม${pressRollingName}</div><p class="projector-body">กำลังสุ่มตัวแทนแถลงข่าว…</p>` : !group ? `<div style="font-size:4rem;padding:18px">🎲</div><button class="btn btn-primary" style="font-size:clamp(1.6rem,2.4vw,2.4rem);padding:20px 40px" onclick="teacherRandomizePress()">🎲 เริ่มสุ่มกลุ่มแถลงข่าว</button>` : `
-            <div class="projector-body" style="margin:8px 0 14px">🎤 ตัวแทนแถลง: <strong style="color:#fbbf24">กลุ่ม${escapeHtml(group)}</strong></div>
-            <div style="font-size:clamp(1.3rem,2.1vw,2.2rem);line-height:1.65;color:#fff;padding:18px;background:#172554;border-radius:16px;margin-bottom:12px">“จากภารกิจคดีที่ ${caseNum} กลุ่มของเราพบเบาะแสเครื่องดนตรี ได้แก่ <strong style="color:#7dd3fc;display:block;max-height:140px;overflow:auto">${escapeHtml(speech.clues)}</strong></div>
-            <div style="font-size:clamp(1.3rem,2.1vw,2.2rem);line-height:1.7;color:#fff;padding:18px;background:#0f172a;border-radius:16px">เมื่อนำเบาะแสมาเปรียบเทียบกับไกด์นักสืบ กลุ่มของเราจึงสันนิษฐานว่าเป็นวง <strong style="color:#fbbf24">........................</strong> ครับ/ค่ะ”</div>
-            <p style="color:#fbbf24;font-size:1.1rem;margin-top:15px">🔒 ยังไม่เฉลยถูก–ผิด จนกว่าจะจบครบ 3 คดี</p>
-          `}
+        container.innerHTML = `<div class="press-room" role="region" aria-label="ฉากแถลงข่าวคดีที่ ${caseNum}">
+          <div class="press-room-content">
+            <div class="press-room-eyebrow">🎥 THAI MUSIC DETECTIVE · PRESS CONFERENCE</div>
+            <div class="press-room-microphone">🎙️</div>
+            <h1 class="press-room-heading">แถลงข้อสันนิษฐาน · คดีที่ ${caseNum}</h1>
+            ${pressRolling ? `<div id="press-roulette-name" class="press-room-group">🎲 กลุ่ม${pressRollingName}</div><p class="projector-body">กำลังสุ่มตัวแทนแถลงข่าว…</p>` : !group ? `<button class="btn btn-primary" style="font-size:clamp(1.5rem,2.3vw,2.2rem);padding:20px 40px;margin:24px 0" onclick="teacherRandomizePress()">🎲 เริ่มสุ่มกลุ่มแถลงข่าว</button>` : `
+              <div class="press-room-group">กลุ่ม${escapeHtml(group)}</div>
+              <div style="font-size:clamp(1.15rem,1.9vw,2rem);color:#fff;font-weight:800">🎤 เชิญตัวแทนขึ้นแถลงข่าว · อ่านสคริปต์ได้บนมือถือของกลุ่ม</div>
+              <p style="font-size:clamp(1rem,1.3vw,1.4rem);color:#fde68a;margin-top:22px">🔒 ยังไม่เฉลยถูก–ผิดจนกว่าจะจบทั้ง 3 คดี</p>
+            `}
+          </div>
         </div>`;
         return;
       }
@@ -3206,7 +3296,7 @@
           const valid = votes.filter(v => v.structure && v.ensemble);
           const total = votes.length;
           const unanimous = total > 0 && valid.length === total &&
-            valid.every(v => v.structure === valid[0].structure && v.ensemble === valid[0].ensemble);
+            valid.every(v => v.ensemble === valid[0].ensemble);
 
           return `
             <div style="background:rgba(15,23,42,0.8); padding:14px 15px; border-radius:8px; border:2px solid ${unanimous ? '#10b981' : '#e2e8f0'}; display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:clamp(1.1rem,1.6vw,1.5rem);">
@@ -3256,18 +3346,15 @@
         const doneA = students.filter(s => s.aSubmitted);
         const pendingA = students.filter(s => !s.aSubmitted);
         container.innerHTML = `
-          <div class="card" style="text-align:center;min-height:min(70vh,660px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:25px 32px">
-            <h1 class="projector-hero" style="color:#fbbf24;margin:0">🎯 ภารกิจตัดสินใจ</h1>
-            <div style="font-size:clamp(3.5rem,7vw,7rem);line-height:1">📱</div>
-            <h2 style="font-size:clamp(1.6rem,2.4vw,2.6rem);color:#fff;margin:0">เลือกวงดนตรีไทยให้เหมาะกับสถานการณ์</h2>
-            <div style="background:#172554;border:2px solid #475569;border-radius:18px;padding:20px 35px;color:#fff;font-size:clamp(1.3rem,2vw,2.1rem);line-height:1.7">
-              1. อ่านคำถาม 3 สถานการณ์บนมือถือ<br>2. เลือกวงให้ครบ แล้วกดยืนยันส่ง
+          <div class="card teacher-a-board">
+            <div class="teacher-a-heading">
+              <div><h1 style="color:#fbbf24;font-size:clamp(1.7rem,2.5vw,2.65rem);margin:0">🎯 ภารกิจตัดสินใจ</h1><div style="font-size:clamp(.9rem,1.1vw,1.15rem);color:#cbd5e1">อ่านสถานการณ์บนจอหรือมือถือ เลือกวงให้ครบทั้ง 3 ข้อ แล้วกดยืนยันส่ง</div></div>
+              <div class="a-progress" style="background:#064e3b;border:2px solid #34d399;border-radius:14px;padding:9px 20px;color:#fff;font-weight:900;font-size:clamp(1.2rem,2vw,2rem)">✅ ส่งแล้ว ${doneA.length}/${students.length} คน</div>
             </div>
-            <div style="background:#064e3b;border:3px solid #34d399;border-radius:20px;padding:16px 50px">
-              <div style="font-size:1.45rem;color:#bbf7d0">📊 ส่งคำตอบแล้ว</div>
-              <div style="font-size:clamp(2.5rem,4.8vw,5rem);font-weight:900;color:#fff">${doneA.length} / ${students.length} คน</div>
+            <div class="teacher-a-cases">
+              ${ATTITUDE_TEACHER_PROMPTS.map((q,i)=>`<div class="teacher-a-case"><h3>ข้อ ${i+1} · ${q.title}</h3><p>${q.text}</p></div>`).join("")}
             </div>
-            <div style="font-size:clamp(1.05rem,1.3vw,1.5rem);color:${pendingA.length?'#fbbf24':'#86efac'}">${pendingA.length ? '⏳ รอเลขที่: '+pendingA.map(s=>escapeHtml(s.number)).join(', ') : '✅ นักเรียนส่งครบทุกคนแล้ว'}</div>
+            <div class="teacher-a-pending" style="color:${pendingA.length?'#fde68a':'#86efac'}">${pendingA.length ? '⏳ ยังรอเลขที่: '+pendingA.map(s=>escapeHtml(s.number)).join(', ') : '🎉 นักเรียนส่งครบทุกคนแล้ว · รอคุณครูเปิดสรุปผล'}</div>
           </div>
         `;
         return;
@@ -3507,19 +3594,18 @@
 
             <!-- UNIFIED DOWNLOADING MENU FOR CLEAN DESK -->
             <div style="background:#090d16; border:1px solid #334155; border-radius:12px; padding:14px; text-align:center;">
-              <div style="font-family:var(--font-head); font-weight:700; font-size:0.95rem; color:var(--gold); margin-bottom:8px;">
-                📥 ดาวน์โหลดหลักฐานประเมินทั้ง 3 ภารกิจ และสรุปผลหลังแผน
-              </div>
-              <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
-                <button class="btn btn-primary btn-sm" onclick="copyPaSummary()">📋 คัดลอกสรุปท้ายแผน</button>
+              <button class="btn btn-primary" style="font-size:1.12rem;padding:13px 28px;max-width:100%" aria-expanded="${showTeacherReportDownloads}" onclick="toggleTeacherReportDownloads()">📥 ดาวน์โหลดรายงานผล ${showTeacherReportDownloads?'▲ ปิดเมนู':'▼ เปิดเมนู'}</button>
+              ${showTeacherReportDownloads ? `<div class="report-download-panel">
+                <button class="btn btn-primary btn-sm" onclick="exportPaSummaryTXT()">📝 สรุปผลหลังแผน (.TXT)</button>
                 <button class="btn btn-success btn-sm" onclick="exportKReportCSV()">📗 รายงานชี้เบาะแส (.CSV)</button>
                 <button class="btn btn-success btn-sm" onclick="exportPReportCSV()">🤝 รายงานจำแนกวง (.CSV)</button>
                 <button class="btn btn-success btn-sm" onclick="exportPGroupCSV()">👥 มติกลุ่ม (.CSV)</button>
                 <button class="btn btn-success btn-sm" onclick="exportAReportCSV()">🎯 รายงานตัดสินใจ (.CSV)</button>
-                <button class="btn btn-success btn-sm" onclick="exportRoomScoresCSV()">📊 ดาวน์โหลดคะแนนรวม (.CSV)</button>
-                <button class="btn btn-secondary btn-sm" onclick="toggleAllDetectiveCards()">🪪 ${showAllCardsPreview ? 'ซ่อน' : 'แสดง'} บัตร ID รายบุคคลทั้งห้อง</button>
-              </div>
-              <div style="color:#94a3b8; font-size:0.8rem; margin-top:8px;">ไฟล์ .CSV เปิดด้วย Excel ได้ และแยกผู้ยังไม่ส่งครบออกจากผู้ไม่ผ่านเกณฑ์</div>
+                <button class="btn btn-success btn-sm" onclick="exportRoomScoresCSV()">📊 คะแนนรวม (.CSV)</button>
+                <button class="btn btn-primary btn-sm" onclick="exportAllStudentDossiersZIP()">🗂️ แฟ้มสรุปทั้งห้อง (.ZIP)</button>
+                <button class="btn btn-secondary btn-sm" onclick="copyPaSummary()">📋 คัดลอกสรุปหลังแผน</button>
+                <button class="btn btn-secondary btn-sm" onclick="toggleAllDetectiveCards()">🪪 ${showAllCardsPreview ? 'ซ่อน' : 'แสดง'} บัตร ID เดิม</button>
+              </div><div style="color:#94a3b8;font-size:.82rem;margin-top:9px">CSV 5 รายงาน · TXT สรุปหลังแผน · ZIP แฟ้ม PNG รายบุคคลทั้งห้อง</div>` : ''}
             </div>
           </div>
 
@@ -3591,6 +3677,109 @@
       } catch (err) {
         showReportNotice("❌ คัดลอกไม่สำเร็จ กรุณาใช้ HTTPS หรือคัดลอกจากข้อความสรุปบนหน้าจอ", true);
       }
+    }
+
+    function toggleTeacherReportDownloads() {
+      showTeacherReportDownloads = !showTeacherReportDownloads;
+      renderTeacherStage(true);
+    }
+
+    function downloadLocalBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    }
+
+    function exportPaSummaryTXT() {
+      const report = paReportTextCache || document.getElementById("pa-summary-text")?.textContent || "";
+      if (!report) return showReportNotice("ไม่พบข้อมูลสรุปผล กรุณาเปิดหน้าสรุปผลก่อน", true);
+      const pin = String(currentPin).replace(/[^0-9a-zA-Z_-]/g, "");
+      downloadLocalBlob(new Blob(["\uFEFF", report], {type:"text/plain;charset=utf-8"}), `สรุปผลหลังแผน_ห้อง_${pin}.txt`);
+      showReportNotice("✅ เริ่มดาวน์โหลดสรุปผลหลังแผน (.TXT) แล้ว");
+    }
+
+    function cleanDossierFilename(value) {
+      return String(value || "ไม่ระบุชื่อ").replace(/[\\/:*?"<>|\x00-\x1f]/g, "_").trim();
+    }
+
+    // สร้าง ZIP แบบ STORE: PNG ถูกบีบอัดอยู่แล้ว จึงไม่ต้องพึ่ง CDN หรือลงไลบรารีเพิ่ม
+    const ZIP_CRC_TABLE = Uint32Array.from({length:256}, (_,n) => {
+      let c=n;
+      for (let i=0;i<8;i++) c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1);
+      return c>>>0;
+    });
+    function zipCRC32(bytes) {
+      let c=0xffffffff;
+      for (let i=0;i<bytes.length;i++) c=ZIP_CRC_TABLE[(c^bytes[i])&255]^(c>>>8);
+      return (c^0xffffffff)>>>0;
+    }
+
+    async function buildZipFromPNGEntries(entries) {
+      if (entries.length > 65535) throw new Error("จำนวนไฟล์ ZIP มากเกินไป");
+      const encoder = new TextEncoder();
+      const localParts=[], centralParts=[];
+      let localOffset=0, centralSize=0;
+      const now=new Date();
+      const zipTime=((now.getHours()&31)<<11)|((now.getMinutes()&63)<<5)|(Math.floor(now.getSeconds()/2)&31);
+      const zipDate=(((now.getFullYear()-1980)&127)<<9)|(((now.getMonth()+1)&15)<<5)|(now.getDate()&31);
+      for (const entry of entries) {
+        const nameBytes=encoder.encode(entry.name);
+        const bytes=new Uint8Array(await entry.blob.arrayBuffer());
+        if (nameBytes.length>65535 || bytes.length>0xffffffff || localOffset>0xffffffff) throw new Error("ไฟล์ ZIP มีขนาดใหญ่เกินกำหนด");
+        const crc=zipCRC32(bytes), size=bytes.length;
+        const local=new Uint8Array(30), a=new DataView(local.buffer);
+        a.setUint32(0,0x04034b50,true);a.setUint16(4,20,true);a.setUint16(6,0x0800,true);
+        a.setUint16(8,0,true);a.setUint16(10,zipTime,true);a.setUint16(12,zipDate,true);
+        a.setUint32(14,crc,true);a.setUint32(18,size,true);a.setUint32(22,size,true);
+        a.setUint16(26,nameBytes.length,true);
+        localParts.push(local,nameBytes,bytes);
+        const central=new Uint8Array(46), b=new DataView(central.buffer);
+        b.setUint32(0,0x02014b50,true);b.setUint16(4,20,true);b.setUint16(6,20,true);
+        b.setUint16(8,0x0800,true);b.setUint16(10,0,true);b.setUint16(12,zipTime,true);
+        b.setUint16(14,zipDate,true);b.setUint32(16,crc,true);b.setUint32(20,size,true);
+        b.setUint32(24,size,true);b.setUint16(28,nameBytes.length,true);
+        b.setUint32(42,localOffset,true);
+        centralParts.push(central,nameBytes);
+        localOffset+=local.length+nameBytes.length+size;
+        centralSize+=central.length+nameBytes.length;
+      }
+      if (localOffset+centralSize>0xffffffff) throw new Error("ZIP ใหญ่เกินไปสำหรับการสร้างบนเบราว์เซอร์");
+      const end=new Uint8Array(22), c=new DataView(end.buffer);
+      c.setUint32(0,0x06054b50,true);
+      c.setUint16(8,entries.length,true);c.setUint16(10,entries.length,true);
+      c.setUint32(12,centralSize,true);c.setUint32(16,localOffset,true);
+      return new Blob([...localParts,...centralParts,end],{type:"application/zip"});
+    }
+
+    async function exportAllStudentDossiersZIP() {
+      const students=getSortedReportStudents();
+      if (!students.length) return showReportNotice("ยังไม่มีรายชื่อนักเรียนสำหรับสร้างแฟ้มสรุป", true);
+      await withTeacherLoading(`กำลังสร้างแฟ้มสรุป 0/${students.length} คน…`, async()=>{
+        const entries=[];
+        for (let i=0;i<students.length;i++) {
+          const s=students[i];
+          const progress=document.getElementById("teacher-busy-message");
+          if (progress) progress.textContent=`⏳ กำลังสร้างแฟ้มสรุป ${i+1}/${students.length} คน…`;
+          const profile={name:s.name,classRoom:s.classRoom,number:s.number,group:s.group,pin:currentPin};
+          const canvas=buildStudentDossierCanvas(s,profile);
+          const png=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("สร้าง PNG ไม่สำเร็จ")),"image/png"));
+          canvas.width=0;canvas.height=0;
+          const num=String(s.number||i+1).padStart(2,"0");
+          entries.push({name:`เลขที่${num}_${cleanDossierFilename(s.name)}_${i+1}.png`,blob:png});
+        }
+        const progress=document.getElementById("teacher-busy-message");
+        if (progress) progress.textContent="⏳ กำลังรวมแฟ้ม PNG เป็น ZIP…";
+        const zip=await buildZipFromPNGEntries(entries);
+        downloadLocalBlob(zip,`แฟ้มสรุปการเรียนรู้_ห้อง${String(currentPin).replace(/[^0-9a-zA-Z_-]/g,"")}.zip`);
+        showReportNotice(`✅ เริ่มดาวน์โหลดแฟ้มสรุปการเรียนรู้ ${students.length} คนแล้ว`);
+        playSound("victory");
+        return true;
+      });
     }
 
     function getSortedReportStudents() {
