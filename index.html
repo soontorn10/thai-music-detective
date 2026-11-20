@@ -356,20 +356,19 @@
       box-shadow: 0 0 0 4px rgba(254, 240, 138, 0.45);
     }
 
-    /* 5-Category Horizontal Bar Chart (Data Visualization for Brainstorming in P Stage) */
-    .bar-chart-box {
+    /* Clean Minimalist 5-Category Horizontal Bar Chart for Student Mobile (Non-clickable and highly optimized) */
+    .bar-chart-box-minimal {
       background: #090d16;
       border: 1px solid #334155;
       border-radius: 14px;
       padding: 14px 16px;
       margin-bottom: 14px;
     }
-    .bar-row {
+    .bar-row-minimal {
       margin-bottom: 10px;
-      cursor: pointer;
     }
-    .bar-row:last-child { margin-bottom: 0; }
-    .bar-label-line {
+    .bar-row-minimal:last-child { margin-bottom: 0; }
+    .bar-label-line-minimal {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -378,25 +377,31 @@
       font-family: var(--font-head);
       margin-bottom: 4px;
     }
-    .bar-track {
+    .bar-track-minimal {
       width: 100%;
-      height: 18px;
+      height: 12px;
       background: #1e293b;
       border-radius: 99px;
       overflow: hidden;
-      position: relative;
     }
-    .bar-fill {
+    .bar-fill-minimal {
       height: 100%;
       border-radius: 99px;
       transition: width 0.4s ease;
-      min-width: 4px;
     }
-    .bar-detail-pills {
-      font-size: 0.78rem;
-      color: #cbd5e1;
-      margin-top: 3px;
-      padding-left: 4px;
+    .bar-pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .bar-pill-tag {
+      font-size: 0.72rem;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #334155;
     }
 
     /* Floating Bottom Teacher Remote Control Dock (No scrolling needed!) */
@@ -470,31 +475,58 @@
       50% { transform: scale(1.06); }
     }
 
-    /* Compact Media Frame on Teacher Projector (Fits 100% in 1 screen without scrolling) */
-    .media-frame {
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 2px solid #475569;
-      max-width: 780px;
-      margin: 0 auto 8px;
-      position: relative;
-    }
-    .media-frame img, .media-frame video {
+    /* Cinema Overlay Mode for Video/Image Fullscreen */
+    .cinema-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-height: 40vh;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
+      height: calc(100% - 70px); /* Leave room for floating teacher bottom dock */
+      background: #000;
+      z-index: 250;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
-    .credit-caption {
-      font-size: 0.8rem;
-      color: #cbd5e1;
-      text-align: center;
-      padding: 5px 10px;
-      background: rgba(15, 23, 42, 0.8);
-      border-radius: 8px;
-      margin-bottom: 10px;
+    .cinema-overlay .media-container {
+      width: 100%;
+      height: 80%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cinema-overlay video, .cinema-overlay img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .cinema-overlay-header {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 260;
+    }
+    .cinema-title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      color: var(--gold);
+      font-size: 1.3rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+    .cinema-clue-badge {
+      background: rgba(239, 68, 68, 0.85);
+      border: 1px solid #ef4444;
+      color: #fff;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-family: var(--font-head);
     }
 
     /* Group Boxes */
@@ -572,7 +604,7 @@
       height: 145px !important;
     }
 
-    /* Press Conference Stage with Realistic Backdrop, Spotlights & Podium */
+    /* Press Conference Stage with Realistic Backdrop, Spotlights & Giant Badge */
     .press-stage {
       background: radial-gradient(circle at 50% 0%, #4c1d95 0%, #1e1b4b 45%, #090d16 100%);
       border: 3px solid var(--gold);
@@ -614,6 +646,23 @@
       text-align: center;
       position: relative;
       box-shadow: 0 -8px 25px rgba(0,0,0,0.6);
+    }
+    .giant-press-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      color: #ffffff;
+      font-family: var(--font-head);
+      font-size: 1.35rem;
+      font-weight: 800;
+      padding: 10px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+      margin-bottom: 12px;
+      animation: pulseAttention 1s infinite alternate;
+    }
+    @keyframes pulseAttention {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
     }
 
     /* 3-2-1 Fullscreen Mission Intro Countdown Overlay */
@@ -695,6 +744,84 @@
     }
     .pass-ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
     .pass-no { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+
+    /* Redesigned Leaderboard / Podium Styles */
+    .podium-container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px auto;
+      padding: 10px;
+      max-width: 580px;
+    }
+    .podium-pillar {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 12px 12px 0 0;
+      padding: 16px 10px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .podium-pillar.rank-1 {
+      background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
+      border-top: 4px solid #facc15;
+      height: 180px;
+    }
+    .podium-pillar.rank-2 {
+      background: linear-gradient(180deg, #475569 0%, #334155 100%);
+      border-top: 4px solid #cbd5e1;
+      height: 140px;
+    }
+    .podium-pillar.rank-3 {
+      background: linear-gradient(180deg, #854d0e 0%, #713f12 100%);
+      border-top: 4px solid #ca8a04;
+      height: 110px;
+    }
+    .podium-pillar.rank-4 {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155;
+      height: 90px;
+    }
+    .podium-trophy {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+    .podium-team-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .podium-score-avg {
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      margin-top: 4px;
+    }
+
+    /* K-P-A Summary Card Badges */
+    .kpa-badge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpa-summary-badge {
+      background: rgba(15,23,42,0.8);
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .kpa-summary-val {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
 
     /* Tables & Reports */
     .table-wrap {
@@ -1074,7 +1201,7 @@
       {
         cat: "ดีด",
         title: "🟡 เครื่องดีด",
-        shortTab: "🟡 ดีด",
+        shortTab: "ดีด",
         color: "#facc15",
         items: [
           { name: "จะเข้", label: "จะเข้" },
@@ -1086,7 +1213,7 @@
       {
         cat: "สี",
         title: "🔵 เครื่องสี",
-        shortTab: "🔵 สี",
+        shortTab: "สี",
         color: "#38bdf8",
         items: [
           { name: "ซอด้วง", label: "ซอด้วง" },
@@ -1098,7 +1225,7 @@
       {
         cat: "ตี",
         title: "🔴 เครื่องตี",
-        shortTab: "🔴 ตี",
+        shortTab: "ตี",
         color: "#f87171",
         items: [
           { name: "ระนาดเอก", label: "ระนาดเอก" },
@@ -1113,7 +1240,7 @@
       {
         cat: "เป่า",
         title: "🟢 เครื่องเป่า",
-        shortTab: "🟢 เป่า",
+        shortTab: "เป่า",
         color: "#34d399",
         items: [
           { name: "ปี่ใน", label: "ปี่ใน" },
@@ -1127,7 +1254,7 @@
       {
         cat: "จังหวะ",
         title: "⚪ เครื่องประกอบจังหวะ",
-        shortTab: "⚪ จังหวะ",
+        shortTab: "จังหวะ",
         color: "#cbd5e1",
         items: [
           { name: "ฉิ่ง", label: "ฉิ่ง" },
@@ -1269,13 +1396,15 @@
         "ดีด": { case1: {}, case2: {}, case3: {} },
         "สี": { case1: {}, case2: {}, case3: {} },
         "ตี": { case1: {}, case2: {}, case3: {} },
-        "เป่า": { case1: {}, case2: {}, case3: {} }
+        "เป่า": { case1: {}, case2: {}, case3: {} },
+        "จังหวะ": { case1: {}, case2: {}, case3: {} }
       },
       groupVotes: {
         "ดีด": { case1: [], case2: [], case3: [] },
         "สี": { case1: [], case2: [], case3: [] },
         "ตี": { case1: [], case2: [], case3: [] },
-        "เป่า": { case1: [], case2: [], case3: [] }
+        "เป่า": { case1: [], case2: [], case3: [] },
+        "จังหวะ": { case1: [], case2: [], case3: [] }
       }
     };
 
@@ -1296,6 +1425,12 @@
     let showGroupPReport = true;
     let showAllCardsPreview = false;
 
+    // Separate view states for separate downloads
+    let showReportK = false;
+    let showReportP = false;
+    let showReportA = false;
+    let showReportAll = false;
+
     let isSubmittingNow = false;
     let lastStudentCount = 0;
     let pollTimer = null;
@@ -1311,12 +1446,13 @@
     } catch (e) {}
 
     /********************************************************************
-     * 3. WEB AUDIO API & 3-2-1 MISSION INTRO COUNTDOWN
+     * 3. WEB AUDIO API & 3-2-1 MISSION INTRO COUNTDOWN & CINEMA OVERLAY
      ********************************************************************/
     let audioCtx = null;
     let bgmPlaying = false;
     let bgmInterval = null;
     let bgmPausedByVideo = false;
+    let isCinemaMode = false;
 
     function getAudioCtx() {
       if (!audioCtx) {
@@ -1642,7 +1778,7 @@
     }
 
     /********************************************************************
-     * 5.5-CATEGORY BAR CHART BUILDER (DATA VISUALIZATION FOR P STAGE & REPORTS)
+     * 5. CLEAN MINIMALIST 5-CATEGORY BAR CHART FOR STUDENT MOBILE
      ********************************************************************/
     function buildFiveCatBarChartHTML(cluesMap, totalMembers, interactive = false) {
       const buckets = {
@@ -1658,7 +1794,7 @@
         if (c > 0) {
           const cat = LOCAL_CAT_MAP[instName] || "จังหวะ";
           buckets[cat].count += c;
-          buckets[cat].items.push(`${instName} (${c})`);
+          buckets[cat].items.push(instName);
         }
       });
 
@@ -1676,44 +1812,41 @@
         { key: "สี", label: "🔵 เครื่องสี", color: "#38bdf8" },
         { key: "ตี", label: "🔴 เครื่องตี", color: "#f87171" },
         { key: "เป่า", label: "🟢 เครื่องเป่า", color: "#34d399" },
-        { key: "จังหวะ", label: "⚪ เครื่องประกอบจังหวะ", color: "#94a3b8" }
+        { key: "จังหวะ", label: "⚪ เครื่องประกอบจังหวะ", color: "#cbd5e1" }
       ];
 
       return `
-        <div class="bar-chart-box">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <span style="font-family:var(--font-head); font-weight:700; color:var(--gold); font-size:0.95rem;">
+        <div class="bar-chart-box-minimal">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-family:var(--font-head); font-weight:700; color:var(--gold); font-size:0.9rem;">
               📊 แผนภูมิแท่งสรุปเบาะแสของกลุ่ม (แยก 5 หมวด)
             </span>
-            <span style="font-size:0.75rem; color:var(--muted);">สมาชิก ${totalMembers} คน</span>
+            <span style="font-size:0.72rem; color:var(--muted);">สมาชิก ${totalMembers} คน</span>
           </div>
           ${metaList.map(m => {
             const b = buckets[m.key];
             const pct = b.count > 0 ? Math.max(8, Math.round((b.count / maxCount) * 100)) : 0;
-            const detailsText = b.items.length > 0 ? b.items.join(", ") : "ไม่มีใครเลือก (0)";
             return `
-              <div class="bar-row" ${interactive ? `onclick="toggleBarDetails('${m.key}')"` : ''}>
-                <div class="bar-label-line">
-                  <span style="color:${m.color};">${m.label}</span>
-                  <span style="color:${b.count > 0 ? '#ffffff' : 'var(--muted)'};">
-                    ${b.count} เบาะแส ${b.count === maxCount && b.count > 0 ? '🔥' : ''}
+              <div class="bar-row-minimal">
+                <div class="bar-label-line-minimal">
+                  <span style="color:${m.color}; font-size:0.82rem;">${m.label}</span>
+                  <span style="color:${b.count > 0 ? '#ffffff' : 'var(--muted)'}; font-size:0.82rem;">
+                    ${b.count} เบาะแส
                   </span>
                 </div>
-                <div class="bar-track">
-                  <div class="bar-fill" style="width:${pct}%; background:${m.color};"></div>
+                <div class="bar-track-minimal">
+                  <div class="bar-fill-minimal" style="width:${pct}%; background:${m.color};"></div>
                 </div>
-                <div class="bar-detail-pills">
-                  ${detailsText}
-                </div>
+                ${b.items.length > 0 ? `
+                  <div class="bar-pills-container">
+                    ${b.items.map(it => `<span class="bar-pill-tag">${it}</span>`).join("")}
+                  </div>
+                ` : ''}
               </div>
             `;
           }).join("")}
         </div>
       `;
-    }
-
-    function toggleBarDetails(catKey) {
-      expandedBarCat = (expandedBarCat === catKey) ? null : catKey;
     }
 
     /********************************************************************
@@ -1937,7 +2070,6 @@
       await refreshRoomState();
     }
 
-    // Step-by-Step P Stage for Student (Step 1: Structure -> Step 2: Ensemble -> Step 3: Live Group Consensus)
     function chooseStudentPStructure(caseNum, structVal) {
       if (isSubmittingNow) return;
       playSound("tick");
@@ -1972,7 +2104,6 @@
       renderStudentStage(true);
     }
 
-    // One-card-at-a-time A Stage for Student
     async function chooseStudentAQuestion(qId, ansVal, totalQuestions) {
       if (isSubmittingNow) return;
       playSound("tick");
@@ -1983,7 +2114,6 @@
         studentASubStep++;
         renderStudentStage(true);
       } else {
-        // All 3 answered -> Submit automatically!
         isSubmittingNow = true;
         renderStudentStage(true);
         const me = roomState.students.find(s => s.studentId === studentProfile.studentId);
@@ -2033,7 +2163,6 @@
       }
       studentRenderedSig = newSig;
 
-      // 1. LOBBY
       if (stage === "LOBBY") {
         const gCount = roomState.students.filter(s => s.group === studentProfile.group).length;
         container.innerHTML = `
@@ -2051,7 +2180,6 @@
         return;
       }
 
-      // 2. STAGE 1K, 2K, 3K (KAHOOT-STYLE CATEGORY TABS - NO LONG SCROLLING)
       if (stage === "1K" || stage === "2K" || stage === "3K") {
         const chosen = studentSelectedK[caseNum] || [];
 
@@ -2087,7 +2215,6 @@
               </div>
             </div>
 
-            <!-- 5 Category Tabs -->
             <div class="cat-tabs-bar">
               ${INSTRUMENT_GROUPS.map(grp => {
                 const countInCat = grp.items.filter(it => chosen.indexOf(it.name) !== -1).length;
@@ -2104,7 +2231,6 @@
               กำลังแสดงหมวด: ${currentCatObj.title} (แตะเลือกได้หลายชิ้น)
             </div>
 
-            <!-- Big Buttons for Active Category Only -->
             <div class="kahoot-inst-grid">
               ${currentCatObj.items.map(inst => {
                 const isSel = chosen.indexOf(inst.name) !== -1;
@@ -2117,7 +2243,6 @@
               }).join("")}
             </div>
 
-            <!-- Bottom Submit Bar -->
             <div style="background:#090d16; border:2px solid var(--gold); border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
               <div>
                 <div style="font-size:0.78rem; color:var(--muted);">คุณเลือกไว้ทั้งหมด</div>
@@ -2132,7 +2257,6 @@
         return;
       }
 
-      // 3. STAGE 1P, 2P, 3P (STEP-BY-STEP WITH 5-CATEGORY BAR CHART)
       if (stage === "1P" || stage === "2P" || stage === "3P") {
         const g = studentProfile.group;
         const curVote = studentVoteP[caseNum];
@@ -2151,19 +2275,16 @@
               </div>
             </div>
 
-            <!-- Live 5-Category Bar Chart -->
             <div id="stu-p-live-chart"></div>
 
-            <!-- Step-by-Step Kahoot Card -->
             ${stepNow === 1 ? `
               <div style="background:#0f172a; border:1px solid #475569; border-radius:14px; padding:14px;">
                 <div style="font-family:var(--font-head); font-weight:800; color:#ffffff; font-size:1.05rem; margin-bottom:10px;">
                   ขั้นที่ 1/2 : จากกราฟแท่งข้างบน วงนี้มีโครงสร้างอย่างไร?
                 </div>
                 ${STRUCTURE_OPTIONS.map(opt => `
-                  <button type="button" class="kahoot-big-choice ${opt.colorClass} ${curVote.structure === opt.value ? 'selected' : ''}" onclick="chooseStudentPStructure(${caseNum}, '${opt.value}')">
+                  <button type="button" class="choice-card p-struct-card ${curVote.structure === opt.value ? 'selected' : ''}" onclick="chooseStudentPStructure(${caseNum}, '${opt.value}')">
                     <span>${opt.icon} ${opt.label}</span>
-                    <span>➔</span>
                   </button>
                 `).join("")}
               </div>
@@ -2191,7 +2312,6 @@
         return;
       }
 
-      // 4. STAGE PRESS (แถลงข่าวปิดคดี)
       if (stage === "PRESS") {
         const assign = roomState.pressAssignments || {};
         let myAssignedCase = null;
@@ -2235,7 +2355,6 @@
         return;
       }
 
-      // 5. STAGE A (ONE QUESTION AT A TIME KAHOOT STYLE)
       if (stage === "A") {
         if (aSub) {
           renderStudentIdCard(container, me);
@@ -2247,44 +2366,35 @@
         const q = questionsForMe[curIdx];
 
         container.innerHTML = `
-          <div class="card">
-            <div class="mission-guide-banner">
-              <div>
-                <div style="font-family:var(--font-head); font-weight:800; color:#34d399; font-size:1.05rem;">
-                  🎯 ด่านสุดท้าย : ภารกิจตัดสินใจ (ข้อที่ ${curIdx + 1} / ${questionsForMe.length})
-                </div>
-                <div style="font-size:0.86rem; color:#e2e8f0;">
-                  ตัดสินใจเลือกวงดนตรีไทยให้เหมาะกับงานครบ 3 ข้อ เพื่อรับใบรายงานผลนักสืบประจำตัว!
-                </div>
-              </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-family:var(--font-head); font-weight:800; color:var(--gold); font-size:1.15rem; margin-bottom:12px;">
+              🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจ (ข้อที่ ${curIdx + 1} / ${questionsForMe.length})
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid #334155; border-radius:12px; padding:18px; margin-bottom:18px;">
+              <div style="font-size:1.15rem; color:#ffffff; font-weight:700;">👀 เงยหน้าอ่านโจทย์สถานการณ์จากจอคุณครูหน้าห้องครับ!</div>
+              <div style="font-size:0.9rem; color:var(--muted); margin-top:4px;">จอมือถือจะแสดงปุ่มให้เลือกใช้วงดนตรีไทยที่เหมาะสมที่สุด</div>
             </div>
 
-            <div style="background:#0f172a; border:2px solid var(--gold); border-radius:14px; padding:18px; margin-bottom:14px;">
-              <div style="font-size:0.82rem; color:var(--gold); font-weight:700; margin-bottom:4px;">สถานการณ์ที่ ${curIdx + 1} จาก 3</div>
-              <div style="font-family:var(--font-head); font-weight:800; color:#ffffff; font-size:1.2rem; margin-bottom:8px;">
-                ${q.scenarioTitle}
+            ${isSubmittingNow ? `
+              <div style="text-align:center; padding:20px; color:var(--gold); font-weight:800; font-size:1.1rem;">
+                ⏳ กำลังส่งคำตอบและออกใบรายงานผลนักสืบของคุณ...
               </div>
-              <div style="font-size:0.98rem; color:#cbd5e1; margin-bottom:16px;">
-                ${q.desc}
-              </div>
-
-              ${isSubmittingNow ? `
-                <div style="text-align:center; padding:20px; color:var(--gold); font-weight:800; font-size:1.1rem;">
-                  ⏳ กำลังส่งคำตอบและออกใบรายงานผลนักสืบของคุณ...
-                </div>
-              ` : ENSEMBLE_OPTIONS.map(opt => `
-                <button type="button" class="kahoot-big-choice ${opt.colorClass}" onclick="chooseStudentAQuestion('${q.id}', '${opt.value}', ${questionsForMe.length})">
-                  <span>${opt.icon} เลือกใช้ "${opt.label}"</span>
-                  <span>เลือก ➔</span>
-                </button>
-              `).join("")}
-            </div>
+            ` : `
+              <button type="button" class="kahoot-big-choice kahoot-red" onclick="chooseStudentAQuestion('${q.id}', 'วงปี่พาทย์', ${questionsForMe.length})">
+                <span>🟥 เลือกใช้ "วงปี่พาทย์"</span>
+              </button>
+              <button type="button" class="kahoot-big-choice kahoot-blue" onclick="chooseStudentAQuestion('${q.id}', 'วงเครื่องสาย', ${questionsForMe.length})">
+                <span>🟦 เลือกใช้ "วงเครื่องสาย"</span>
+              </button>
+              <button type="button" class="kahoot-big-choice kahoot-yellow" onclick="chooseStudentAQuestion('${q.id}', 'วงมโหรี', ${questionsForMe.length})">
+                <span>🟨 เลือกใช้ "วงมโหรี"</span>
+              </button>
+            `}
           </div>
         `;
         return;
       }
 
-      // 6. STAGE SUMMARY
       if (stage === "SUMMARY") {
         renderStudentIdCard(container, me);
       }
@@ -2308,7 +2418,7 @@
 
       const chartEl = document.getElementById("stu-p-live-chart");
       if (chartEl) {
-        chartEl.innerHTML = buildFiveCatBarChartHTML(cluesMap, votesList.length || 1, true);
+        chartEl.innerHTML = buildFiveCatBarChartHTML(cluesMap, votesList.length || 1, false);
       }
 
       const voteStatusEl = document.getElementById("stu-p-live-vote-status");
@@ -2366,10 +2476,10 @@
         return "🌟 ยอดเยี่ยมมาก! คุณมีทักษะการสังเกตเครื่องดนตรีไทยแม่นยำ ร่วมระดมสมองสังเคราะห์โครงสร้างวงกับเพื่อนได้ดีเยี่ยม และเลือกใช้วงดนตรีตามโอกาสได้อย่างเหมาะสม";
       }
       const tips = [];
-      if (scoreK < 7) tips.push("ทบทวนรูปร่างและชื่อเครื่องดนตรีในแต่ละหมวดเพิ่มเติมอีกนิด");
-      if (scoreP < 4) tips.push("ฝึกสังเกตจุดต่างระหว่างวงปี่พาทย์ เครื่องสาย และมโหรีจากแผนภูมิ 5 หมวด");
-      if (scoreA < 2) tips.push("ทบทวนความเหมาะสมของโทนเสียงแต่ละวงกับลักษณะงานพิธี");
-      return "💡 พยายามได้ดีมาก! คำแนะนำเพื่อพัฒนาต่อยอด: " + tips.join(" และ ");
+      if (scoreK < 7) tips.push("ทบทวนรูปร่างและชื่อเครื่องดนตรี in แต่ละหมวดเพิ่มเติม");
+      if (scoreP < 4) tips.push("ฝึกสังเกตจุดต่างระว่างวงปี่พาทย์ เครื่องสาย และมโหรี");
+      if (scoreA < 2) tips.push("ทบทวนความเหมาะสมของโทนเสียงวงดนตรีไทยกับประเภทลักษณะงาน");
+      return "💡 พยายามได้ดีมาก! คำแนะนำ: " + tips.join(" และ ");
     }
 
     function renderStudentIdCard(container, me) {
@@ -2669,16 +2779,19 @@
           const cNum = Number(newStage[0]);
           teacherFolderOpened[cNum] = true;
           teacherMediaMode[cNum] = "VIDEO";
+          isCinemaMode = true; // Automatically launch cinema overlay full screen!
           runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
             startTeacherTimer(120);
             renderTeacherStage(true);
           });
         } else if (newStage === "1P" || newStage === "2P" || newStage === "3P" || newStage === "A") {
+          isCinemaMode = false;
           runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
             startTeacherTimer(90);
             renderTeacherStage(true);
           });
         } else if (newStage === "PRESS") {
+          isCinemaMode = false;
           runMissionCountdown(meta.step, meta.title, meta.instruction, () => {
             renderTeacherStage(true);
           });
@@ -2689,6 +2802,11 @@
 
       await callGasApi({ action: "setStage", pin: currentPin, stage: newStage });
       await refreshRoomState();
+    }
+
+    function toggleCinemaMode() {
+      isCinemaMode = !isCinemaMode;
+      renderTeacherStage(true);
     }
 
     function teacherNextStage() {
@@ -2882,7 +3000,7 @@
       if (stage === "1K" || stage === "2K" || stage === "3K") {
         const caseNum = Number(stage[0]);
         const mMode = teacherMediaMode[caseNum];
-        const sig = `${stage}|mode:${mMode}|pin:${currentPin}`;
+        const sig = `${stage}|mode:${mMode}|cinema:${isCinemaMode}|pin:${currentPin}`;
 
         if (!forceRebuild && teacherRenderedSig === sig) {
           const liveGrid = document.getElementById("teacher-k-live-groups");
@@ -2894,6 +3012,26 @@
         const cData = CASES_DATA[caseNum];
         const resolvedImg = resolveMediaUrl(cData.image);
 
+        if (isCinemaMode) {
+          container.innerHTML = `
+            <div class="cinema-overlay">
+              <div class="cinema-overlay-header">
+                <span class="cinema-title">🕵️‍♂️ ภารกิจสืบพยานหลักฐานวิดีโอ : คดีที่ ${caseNum}</span>
+                <button class="btn btn-secondary btn-sm" onclick="toggleCinemaMode()">🗗 ย่อขนาด</button>
+              </div>
+              <div class="media-container">
+                ${mMode === "VIDEO" ? `
+                  <video id="case-video-player" src="${resolveMediaUrl(cData.video)}" autoplay playsinline onplay="pauseBGMForClip()" onended="onCaseVideoEnded(${caseNum})"></video>
+                ` : `
+                  <img src="${resolvedImg}" alt="${cData.title}">
+                `}
+              </div>
+              <div style="color:#fff; padding:10px; font-size:0.9rem;">📌 ${cData.creditHidden}</div>
+            </div>
+          `;
+          return;
+        }
+
         container.innerHTML = `
           <div class="card" style="padding:14px 18px;">
             <div class="mission-guide-banner gold" style="margin-bottom:10px;">
@@ -2903,6 +3041,7 @@
                 <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
               </div>
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn btn-blue btn-sm" onclick="toggleCinemaMode()">⛶ ฉายวิดีโอเต็มจอ</button>
                 <button class="btn ${mMode === 'VIDEO' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="switchCaseMedia(${caseNum}, 'VIDEO')">
                   ▶️ เล่นคลิปฟังเสียง
                 </button>
@@ -2990,73 +3129,62 @@
         return;
       }
 
-      // 2. STAGE 1P, 2P, 3P (SHOWS 5-CATEGORY BAR CHART FOR ALL 4 GROUPS ON PROJECTOR!)
+      // 2. STAGE 1P, 2P, 3P (SHOWS STRUCTURE DIAGRAM SO STUDENTS DISCUSS WITH MOBILE)
       if (stage === "1P" || stage === "2P" || stage === "3P") {
         const caseNum = Number(stage[0]);
         const caseKey = "case" + caseNum;
         const cData = CASES_DATA[caseNum];
 
-        const groupCardsHtml = ["ดีด", "สี", "ตี", "เป่า"].map(g => {
+        const groupStatusHtml = ["ดีด", "สี", "ตี", "เป่า"].map(g => {
           const votes = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][caseKey]) || [];
-          const clues = (roomState.groupClues && roomState.groupClues[g] && roomState.groupClues[g][caseKey]) || {};
           const valid = votes.filter(v => v.structure && v.ensemble);
-          const pending = votes.filter(v => !v.structure || !v.ensemble);
           const total = votes.length;
           const unanimous = total > 0 && valid.length === total &&
             valid.every(v => v.structure === valid[0].structure && v.ensemble === valid[0].ensemble);
 
           return `
-            <div class="group-box" style="border-color:${unanimous ? '#10b981' : '#f59e0b'}; display:flex; flex-direction:column; justify-content:space-between;">
-              <div>
-                <div class="group-header">
-                  <span>กลุ่ม${g} (${total} คน)</span>
-                  <span class="pass-tag ${unanimous ? 'pass-ok' : 'pass-no'}">
-                    ${unanimous ? '🎉 มติเอกฉันท์แล้ว' : `⏳ โหวต ${valid.length}/${total}`}
-                  </span>
-                </div>
-                ${buildFiveCatBarChartHTML(clues, total, false)}
-              </div>
-
-              ${unanimous ? `
-                <div style="background:rgba(16,185,129,0.18); padding:10px; border-radius:8px; color:#6ee7b7; font-weight:700; text-align:center;">
-                  🔒 ล็อกซองคำตัดสินคดีที่ ${caseNum} สำเร็จ!
-                </div>
-              ` : `
-                <div>
-                  <div style="font-size:0.8rem; color:#fbbf24; margin-bottom:6px;">
-                    ${pending.length ? `⏳ รอเลขที่: ${pending.map(p => p.number).join(", ")}` : '⚠️ มีคนเลือกไม่ตรงกัน กำลังคุยกันในกลุ่ม'}
-                  </div>
-                  ${total > 0 ? `
-                    <button class="btn btn-secondary btn-sm" style="width:100%; font-size:0.76rem;" onclick="teacherForceApproveGroupP(${caseNum}, '${g}')">
-                      ✅ ครูอนุมัติมติกลุ่มนี้ (กรณีเน็ตหลุด)
-                    </button>
-                  ` : ''}
-                </div>
-              `}
+            <div style="background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px; border:2px solid ${unanimous ? '#10b981' : '#e2e8f0'}; display:flex; justify-content:space-between; align-items:center;">
+              <div><strong>กลุ่ม${g}</strong> (${total} คน)</div>
+              <span class="pass-tag ${unanimous ? 'pass-ok' : 'pass-no'}">
+                ${unanimous ? '🎉 มติเอกฉันท์สำเร็จ' : `⏳ ส่งมติแล้ว ${valid.length}/${total}`}
+              </span>
             </div>
           `;
         }).join("");
 
         container.innerHTML = `
           <div class="card">
-            <div class="mission-guide-banner gold">
+            <div class="mission-guide-banner gold" style="margin-bottom:14px;">
               <div>
                 <span style="background:var(--gold); color:#0f172a; font-weight:800; padding:2px 10px; border-radius:99px; font-size:0.8rem; margin-right:8px;">${meta.step}</span>
                 <strong style="font-family:var(--font-head); font-size:1.25rem; color:#ffffff;">${meta.title}</strong>
                 <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
               </div>
-              <button class="btn btn-secondary btn-sm" onclick="openZoomModal('${resolveMediaUrl(cData.image)}', '${cData.title}')">
-                🖼️ เปิดดูภาพวงประกอบ
-              </button>
             </div>
 
-            <div class="grid-2">${groupCardsHtml}</div>
+            <!-- 2-Column layout: Reference Board on left, Group statuses on right -->
+            <div class="grid-2" style="grid-template-columns: 1.2fr 0.8fr; gap:14px; margin-bottom:14px;">
+              <div class="card" style="background:#090d16; border-color:#334155; margin-bottom:0; display:flex; flex-direction:column; justify-content:center;">
+                <h3 style="color:var(--gold); font-size:1.15rem; margin-bottom:8px; border-bottom:1px solid #334155; padding-bottom:4px;">📊 ชาร์ตโครงสร้างเปรียบเทียบวงดนตรีไทย (เป้าหมายปลายทาง)</h3>
+                <div style="font-size:0.9rem; line-height:1.75; color:#cbd5e1;">
+                  • 🟥 <strong>วงปี่พาทย์:</strong> โครงสร้างมีแต่ <strong>"เครื่องตีและเครื่องเป่า"</strong> เท่านั้น ไม่มีเครื่องสาย (จะเข้/ซอ)<br>
+                  • 🟦 <strong>วงเครื่องสาย:</strong> โครงสร้างเน้น <strong>"เครื่องสายดีด-สีและขลุ่ย"</strong> เท่านั้น ไม่มีระนาดและฆ้องวง<br>
+                  • 🟨 <strong>วงมโหรี:</strong> โครงสร้างผสมผสานสมบูรณ์แบบครบทั้ง <strong>"เครื่องสายและเครื่องตีทำนอง (ครบ 4 ตระกูล)"</strong>
+                </div>
+              </div>
+              <div class="card" style="background:#090d16; border-color:#334155; margin-bottom:0;">
+                <h3 style="color:var(--gold); font-size:1.15rem; margin-bottom:8px; border-bottom:1px solid #334155; padding-bottom:4px;">⏳ สถานะมติกลุ่ม</h3>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  ${groupStatusHtml}
+                </div>
+              </div>
+            </div>
           </div>
         `;
         return;
       }
 
-      // 3. STAGE PRESS (REALISTIC PRESS CONFERENCE STAGE WITH SPOTLIGHTS, PODIUM, SCRIPT ON PROJECTOR & INSTANT BUTTONS)
+      // 3. STAGE PRESS (REALISTIC PRESS CONFERENCE STAGE WITH GIANT GROUP LABELS)
       if (stage === "PRESS") {
         const assign = roomState.pressAssignments || {};
         const revealed = roomState.revealedCases || {};
@@ -3065,7 +3193,6 @@
           const cKey = "case" + cNum;
           const cData = CASES_DATA[cNum];
           const gName = assign[cKey] || "";
-          const assignedGroup = gName ? `กลุ่ม${gName}` : "กดปุ่มสุ่มกลุ่มด้านบน";
           const isRev = !!revealed[cKey];
 
           const gVotes = (gName && roomState.groupVotes && roomState.groupVotes[gName] && roomState.groupVotes[gName][cKey]) || [];
@@ -3076,16 +3203,16 @@
 
           return `
             <div class="card" style="background:rgba(15,23,42,0.94); border:2px solid ${isRev ? '#10b981' : 'var(--gold)'}; margin:0; position:relative; z-index:2;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-family:var(--font-head); font-size:1.15rem; font-weight:800; color:var(--gold);">📁 แฟ้มคดีที่ ${cNum}</span>
-                <span class="stu-pill" style="background:#1d4ed8; font-weight:700;">🎙️ ผู้แถลง: ${assignedGroup}</span>
+              <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:8px;">
+                <span style="font-family:var(--font-head); font-size:1.25rem; font-weight:800; color:var(--gold);">📁 แฟ้มคดีที่ ${cNum}</span>
+                ${gName ? `<span class="giant-press-badge">🎙️ กลุ่มผู้แถลง: กลุ่ม${gName}</span>` : `<span style="color:var(--muted); font-size:0.84rem;">(กดปุ่มสุ่มจับคู่ผู้แถลงก่อนครับ)</span>`}
               </div>
 
               <!-- Speech Script on Projector so student can stand & read confidently -->
               <div style="background:#090d16; border:1px solid #334155; border-radius:10px; padding:10px; font-size:0.84rem; line-height:1.6; color:#e2e8f0; margin-bottom:10px;">
                 <strong style="color:#38bdf8;">💬 สคริปต์แถลงปิดคดีที่ ${cNum}:</strong><br>
-                1. "เบาะแสหลักที่พบคือ <strong>${topClues}</strong>"<br>
-                2. "สังเคราะห์โครงสร้างได้ว่า <strong>${groupStruct}</strong>"<br>
+                1. "สวัสดีครับ/ค่ะ ทีมสืบสวน <strong>กลุ่ม${gName || '...'}</strong> ขอแถลงปิด<strong>คดีที่ ${cNum}</strong> ครับ/ค่ะ"<br>
+                2. "เบาะแสเครื่องดนตรีสำคัญที่เราพบคือ <strong>${topClues}</strong> สังเคราะห์โครงสร้างได้ว่า <strong>${groupStruct}</strong>"<br>
                 3. "จึงฟันธงปิดคดีนี้ว่าคือ <strong style="color:var(--gold);">${groupAns}</strong> ครับ/ค่ะ!"
               </div>
 
@@ -3143,38 +3270,49 @@
         return;
       }
 
-      // 4. STAGE A (ภารกิจตัดสินใจ)
+      // 4. STAGE A (KAHOOT-STYLE GIANT SCENARIO ON PROJECTOR)
       if (stage === "A") {
         const doneA = students.filter(s => s.aSubmitted);
         const pendingA = students.filter(s => !s.aSubmitted);
 
+        const currentScenarioIdx = Math.min(studentASubStep, ATTITUDE_QUESTIONS_BASE.length - 1);
+        const q = ATTITUDE_QUESTIONS_BASE[currentScenarioIdx];
+
         container.innerHTML = `
-          <div class="card">
-            <div class="mission-guide-banner gold">
-              <div>
-                <span style="background:var(--gold); color:#0f172a; font-weight:800; padding:2px 10px; border-radius:99px; font-size:0.8rem; margin-right:8px;">${meta.step}</span>
-                <strong style="font-family:var(--font-head); font-size:1.25rem; color:#ffffff;">${meta.title}</strong>
-                <div style="font-size:0.95rem; color:var(--gold-light); margin-top:2px;">${meta.instruction}</div>
-              </div>
+          <div class="card" style="text-align:center;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid #334155;">
+              <h2 style="color:var(--gold); margin:0;">🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจเลือกใช้วงดนตรีออกงาน (สไตล์ Kahoot!)</h2>
+              <span class="stu-pill" style="background:var(--brand); font-size:0.9rem;">
+                ส่งคำตอบแล้ว ${doneA.length} / ${students.length} คน
+              </span>
             </div>
 
-            <div style="background:#0f172a; padding:14px 16px; border-radius:12px; margin-bottom:14px; border:1px solid var(--gold);">
-              <div>
-                <strong>📊 สถานะการส่งคำตอบด่านสุดท้าย:</strong> ส่งครบแล้ว <strong style="color:var(--gold); font-size:1.25rem;">${doneA.length} / ${students.length} คน</strong>
+            <!-- Big Scenario Banner for the class to read together -->
+            <div style="background:#090d16; border:2px solid var(--gold); border-radius:16px; padding:24px; max-width:800px; margin:14px auto 20px;">
+              <div style="color:var(--gold); font-family:var(--font-head); font-weight:800; font-size:1.15rem; margin-bottom:6px;">
+                สถานการณ์โจทย์ข้อที่ ${currentScenarioIdx + 1} จาก 3
               </div>
-              ${pendingA.length ? `
-                <div style="font-size:0.85rem; color:#f87171; margin-top:4px;">
-                  ⏳ กำลังรอเลขที่: ${pendingA.map(p => `${p.number} (${p.name})`).join(", ")}
-                </div>
-              ` : (students.length ? `<div style="font-size:0.95rem; color:#34d399; margin-top:4px; font-weight:700;">✅ ส่งครบทุกคนแล้ว! กดปุ่มสีเขียวด้านล่างเพื่อดูรายงานสรุปผลได้เลยครับ</div>` : '')}
+              <h1 style="color:#ffffff; font-family:var(--font-head); font-size:1.85rem; margin-bottom:12px; text-shadow:0 2px 10px rgba(0,0,0,0.5);">
+                ${q.scenarioTitle}
+              </h1>
+              <p style="font-size:1.15rem; color:#cbd5e1; margin:0; line-height:1.7;">
+                ${q.desc}
+              </p>
             </div>
 
-            <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-              ${ATTITUDE_QUESTIONS_BASE.map((q, idx) => `
-                <div style="background:#0f172a; border:1px solid #334155; border-radius:12px; padding:14px;">
-                  <div style="color:var(--gold); font-weight:700; margin-bottom:6px;">สถานการณ์ที่ ${idx + 1}: ${q.scenarioTitle}</div>
-                  <div style="font-size:0.92rem; color:#cbd5e1;">${q.desc}</div>
-                </div>
+            <!-- Kahoot-style Color Legend representing options -->
+            <div class="grid-2" style="max-width:800px; margin:0 auto 20px;">
+              <div class="card" style="background:linear-gradient(135deg, #e11d48 0%, #b91c1c 100%); color:#fff; font-family:var(--font-head); font-weight:700; margin-bottom:0; padding:12px;">🟥 ปุ่มสีแดง : วงปี่พาทย์</div>
+              <div class="card" style="background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#fff; font-family:var(--font-head); font-weight:700; margin-bottom:0; padding:12px;">🟦 ปุ่มสีน้ำเงิน : วงเครื่องสาย</div>
+              <div class="card" style="background:linear-gradient(135deg, #d97706 0%, #b45309 100%); color:#fff; font-family:var(--font-head); font-weight:700; margin-bottom:0; padding:12px; grid-column: span 2;">🟨 ปุ่มสีเหลือง : วงมโหรี</div>
+            </div>
+
+            <!-- Pagination / Step controls -->
+            <div style="display:flex; justify-content:center; gap:10px; margin-top:20px;">
+              ${[0, 1, 2].map(idx => `
+                <button class="btn ${idx === currentScenarioIdx ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="studentASubStep=${idx}; renderTeacherStage(true);">
+                  โจทย์ข้อที่ ${idx + 1}
+                </button>
               `).join("")}
             </div>
           </div>
@@ -3182,7 +3320,7 @@
         return;
       }
 
-      // 5. STAGE SUMMARY (COMPLETE WITH GROUP P SYNTHESIS REPORT + INDIVIDUAL REPORT CARDS + PA TEXT + EXCEL CSV)
+      // 5. STAGE SUMMARY (EXQUISITE LEADERBOARD PODIUMS + MENU DOWNLOADS)
       if (stage === "SUMMARY") {
         const totalStu = students.length;
         const passKList = students.filter(s => (s.scoreK ?? 0) >= 7);
@@ -3210,93 +3348,90 @@
    • ผ่านเกณฑ์: ${passAList.length} คน (คิดเป็นร้อยละ ${pct(passAList.length)})
    • ไม่ผ่านเกณฑ์: ${failAList.length} คน (คิดเป็นร้อยละ ${pct(failAList.length)})${failAList.length ? ' -> เลขที่ ' + failAList.map(s => s.number).join(', ') : ''}`;
 
-        // Build Group P Synthesis Report (4 Groups x 3 Cases with Bar Charts & Consensus Trace)
-        const groupSynthesisHtml = showGroupPReport ? `
-          <div class="card" id="group-p-report-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-              <div>
-                <h3 style="color:var(--gold); margin:0;">📊 ใบรายงานผลการระดมสมองและสังเคราะห์ข้อมูลรายกลุ่ม (ด้าน P - 4 กลุ่ม)</h3>
-                <span style="font-size:0.85rem; color:var(--muted);">ร่องรอยหลักฐานการรวบรวมเบาะแส การสังเคราะห์โครงสร้างวง และมติเอกฉันท์ของแต่ละกลุ่ม (สำหรับแนบภาคผนวก ว.PA)</span>
-              </div>
-              <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">🖨️ สั่งพิมพ์ / Save as PDF</button>
+        // Calculate Team Averages to Sort Leaderboard
+        const teamStats = ["ดีด", "สี", "ตี", "เป่า"].map(g => {
+          const gMembers = students.filter(s => s.group === g);
+          const totalScoreSum = gMembers.reduce((sum, s) => sum + (s.total ?? 0), 0);
+          const avg = gMembers.length > 0 ? (totalScoreSum / gMembers.length).toFixed(2) : "0.00";
+          return { group: g, avg: Number(avg), count: gMembers.length };
+        }).sort((a, b) => b.avg - a.avg);
+
+        // Build podium cards based on ranks
+        const ranksMeta = {
+          0: { class: "rank-1", trophy: "👑🥇", label: "ที่ 1 ยอดเยี่ยม" },
+          1: { class: "rank-2", trophy: "🥈", label: "ที่ 2 ยอดเยี่ยม" },
+          2: { class: "rank-3", trophy: "🥉", label: "ที่ 3 ยอดเยี่ยม" },
+          3: { class: "rank-4", trophy: "⭐", label: "ผู้เข้าร่วมสืบสวน" }
+        };
+
+        // Build Individual Reports for K, P, A separately based on toggle states
+        const reportKHtml = showReportK ? `
+          <div class="card no-print">
+            <h3 style="color:var(--gold); margin-bottom:12px;">📊 รายงานผลแยกด้านความรู้ (K) - รายบุคคล</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>เลขที่</th>
+                    <th>ชื่อ - นามสกุล</th>
+                    <th>ชั้น</th>
+                    <th>กลุ่ม</th>
+                    <th>คะแนน K (เต็ม 10)</th>
+                    <th>ร้อยละ (%)</th>
+                    <th>ผลประเมิน</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${students.map(s => `
+                    <tr>
+                      <td>${s.number}</td>
+                      <td><strong>${s.name}</strong></td>
+                      <td>${s.classRoom}</td>
+                      <td>กลุ่ม${s.group}</td>
+                      <td><strong>${s.scoreK}</strong> / 10</td>
+                      <td>${s.scoreK * 10}%</td>
+                      <td><span class="pass-tag ${s.scoreK >= 7 ? 'pass-ok' : 'pass-no'}">${s.scoreK >= 7 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
             </div>
-
-            <div class="grid-2">
-              ${["ดีด", "สี", "ตี", "เป่า"].map(g => {
-                const gMembers = students.filter(s => s.group === g);
-                const gScoreP = gMembers[0]?.scoreP ?? 0;
-                return `
-                  <div class="group-box" style="border-color:var(--gold);">
-                    <div class="group-header">
-                      <span style="font-size:1.1rem; color:var(--gold);">🛡️ รายงานการสังเคราะห์ผล : กลุ่ม${g} (สมาชิก ${gMembers.length} คน)</span>
-                      <span class="pass-tag ${gScoreP >= 4 ? 'pass-ok' : 'pass-no'}">คะแนนกลุ่ม P: ${gScoreP} / 6</span>
-                    </div>
-                    <div style="font-size:0.8rem; color:#cbd5e1; margin-bottom:10px;">
-                      <strong>สมาชิกในกลุ่ม:</strong> ${gMembers.map(m => `เลขที่ ${m.number} ${m.name}`).join(", ") || "-"}
-                    </div>
-
-                    ${[1, 2, 3].map(cNum => {
-                      const cKey = "case" + cNum;
-                      const clues = (roomState.groupClues && roomState.groupClues[g] && roomState.groupClues[g][cKey]) || {};
-                      const votes = (roomState.groupVotes && roomState.groupVotes[g] && roomState.groupVotes[g][cKey]) || [];
-                      const v0 = votes[0] || {};
-                      const structLabel = STRUCTURE_LABEL_MAP[v0.structure] || v0.structure || "ไม่ได้ระบุ";
-                      const ensLabel = v0.ensemble || "ไม่ได้ระบุ";
-                      const isCorrect = ensLabel === CASES_DATA[cNum].shortAns;
-
-                      return `
-                        <div style="background:rgba(0,0,0,0.25); border:1px solid #334155; border-radius:10px; padding:10px; margin-bottom:8px;">
-                          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.88rem; color:#38bdf8; margin-bottom:6px;">
-                            <span>📁 แฟ้มคดีที่ ${cNum} (เฉลย: ${CASES_DATA[cNum].shortAns})</span>
-                            <span style="color:${isCorrect ? '#34d399' : '#f87171'};">${isCorrect ? '✓ สังเคราะห์ถูกต้อง' : '✗ คลาดเคลื่อน'}</span>
-                          </div>
-                          ${buildFiveCatBarChartHTML(clues, gMembers.length || 1, false)}
-                          <div style="font-size:0.82rem; line-height:1.55; color:#e2e8f0;">
-                            • <strong>ผลการสังเคราะห์โครงสร้างวง:</strong> ${structLabel}<br>
-                            • <strong>มติเอกฉันท์ฟันธงชื่อวง:</strong> <strong style="color:var(--gold);">${ensLabel}</strong>
-                          </div>
-                        </div>
-                      `;
-                    }).join("")}
-                  </div>
-                `;
-              }).join("")}
-            </div>
+            <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน K: ผ่านเกณฑ์ ${passKList.length} / ${students.length} คน (คิดเป็นร้อยละ ${pct(passKList.length)}%)</div>
           </div>
         ` : "";
 
-        // Build Individual Report Cards for All Students (With Automated Feedback)
-        const allCardsHtml = showAllCardsPreview ? `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-              <h3 style="color:var(--gold); margin:0;">🪪 ใบรายงานผลการเรียนรู้รายบุคคลของนักเรียนทั้งห้อง (${students.length} คน)</h3>
-              <button class="btn btn-secondary btn-sm no-print" onclick="window.print()">🖨️ สั่งพิมพ์ / Save as PDF</button>
+        const reportAHtml = showReportA ? `
+          <div class="card no-print">
+            <h3 style="color:var(--gold); margin-bottom:12px;">🎯 รายงานผลแยกด้านเจตคติและการนำไปใช้ (A) - รายบุคคล</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>เลขที่</th>
+                    <th>ชื่อ - นามสกุล</th>
+                    <th>ชั้น</th>
+                    <th>กลุ่ม</th>
+                    <th>คะแนน A (เต็ม 3)</th>
+                    <th>ร้อยละ (%)</th>
+                    <th>ผลประเมิน</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${students.map(s => `
+                    <tr>
+                      <td>${s.number}</td>
+                      <td><strong>${s.name}</strong></td>
+                      <td>${s.classRoom}</td>
+                      <td>กลุ่ม${s.group}</td>
+                      <td><strong>${s.scoreA}</strong> / 3</td>
+                      <td>${Math.round((s.scoreA / 3) * 100)}%</td>
+                      <td><span class="pass-tag ${s.scoreA >= 2 ? 'pass-ok' : 'pass-no'}">${s.scoreA >= 2 ? 'ผ่าน' : 'ไม่ผ่าน'}</span></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
             </div>
-            <div class="all-id-grid">
-              ${students.slice().sort((a, b) => Number(a.number) - Number(b.number)).map(s => {
-                const fb = getAutomatedFeedback(s.scoreK, s.scoreP, s.scoreA);
-                return `
-                  <div class="id-card" style="margin:0;">
-                    <div class="id-card-header">
-                      <div>
-                        <div style="font-size:0.68rem; color:var(--gold);">THAI MUSIC DETECTIVE REPORT</div>
-                        <div style="font-weight:800; font-size:1rem;">${s.name} (เลขที่ ${s.number})</div>
-                      </div>
-                      <span class="pass-tag ${(s.scoreK >= 7 && s.scoreP >= 4 && s.scoreA >= 2) ? 'pass-ok' : 'pass-no'}">รวม ${s.total}/19</span>
-                    </div>
-                    <div style="font-size:0.82rem; margin-bottom:8px;">ชั้น ${s.classRoom} | ทีม: กลุ่ม${s.group} | ห้อง: ${currentPin}</div>
-                    <div class="score-grid-3">
-                      <div class="score-box"><div style="font-size:0.72rem;">K (10)</div><div class="score-val">${s.scoreK}</div></div>
-                      <div class="score-box"><div style="font-size:0.72rem;">P (6)</div><div class="score-val">${s.scoreP}</div></div>
-                      <div class="score-box"><div style="font-size:0.72rem;">A (3)</div><div class="score-val">${s.scoreA}</div></div>
-                    </div>
-                    <div style="font-size:0.76rem; color:#fef3c7; background:rgba(245,158,11,0.1); padding:6px 8px; border-radius:6px;">
-                      ${fb}
-                    </div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
+            <div style="margin-top:10px; font-weight:bold; color:var(--gold);">สรุปด้าน A: ผ่านเกณฑ์ ${passAList.length} / ${students.length} คน (คิดเป็นร้อยละ ${pct(passAList.length)}%)</div>
           </div>
         ` : "";
 
@@ -3314,27 +3449,109 @@
           </tr>
         `).join("");
 
+        const allCardsHtml = showAllCardsPreview ? `
+          <div class="all-id-grid">
+            ${students.map(s => `
+              <div class="id-card" style="margin:0;">
+                <div class="id-card-header">
+                  <div>
+                    <div style="font-size:0.7rem; color:var(--gold);">THAI MUSIC DETECTIVE</div>
+                    <div style="font-weight:800;">${s.name} (เลขที่ ${s.number})</div>
+                  </div>
+                  <span>🕵️‍♂️</span>
+                </div>
+                <div style="font-size:0.85rem; margin-bottom:8px;">ชั้น ${s.classRoom} | ทีม: กลุ่ม${s.group} | ห้อง: ${currentPin}</div>
+                <div class="score-grid-3">
+                  <div class="score-box"><div style="font-size:0.75rem;">K (10)</div><div class="score-val">${s.scoreK}</div></div>
+                  <div class="score-box"><div style="font-size:0.75rem;">P (6)</div><div class="score-val">${s.scoreP}</div></div>
+                  <div class="score-box"><div style="font-size:0.75rem;">A (3)</div><div class="score-val">${s.scoreA}</div></div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        ` : "";
+
         container.innerHTML = `
-          <div class="card">
-            <h2 style="color:var(--gold); margin-bottom:10px;">📊 สรุปผลการประเมินประจำคาบเรียน & ดาวน์โหลดหลักฐานร่องรอย ว.PA</h2>
-            <div class="pa-report-box" id="pa-summary-text">${reportText}</div>
-            <div class="no-print" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
-              <button class="btn btn-primary" onclick="copyPaSummary()">📋 คัดลอกข้อความสรุปหลังแผน</button>
-              <button class="btn btn-success" onclick="exportRoomScoresCSV()">📥 ดาวน์โหลดตารางคะแนน (Excel / .CSV)</button>
-              <button class="btn ${showGroupPReport ? 'btn-blue' : 'btn-secondary'}" onclick="toggleGroupPReport()">
-                📊 ${showGroupPReport ? 'ซ่อน' : 'แสดง'}ใบรายงานการสังเคราะห์ผลรายกลุ่ม (ด้าน P)
-              </button>
-              <button class="btn ${showAllCardsPreview ? 'btn-blue' : 'btn-secondary'}" onclick="toggleAllDetectiveCards()">
-                🪪 ${showAllCardsPreview ? 'ซ่อน' : 'แสดง'}ใบรายงานผลรายบุคคลทั้งห้อง (${students.length} คน)
-              </button>
+          <!-- EXQUISITE TEAM PODIUMS / LEADERBOARDS -->
+          <div class="card" style="text-align:center; padding:18px;">
+            <h2 style="color:var(--gold); margin-bottom:4px; font-family:var(--font-head);">🏆 แท่นโพเดียมประกาศเกียรติยศทีมสืบสวนยอดเยี่ยมประจำห้อง</h2>
+            <p style="color:var(--muted); font-size:0.85rem; margin-top:0;">วัดจากคะแนนรวมเฉลี่ยของสมาชิกทุกคนในทีมสืบสวน เพื่อความยุติธรรม 100%</p>
+            
+            <div class="podium-container">
+              <!-- Second Place Pillar -->
+              <div class="podium-pillar ${ranksMeta[1].class}">
+                <div class="podium-trophy">${ranksMeta[1].trophy}</div>
+                <div class="podium-team-name">กลุ่ม${teamStats[1]?.group || "-"}</div>
+                <div class="podium-score-avg">${teamStats[1]?.avg || "0"} คะแนน</div>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:4px;">${ranksMeta[1].label}</div>
+              </div>
+
+              <!-- First Place Pillar -->
+              <div class="podium-pillar ${ranksMeta[0].class}">
+                <div class="podium-trophy">${ranksMeta[0].trophy}</div>
+                <div class="podium-team-name">กลุ่ม${teamStats[0]?.group || "-"}</div>
+                <div class="podium-score-avg">${teamStats[0]?.avg || "0"} คะแนน</div>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:4px;">${ranksMeta[0].label}</div>
+              </div>
+
+              <!-- Third Place Pillar -->
+              <div class="podium-pillar ${ranksMeta[2].class}">
+                <div class="podium-trophy">${ranksMeta[2].trophy}</div>
+                <div class="podium-team-name">กลุ่ม${teamStats[2]?.group || "-"}</div>
+                <div class="podium-score-avg">${teamStats[2]?.avg || "0"} คะแนน</div>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:4px;">${ranksMeta[2].label}</div>
+              </div>
+            </div>
+
+            <!-- Fourth Place Simple Indicator -->
+            <div style="font-size:0.85rem; color:var(--muted); margin-top:8px;">
+              🎖️ ร่วมเชิดชูเกียรติ: อันดับที่ 4 <strong>กลุ่ม${teamStats[3]?.group || "-"}</strong> (${teamStats[3]?.avg || "0"} คะแนนเฉลี่ย)
             </div>
           </div>
 
+          <!-- CLEAN READABLE K-P-A SUMMARY BOARD -->
+          <div class="card">
+            <h3 style="color:var(--gold); margin-bottom:12px; font-family:var(--font-head);">📊 กล่องสถิติร้อยละรวมความสำเร็จ (ด้าน K - P - A)</h3>
+            <div class="kpa-badge-grid">
+              <div class="kpa-summary-badge" style="cursor:pointer;" onclick="showReportK=!showReportK; renderTeacherStage(true);">
+                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">ด้านความรู้ (K - ผ่าน ≥ 7) 🌐</div>
+                <div class="kpa-summary-val">${passKList.length} / ${students.length} คน</div>
+                <div style="font-size:0.82rem; color:var(--success); font-weight:700; margin-top:4px;">ร้อยละความสำเร็จ: ${pct(passKList.length)}%</div>
+              </div>
+              <div class="kpa-summary-badge" style="cursor:pointer;" onclick="toggleGroupPReport()">
+                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">กระบวนการกลุ่ม (P - ผ่าน ≥ 4) 🌐</div>
+                <div class="kpa-summary-val">${passPList.length} / ${students.length} คน</div>
+                <div style="font-size:0.82rem; color:var(--success); font-weight:700; margin-top:4px;">ร้อยละความสำเร็จ: ${pct(passPList.length)}%</div>
+              </div>
+              <div class="kpa-summary-badge" style="cursor:pointer;" onclick="showReportA=!showReportA; renderTeacherStage(true);">
+                <div style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;">เจตคติ / นำไปใช้ (A - ผ่าน ≥ 2) 🌐</div>
+                <div class="kpa-summary-val">${passAList.length} / ${students.length} คน</div>
+                <div style="font-size:0.82rem; color:var(--success); font-weight:700; margin-top:4px;">ร้อยละความสำเร็จ: ${pct(passAList.length)}%</div>
+              </div>
+            </div>
+
+            <!-- UNIFIED DOWNLOADING MENU FOR CLEAN DESK -->
+            <div style="background:#090d16; border:1px solid #334155; border-radius:12px; padding:14px; text-align:center;">
+              <div style="font-family:var(--font-head); font-weight:700; font-size:0.95rem; color:var(--gold); margin-bottom:8px;">
+                📥 แท็บเมนูดาวน์โหลดหลักฐานร่องรอย แนบภาคผนวก ว.PA (แยกด้านชัดเจน)
+              </div>
+              <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="copyPaSummary()">📋 คัดลอกสรุปท้ายแผน</button>
+                <button class="btn btn-success btn-sm" onclick="exportRoomScoresCSV()">📥 ดาวน์โหลดตารางคะแนน (.CSV)</button>
+                <button class="btn btn-secondary btn-sm" onclick="toggleAllDetectiveCards()">🪪 ${showAllCardsPreview ? 'ซ่อน' : 'แสดง'} บัตร ID รายบุคคลทั้งห้อง</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic separate reports container -->
+          ${reportKHtml}
           ${groupSynthesisHtml}
+          ${reportAHtml}
           ${allCardsHtml}
 
+          <!-- RAW SCORES LIST -->
           <div class="card">
-            <h3 style="color:var(--gold); margin-bottom:12px;">🏆 ตารางคะแนน K - P - A รายบุคคล (แท็บ ห้อง_${currentPin} ใน Google Sheets)</h3>
+            <h3 style="color:var(--gold); margin-bottom:12px; font-family:var(--font-head);">🏆 ตารางรายบุคคล (แยกคะแนนรายด้าน K-P-A)</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -3355,6 +3572,10 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div class="card" style="display:none;" id="pa-summary-box">
+            <div id="pa-summary-text">${reportText}</div>
           </div>
         `;
       }
