@@ -1063,6 +1063,12 @@
     .teacher-a-case h3 {color:#fbbf24;margin:0 0 3px;font-size:clamp(1.04rem,1.55vw,1.7rem);}
     .teacher-a-case p {color:#fff;margin:0;font-size:clamp(.98rem,1.5vw,1.55rem);line-height:1.35;}
     .teacher-a-pending {background:#344961;color:#fde6ad;border-radius:11px;padding:9px 13px;font-size:clamp(.92rem,1.1vw,1.25rem);}
+    .teacher-mission-brief {max-width:980px;margin:14px auto;padding:clamp(20px,2.6vw,32px);background:#f8f3e9;color:#173047;border:1px solid #e8d4b2;border-radius:22px;text-align:center;box-shadow:0 8px 0 #12283b;}
+    .teacher-mission-brief h1 {font-size:clamp(1.9rem,3vw,3rem);line-height:1.24;margin:8px 0 16px;color:#173047;}
+    .teacher-mission-brief .brief-step {display:flex;align-items:center;gap:16px;text-align:left;background:#eaf0f3;padding:12px 18px;border-radius:14px;margin:8px 0;font-size:clamp(1.08rem,1.75vw,1.65rem);font-weight:750;line-height:1.35;}
+    .teacher-mission-brief .brief-number {display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#173047;color:#fff;font-weight:900;}
+    .teacher-mission-brief .brief-start {font-size:clamp(1.25rem,2vw,1.6rem);padding:14px 36px;margin-top:17px;}
+    @media(max-width:650px){.teacher-mission-brief{margin:8px 0;padding:16px}.teacher-mission-brief .brief-step{padding:11px;gap:10px}.teacher-mission-brief .brief-number{flex-basis:36px;width:36px;height:36px}}
     .report-download-panel {display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:9px;margin-top:12px;}
     .report-download-panel button {min-height:48px;text-align:left;white-space:normal;}
     @media(max-height:760px){.teacher-a-board{height:calc(100dvh - 170px);min-height:410px;padding:10px 18px!important;gap:6px}.teacher-a-case{padding:6px 12px}.teacher-a-heading h1{font-size:1.7rem!important}.teacher-a-heading .a-progress{font-size:1.15rem!important}}
@@ -1486,14 +1492,14 @@
 
     const STAGE_META = {
       "LOBBY":   { step: "เตรียมทีม", title: "ห้องเตรียมภารกิจ", nextLabel: "⏭️ เริ่มคดีที่ 1", instruction: "สแกน QR Code หรือกรอก PIN แล้วเลือกกลุ่มดีด สี ตี หรือเป่า" },
-      "1K":      { step: "คดีที่ 1 (ด่าน 1/2)", title: "📁 คดีที่ 1 : ระบุเครื่องดนตรี", nextLabel: "⏭️ สรุปชื่อวงคดีที่ 1", instruction: "ดูคลิปและภาพเบาะแส แล้วเลือกเครื่องดนตรีที่พบในมือถือ" },
-      "1P":      { step: "คดีที่ 1 (ด่าน 2/2)", title: "📊 คดีที่ 1 : ระดมสมองสรุปชื่อวง", nextLabel: "🎙️ แถลงคดีที่ 1", instruction: "ดูกราฟเบาะแส ปรึกษาเพื่อน แล้วเลือกโครงสร้างและชื่อวงให้ตรงกัน" },
-      "2K":      { step: "คดีที่ 2 (ด่าน 1/2)", title: "📁 คดีที่ 2 : ระบุเครื่องดนตรี", nextLabel: "⏭️ สรุปชื่อวงคดีที่ 2", instruction: "ดูคลิปและภาพเบาะแส แล้วเลือกเครื่องดนตรีที่พบในมือถือ" },
-      "2P":      { step: "คดีที่ 2 (ด่าน 2/2)", title: "📊 คดีที่ 2 : ระดมสมองสรุปชื่อวง", nextLabel: "🎙️ แถลงคดีที่ 2", instruction: "ดูกราฟเบาะแส ปรึกษาเพื่อน แล้วเลือกโครงสร้างและชื่อวงให้ตรงกัน" },
-      "3K":      { step: "คดีที่ 3 (ด่าน 1/2)", title: "📁 คดีที่ 3 : ระบุเครื่องดนตรี", nextLabel: "⏭️ สรุปชื่อวงคดีที่ 3", instruction: "ดูคลิปและภาพเบาะแส แล้วเลือกเครื่องดนตรีที่พบในมือถือ" },
-      "3P":      { step: "คดีที่ 3 (ด่าน 2/2)", title: "📊 คดีที่ 3 : ระดมสมองสรุปชื่อวง", nextLabel: "🎙️ แถลงคดีที่ 3", instruction: "ดูกราฟเบาะแส ปรึกษาเพื่อน แล้วเลือกโครงสร้างและชื่อวงให้ตรงกัน" },
+      "1K":      { step: "คดีที่ 1 (ด่าน 1/2)", title: "🔍 คดีที่ 1 : รวบรวมหลักฐาน", nextLabel: "🧩 ถอดรหัสหลักฐานคดีที่ 1", instruction: "สังเกตคลิปและภาพเบาะแส แล้วระบุชื่อเครื่องดนตรีที่พบ" },
+      "1P":      { step: "คดีที่ 1 (ด่าน 2/2)", title: "🧩 คดีที่ 1 : ถอดรหัสหลักฐาน", nextLabel: "🎙️ แถลงข้อสันนิษฐานคดีที่ 1", instruction: "ระดมสมอง เทียบหลักฐานกับคู่มือไขคดี แล้วเลือกโครงสร้างและชื่อวง" },
+      "2K":      { step: "คดีที่ 2 (ด่าน 1/2)", title: "🔍 คดีที่ 2 : รวบรวมหลักฐาน", nextLabel: "🧩 ถอดรหัสหลักฐานคดีที่ 2", instruction: "สังเกตคลิปและภาพเบาะแส แล้วระบุชื่อเครื่องดนตรีที่พบ" },
+      "2P":      { step: "คดีที่ 2 (ด่าน 2/2)", title: "🧩 คดีที่ 2 : ถอดรหัสหลักฐาน", nextLabel: "🎙️ แถลงข้อสันนิษฐานคดีที่ 2", instruction: "ระดมสมอง เทียบหลักฐานกับคู่มือไขคดี แล้วเลือกโครงสร้างและชื่อวง" },
+      "3K":      { step: "คดีที่ 3 (ด่าน 1/2)", title: "🔍 คดีที่ 3 : รวบรวมหลักฐาน", nextLabel: "🧩 ถอดรหัสหลักฐานคดีที่ 3", instruction: "สังเกตคลิปและภาพเบาะแส แล้วระบุชื่อเครื่องดนตรีที่พบ" },
+      "3P":      { step: "คดีที่ 3 (ด่าน 2/2)", title: "🧩 คดีที่ 3 : ถอดรหัสหลักฐาน", nextLabel: "🎙️ แถลงข้อสันนิษฐานคดีที่ 3", instruction: "ระดมสมอง เทียบหลักฐานกับคู่มือไขคดี แล้วเลือกโครงสร้างและชื่อวง" },
       "PRESS":   { step: "ไคลแมกซ์ปิดคดี", title: "🎙️ ห้องแถลงข่าวคลี่คลายคดีดนตรีไทย", nextLabel: "⏭️ ไปภารกิจตัดสินใจ ➔", instruction: "🎯 ภารกิจนี้: ตัวแทนกลุ่มที่ถูกสุ่มยืนแถลงปิดคดีตามสคริปต์บนจอ แล้วร่วมกันลุ้นเปิดซองเฉลย!" },
-      "A":       { step: "ด่านสุดท้าย", title: "🎯 ภารกิจที่ 3 : ภารกิจตัดสินใจเลือกวงออกงาน", nextLabel: "🏆 ไปดูสรุปผลคะแนนทั้งห้อง ➔", instruction: "🎯 ภารกิจนี้: นักเรียนแต่ละคนตัดสินใจเลือกวงดนตรีไทยให้เหมาะกับงานทั้ง 3 ข้อในมือถือ" },
+      "A":       { step: "ด่านสุดท้าย", title: "🎯 ภารกิจตัดสินใจ", nextLabel: "🏆 ดูสรุปผลทั้งห้อง", instruction: "เลือกวงดนตรีไทยให้เหมาะสมกับสถานการณ์ทั้ง 3 ข้อบนมือถือ" },
       "SUMMARY": { step: "สรุปผลภารกิจ", title: "🏆 สรุปผลปฏิบัติการนักสืบดนตรีไทย", nextLabel: "🔄 กลับหน้าเข้าห้อง", instruction: "ดูคะแนนรายบุคคล ผลรายกลุ่ม และดาวน์โหลดรายงาน" },
       "1PRESS": { step: "คดีที่ 1", title: "🎙️ แถลงข้อสันนิษฐานคดีที่ 1", nextLabel: "⏭️ ไปคดีที่ 2", instruction: "ตัวแทนกลุ่มบอกว่าเป็นวงอะไร และเพราะเหตุใด โดยยังไม่เฉลย" },
       "2PRESS": { step: "คดีที่ 2", title: "🎙️ แถลงข้อสันนิษฐานคดีที่ 2", nextLabel: "⏭️ ไปคดีที่ 3", instruction: "ตัวแทนกลุ่มบอกว่าเป็นวงอะไร และเพราะเหตุใด โดยยังไม่เฉลย" },
@@ -2530,7 +2536,7 @@
               <div style="color:#7dd3fc;font-weight:900;margin-bottom:7px">📄 ไกด์สคริปต์สำหรับอ่านแถลงข่าว</div>
               <p style="margin:7px 0">“จากภารกิจคดีที่ ${pressCase} กลุ่มของเราพบเบาะแสเครื่องดนตรี ได้แก่</p>
               <div style="background:#172554;border-left:5px solid #38bdf8;padding:12px;margin:9px 0;border-radius:8px;font-weight:800;color:#fff;overflow-wrap:anywhere">${escapeHtml(speech.clues)}</div>
-              <p style="margin:7px 0">เมื่อนำเบาะแสมาเปรียบเทียบกับไกด์นักสืบ กลุ่มของเราจึงสันนิษฐานว่าเป็นวง <strong style="color:#fbbf24">....................</strong> ครับ/ค่ะ”</p>
+              <p style="margin:7px 0">เมื่อนำเบาะแสมาเปรียบเทียบกับคู่มือไขคดีวงดนตรีไทย กลุ่มของเราจึงสันนิษฐานว่าเป็นวง <strong style="color:#fbbf24">....................</strong> ครับ/ค่ะ”</p>
             </div>` : `<p style="font-size:1.3rem;line-height:1.7;color:#fff">${selectedGroup?'👂 ฟังตัวแทน':'🎲 กำลังรอคุณครูสุ่ม'}<strong style="color:#fbbf24">${selectedGroup?'กลุ่ม'+escapeHtml(selectedGroup):'กลุ่มแถลงข่าว'}</strong>${selectedGroup?' แถลงเหตุผล แล้วร่วมแลกเปลี่ยนอย่างสุภาพ':''}</p>`}
           <p style="font-size:1rem;color:#fbbf24;margin-top:13px">🔒 ยังไม่เฉลย รอจนแถลงครบทั้ง 3 คดี</p>
         </div>`;
@@ -2576,12 +2582,12 @@
           container.innerHTML = `
             <div class="card" style="text-align:center; padding:30px 18px; border:2px solid var(--success);">
               <div style="font-size:3.2rem; margin-bottom:6px;">✅</div>
-              <h2 style="color:#34d399; margin-bottom:6px;">ด่านที่ 1 สำเร็จ! ส่งเบาะแสคดีที่ ${caseNum} แล้ว</h2>
+              <h2 style="color:#34d399; margin-bottom:6px;">ส่งหลักฐานคดีที่ ${caseNum} เรียบร้อยแล้ว</h2>
               <p style="color:#cbd5e1; font-size:0.95rem;">
                 เครื่องดนตรีที่คุณส่งเข้าทีม (${chosen.length} ชิ้น): <strong style="color:var(--gold);">${chosen.join(", ") || "บันทึกแล้ว"}</strong>
               </p>
               <div id="stu-k-wait-box" style="margin-top:16px; padding:12px; background:#0f172a; border-radius:12px; color:var(--gold); font-weight:700;">
-                ⏳ กำลังรอเพื่อนส่งเบาะแส... เดี๋ยวคุณครูจะพาไปด่านที่ 2 (สรุปชื่อวง)
+                ⏳ กำลังรอเพื่อนส่งหลักฐาน... คุณครูจะพาไปถอดรหัสหลักฐานในขั้นถัดไป
               </div>
             </div>
           `;
@@ -2596,7 +2602,7 @@
             <div class="mission-guide-banner">
               <div>
                 <div style="font-family:var(--font-head); font-weight:800; color:#60a5fa; font-size:1.05rem;">
-                  🔍 คดีที่ ${caseNum} (ด่านที่ 1/2) : บอกชื่อเครื่องดนตรีที่เห็น
+                  🔍 คดีที่ ${caseNum} (ด่านที่ 1/2) : รวบรวมหลักฐาน
                 </div>
                 <div style="font-size:0.86rem; color:#e2e8f0;">
                   <strong>ขั้นที่ 1:</strong> เลือกหมวด ดีด / สี / ตี / เป่า / ประกอบจังหวะ แล้วเลือกเครื่องดนตรีที่พบ
@@ -2659,7 +2665,7 @@
         const showingStatus = stepNow === 3 || (sentAlready && !studentPEditing[caseNum]);
         container.innerHTML = `
           <div class="card mobile-compact-card">
-            <h2 style="font-size:1.24rem;color:#fbbf24;margin:0 0 7px">📊 คดีที่ ${caseNum} · ระดมสมองกลุ่ม${g}</h2>
+            <h2 style="font-size:1.24rem;color:#fbbf24;margin:0 0 7px">🧩 คดีที่ ${caseNum} · ถอดรหัสหลักฐานกลุ่ม${g}</h2>
             <div id="stu-p-live-chart"></div>
             ${showingStatus ? `<div id="stu-p-live-vote-status"></div>` : `
               <div style="font-weight:900;color:#fff;margin:9px 0 7px;font-size:1.08rem">1. เลือกโครงสร้างวง <span style="color:#7dd3fc">(กด 1 ข้อ)</span></div>
@@ -2720,7 +2726,7 @@
       if (!box) return;
       const gAll = (roomState.students || []).filter(s => s.group === studentProfile.group);
       const gDone = gAll.filter(s => s["k" + caseNum + "Submitted"]);
-      box.innerHTML = `⏳ ทีมกลุ่ม${studentProfile.group} ส่งเบาะแสแล้ว <strong>${gDone.length} / ${gAll.length} คน</strong><br><span style="font-size:0.85rem; color:#cbd5e1;">รอคุณครูพาเข้าสู่ด่านที่ 2 (สรุปชื่อวง) สักครู่ครับ...</span>`;
+      box.innerHTML = `⏳ ทีมกลุ่ม${studentProfile.group} ส่งหลักฐานแล้ว <strong>${gDone.length} / ${gAll.length} คน</strong><br><span style="font-size:0.85rem; color:#cbd5e1;">รอคุณครูพาไปถอดรหัสหลักฐานสักครู่ครับ...</span>`;
     }
 
     function updateStudentPLiveWidgets(caseNum) {
@@ -2765,7 +2771,7 @@
               <div style="text-align:center;">
                 <div style="font-size:2.6rem;">🎉🔒</div>
                 <div style="font-weight:800; color:#34d399; font-size:1.2rem;">
-                  ผ่านด่านที่ 2! สมาชิกกลุ่ม${g} เห็นตรงกันครบ ${totalMembers} คน
+                  กลุ่มมีมติร่วมกันแล้ว! สมาชิกกลุ่ม${g} เห็นตรงกันครบ ${totalMembers} คน
                 </div>
                 <div style="font-size:0.95rem; color:#e2e8f0; margin-top:6px;">
                   กลุ่มของคุณสรุปว่าเป็น <strong style="color:var(--gold);">${validVotes[0]?.ensemble || curVote.ensemble}</strong><br>
@@ -3184,6 +3190,7 @@
     }
 
     function teacherNextStage() {
+      if (roomState.phase === "PREPARE") return;
       const cur = roomState.stage || "LOBBY";
       const idx = STAGE_ORDER.indexOf(cur);
       const nextIdx = (idx + 1) < STAGE_ORDER.length ? (idx + 1) : idx;
@@ -3291,7 +3298,7 @@
       nextBtn.textContent = meta.nextLabel || "⏭️ ถัดไป";
       nextBtn.title = meta.nextLabel || "ไปขั้นถัดไป";
       nextBtn.style.display = stage === "SUMMARY" ? "none" : "inline-flex";
-      nextBtn.disabled = stage === "LOBBY" && !teacherRoomReady;
+      nextBtn.disabled = (stage === "LOBBY" && !teacherRoomReady) || roomState.phase === "PREPARE";
 
       let isAllReady = false;
       if (stage === "1K" || stage === "2K" || stage === "3K") {
@@ -3319,7 +3326,7 @@
         isAllReady = students.length > 0 && doneA === students.length;
       }
 
-      if (isAllReady) nextBtn.classList.add("btn-ready-pulse");
+      if (isAllReady && roomState.phase !== "PREPARE") nextBtn.classList.add("btn-ready-pulse");
       else nextBtn.classList.remove("btn-ready-pulse");
     }
 
@@ -3382,12 +3389,26 @@
 
       if (stage !== "LOBBY" && stage !== "SUMMARY" && roomState.phase === "PREPARE") {
         teacherRenderedSig = "";
-        container.innerHTML = `<div class="card" style="text-align:center;padding:36px 20px;border:2px solid var(--gold)">
-          <div style="font-size:3rem">📋</div><h2 style="color:var(--gold)">อธิบายภารกิจก่อนเริ่ม</h2>
-          <h2>${meta.title || stage}</h2><p style="font-size:1.3rem;line-height:1.9">${meta.instruction || "อธิบายวิธีเล่นให้นักเรียนเข้าใจ"}</p>
-          ${stage.endsWith("K") ? `<p style="font-size:clamp(1.5rem,2.2vw,2.4rem)">ดีด · สี · ตี · เป่า · ประกอบจังหวะ</p><p style="font-size:1.6rem">เลือกหมวด → เลือกเครื่องดนตรี → ส่งเบาะแส</p>` : stage.endsWith("P") ? `<p style="font-size:1.6rem">ดูกราฟ → ปรึกษาเพื่อน → เลือกโครงสร้าง → เลือกชื่อวง → ยืนยัน</p>` : ""}
-          <button class="btn btn-success" style="font-size:1.5rem;padding:18px 36px;margin-top:24px" onclick="teacherStartMission()">▶ เริ่มภารกิจ</button>
-          <p style="color:var(--muted);margin-top:14px">นักเรียนทุกคนเห็นหน้าเตรียมพร้อมและยังไม่สามารถส่งคำตอบ</p></div>`;
+        const briefSteps = stage.endsWith("K") ? [
+          "สังเกตเครื่องดนตรีจากคลิปและภาพเบาะแส",
+          "เลือกหมวดเครื่องดนตรีและระบุชื่อเครื่องดนตรีที่พบ",
+          "ตรวจสอบคำตอบ แล้วกดส่งหลักฐาน"
+        ] : stage.endsWith("P") ? [
+          "ศึกษากราฟสรุปหลักฐานเครื่องดนตรีของกลุ่ม",
+          "ระดมสมอง เปรียบเทียบหลักฐานกับคู่มือไขคดีวงดนตรีไทย",
+          "เลือกโครงสร้างและชื่อวง แล้วกดยืนยันคำตอบ"
+        ] : [
+          "อ่านสถานการณ์ทั้ง 3 ข้อบนมือถือ",
+          "เลือกวงดนตรีไทยที่เหมาะสมกับแต่ละสถานการณ์",
+          "ตรวจสอบให้ครบ 3 ข้อ แล้วกดยืนยันส่งคำตอบ"
+        ];
+        container.innerHTML = `<section class="teacher-mission-brief">
+          <div style="font-weight:900;color:#a76c17;letter-spacing:.07em">📁 เตรียมรับภารกิจ · ${meta.step || "ภารกิจสุดท้าย"}</div>
+          <h1>${meta.title || stage}</h1>
+          ${briefSteps.map((item,i) => `<div class="brief-step"><span class="brief-number">${i+1}</span><span>${item}</span></div>`).join("")}
+          <button class="btn btn-primary brief-start" onclick="teacherStartMission()">▶ เริ่มภารกิจ</button>
+          <p style="color:#617586;font-weight:700;margin:10px 0 0;font-size:.96rem">นักเรียนรอคุณครูเริ่มภารกิจ</p>
+        </section>`;
         return;
       }
 
@@ -3590,13 +3611,13 @@
             <!-- 2-Column layout: Reference Board on left, Group statuses on right -->
             <div class="grid-2" style="grid-template-columns: 1.2fr 0.8fr; gap:14px; margin-bottom:14px;">
               <div class="card" style="background:#090d16; border-color:#334155; margin-bottom:0; display:flex; flex-direction:column; justify-content:center;">
-                <h3 style="color:var(--gold); font-size:clamp(1.35rem,2.2vw,2.3rem); margin-bottom:14px; border-bottom:1px solid #334155; padding-bottom:10px;">🕵️ ไกด์นักสืบ : เปรียบเทียบ 3 วง</h3>
+                <h3 style="color:var(--gold); font-size:clamp(1.35rem,2.2vw,2.3rem); margin-bottom:14px; border-bottom:1px solid #334155; padding-bottom:10px;">🗂️ คู่มือไขคดีวงดนตรีไทย</h3>
                 <div style="display:grid;gap:11px;font-size:clamp(1.18rem,1.65vw,1.75rem);line-height:1.45;color:#fff;">
                   <div style="background:#471c29;border-left:7px solid #f87171;border-radius:9px;padding:11px 14px"><strong>🟥 วงปี่พาทย์</strong><div>เครื่องตี + ปี่</div></div>
                   <div style="background:#122e55;border-left:7px solid #38bdf8;border-radius:9px;padding:11px 14px"><strong>🟦 วงเครื่องสาย</strong><div>เครื่องดีด + เครื่องสี + ขลุ่ยเพียงออ</div></div>
                   <div style="background:#493515;border-left:7px solid #fbbf24;border-radius:9px;padding:11px 14px"><strong>🟨 วงมโหรี</strong><div>เครื่องดีด + เครื่องสี + เครื่องตี + เครื่องเป่า (ครบ 4 ประเภท)</div></div>
                 </div>
-                <p style="color:#cbd5e1;font-size:1.1rem;margin:12px 0 0">💡 เครื่องประกอบจังหวะพบได้ในหลายวง · ใช้ข้อมูลบนมือถือมาเทียบไกด์</p>
+                <p style="color:#cbd5e1;font-size:1.1rem;margin:12px 0 0">💡 เครื่องประกอบจังหวะพบได้ในหลายวง · ใช้ข้อมูลบนมือถือเปรียบเทียบกับคู่มือ</p>
               </div>
               <div class="card" style="background:#090d16; border-color:#334155; margin-bottom:0;">
                 <h3 style="color:var(--gold); font-size:clamp(1.45rem,2.1vw,2.2rem); margin-bottom:12px; border-bottom:1px solid #334155; padding-bottom:8px;">⏳ สถานะส่งมติกลุ่ม</h3>
