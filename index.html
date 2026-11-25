@@ -11,20 +11,20 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <style>
     :root {
-      --bg: #0c1727;
-      --surface: #17283e;
-      --surface-light: #2a3d55;
+      --bg: #172c45;
+      --surface: #213b55;
+      --surface-light: #304e68;
       --ink: #f4f8fc;
-      --muted: #a8bacd;
-      --border: #3c526a;
+      --muted: #acc2cc;
+      --border: #48667b;
       --gold: #f4c66a;
       --gold-light: #f9e9bd;
       --brand: #59bdc1;
       --success: #23b89a;
       --danger: #e95765;
       --warning: #ffd65b;
-      --radius: 13px;
-      --shadow: 0 12px 28px rgba(2, 10, 22, 0.28);
+      --radius: 18px;
+      --shadow: 0 10px 26px rgba(2, 10, 22, 0.20);
       --font-head: 'Kanit', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-body: 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -34,9 +34,8 @@
       margin: 0;
       font-family: var(--font-body);
       color: var(--ink);
-      background: radial-gradient(ellipse at 90% 0%, #25425d 0%, transparent 42%),
-                  repeating-linear-gradient(125deg, transparent 0 119px, rgba(91, 146, 175, 0.035) 120px 121px),
-                  linear-gradient(160deg, #14253b 0%, #0d192a 65%, #0a1423 100%);
+      background: radial-gradient(ellipse at 55% 0%, #4267814a 0%, transparent 46%),
+                  linear-gradient(150deg, #203b56 0%, #172c45 72%, #13263d 100%);
       min-height: 100vh;
       line-height: 1.5;
       overflow-x: hidden;
@@ -49,9 +48,8 @@
 
     /* Top Bar */
     .topbar {
-      background: linear-gradient(105deg, rgba(15, 32, 52, 0.98), rgba(21, 42, 64, 0.98));
-      backdrop-filter: blur(10px);
-      border-bottom: 2px solid rgba(70, 203, 213, 0.65);
+      background: rgba(19, 40, 62, 0.98);
+      border-bottom: 1px solid #456279;
       padding: 10px 18px;
       position: sticky;
       top: 0;
@@ -80,18 +78,8 @@
       flex-shrink: 0;
       font-size: 1.4rem;
       background: #243e55;
-      border: 1px solid #518a9b;
-      border-radius: 11px 4px 11px 4px;
-    }
-    .topbar::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 16px;
-      width: min(23%, 240px);
-      height: 2px;
-      background: #ffe18a;
-      pointer-events: none;
+      border: 1px solid #476b80;
+      border-radius: 11px;
     }
     .brand-sub {
       font-size: 0.77rem;
@@ -112,7 +100,7 @@
       font-size: 0.95rem;
       font-weight: 600;
       padding: 10px 16px;
-      border-radius: 9px;
+      border-radius: 12px;
       border: 1px solid transparent;
       cursor: pointer;
       display: inline-flex;
@@ -131,38 +119,37 @@
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .btn-primary {
-      background: linear-gradient(180deg, #ffdb8a 0%, #eeb450 100%);
+      background: linear-gradient(180deg, #ffdc8d 0%, #f1bd5c 100%);
       color: #122238;
       font-weight: 800;
-      box-shadow: 0 5px 0 #9c6c37, 0 10px 15px #0003;
+      box-shadow: 0 4px 0 #b38748, 0 9px 14px #0002;
       border-color: #ffebbb;
-      border-radius: 13px;
+      border-radius: 14px;
     }
     .btn-primary:hover:not(:disabled) {
       background: linear-gradient(180deg, #ffe5a0 0%, #f5c36b 100%);
     }
 
     .btn-blue {
-      background: linear-gradient(115deg, #277fbb 0%, #295fba 100%);
+      background: #367e9c;
       color: #ffffff;
-      border-color: #5391c5;
-      box-shadow: 0 4px 0 rgba(11, 38, 73, 0.65);
+      border-color: #6bafbe;
     }
     .btn-success {
-      background: linear-gradient(180deg, #a0dedb 0%, #57b8ba 100%);
+      background: linear-gradient(180deg, #b5e8e5 0%, #72c8c8 100%);
       color: #183c4b;
       font-weight: 700;
       border-color: #c8f2ec;
-      box-shadow: 0 5px 0 #297b81, 0 10px 15px #0003;
+      box-shadow: 0 4px 0 #478f94, 0 9px 14px #0002;
     }
     .btn-danger {
       background: linear-gradient(115deg, #de586b 0%, #b83656 100%);
       color: #ffffff;
     }
     .btn-secondary {
-      background: #2b4057;
+      background: #2e4a62;
       color: var(--ink);
-      border-color: #4a647e;
+      border-color: #567489;
     }
     .btn-secondary:hover:not(:disabled) { background: #395873; }
     .btn-sm {
@@ -191,17 +178,16 @@
     }
 
     .card {
-      background: linear-gradient(145deg, rgba(29, 49, 72, 0.98), rgba(18, 33, 52, 0.98));
-      border: 1px solid #38546d;
-      border-top: 2px solid #4b8e9c;
-      border-radius: 15px 5px 15px 5px;
+      background: linear-gradient(145deg, #254059, #1b314a);
+      border: 1px solid #45657b;
+      border-radius: 19px;
       box-shadow: var(--shadow);
       padding: 18px;
       margin-bottom: 14px;
     }
     #stu-login-card {
-      border-top: 3px solid #64cbd0;
-      box-shadow: 0 22px 65px rgba(0, 8, 23, 0.35);
+      border: 1px solid #e3e7e4;
+      box-shadow: 0 15px 40px rgba(0, 8, 23, 0.25);
     }
     #stu-login-card::before {
       content: '●  DETECTIVE ACCESS / เข้าสู่หน่วยสืบสวน';
@@ -212,7 +198,7 @@
       letter-spacing: 0.04em;
     }
     #stu-stage-content > .card {
-      border-left: 3px solid #4eb9c5;
+      border-color: #456579;
     }
 
     /* Forms */
@@ -253,10 +239,9 @@
 
     /* Student 4-Step Progress Bar */
     .stu-progress-wrap {
-      background: rgba(14, 27, 44, 0.96);
-      border: 1px solid #41617b;
-      border-top: 3px solid #4abac4;
-      border-radius: 11px;
+      background: #223b53;
+      border: 1px solid #45667b;
+      border-radius: 16px;
       padding: 10px 12px;
       margin-bottom: 12px;
       box-shadow: inset 0 1px 0 rgba(172, 229, 234, 0.08);
@@ -267,10 +252,9 @@
       gap: 6px;
     }
     .stu-p-item {
-      background: #253950;
-      border: 1px solid #37516d;
-      border-radius: 3px;
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+      background: #304c63;
+      border: 1px solid #45667b;
+      border-radius: 9px;
       padding: 6px 4px;
       text-align: center;
       font-family: var(--font-head);
@@ -292,10 +276,9 @@
 
     /* How-To-Pass Instruction Banner (Both Teacher & Student) */
     .mission-guide-banner {
-      background: linear-gradient(95deg, #1b4156 0%, #1c3049 100%);
-      border: 1px solid #3e7484;
-      border-left: 5px solid #58ccd5;
-      border-radius: 8px;
+      background: #28465d;
+      border: 1px solid #527a88;
+      border-radius: 13px;
       padding: 10px 14px;
       margin-bottom: 12px;
       display: flex;
@@ -305,8 +288,8 @@
       gap: 8px;
     }
     .mission-guide-banner.gold {
-      background: linear-gradient(90deg, #3e3d38 0%, #233447 100%);
-      border-left-color: var(--gold);
+      background: #30475b;
+      border-color: #6b7780;
     }
 
     /* Kahoot-style Category Tabs for Student K Stage (No vertical scrolling needed) */
@@ -317,10 +300,9 @@
       margin-bottom: 12px;
     }
     .cat-tab-btn {
-      background: #253a53;
-      border: 2px solid #4a627b;
-      border-bottom: 4px solid #15273d;
-      border-radius: 7px;
+      background: #2c4a63;
+      border: 1px solid #587b8e;
+      border-radius: 12px;
       padding: 13px 2px;
       color: #fff;
       font-family: var(--font-head);
@@ -332,10 +314,10 @@
       transition: all 0.15s;
     }
     .cat-tab-btn.active {
-      background: #1d5766;
-      border-color: #7ce2e3;
+      background: #2c6772;
+      border-color: #a0dada;
       color: #ffffff;
-      box-shadow: inset 0 0 0 1px #7ce2e3;
+      box-shadow: 0 0 0 1px #a0dada;
     }
     .cat-tab-count {
       display: inline-block;
@@ -385,10 +367,9 @@
     .kahoot-big-choice {
       width: 100%;
       padding: 16px 18px;
-      border-radius: 10px;
+      border-radius: 14px;
       border: 2px solid rgba(255,255,255,0.35);
-      border-bottom-width: 5px;
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      border-bottom-width: 2px;
       font-family: var(--font-head);
       font-size: 1.08rem;
       font-weight: 700;
@@ -401,7 +382,7 @@
       gap: 12px;
       margin-bottom: 10px;
       transition: all 0.16s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
     }
     .kahoot-big-choice:active,
     .kahoot-inst-btn:active,
@@ -474,23 +455,13 @@
       right: 0;
       background: rgba(12, 27, 44, 0.97);
       backdrop-filter: blur(12px);
-      border-top: 2px solid #4fb9c5;
+      border-top: 1px solid #527489;
       padding: 8px 16px;
       z-index: 300;
-      box-shadow: 0 -9px 25px rgba(2, 9, 22, 0.54);
+      box-shadow: 0 -7px 20px rgba(2, 9, 22, 0.35);
     }
     .teacher-floating-dock::before {
-      content: 'MISSION CONTROL';
-      position: absolute;
-      right: 18px;
-      bottom: calc(100% + 2px);
-      padding: 3px 11px;
-      border-radius: 6px 6px 0 0;
-      background: #174355;
-      color: #b7e8e8;
-      font: 700 0.64rem var(--font-head);
-      letter-spacing: 0.08em;
-      pointer-events: none;
+      content: none;
     }
     .dock-inner {
       max-width: 1850px;
@@ -504,17 +475,18 @@
     .dock-quick-stages {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 9px;
       flex-wrap: nowrap;
       overflow-x: auto;
       min-width: 0;
     }
     .dock-stage-pill {
       font-family: var(--font-head);
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 6px 10px;
-      border-radius: 6px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      padding: 9px 14px;
+      min-height: 49px;
+      border-radius: 12px;
       background: #253b53;
       border: 1px solid #46617b;
       color: #e4edf6;
@@ -522,27 +494,40 @@
       transition: all 0.15s;
       white-space: nowrap;
       flex-shrink: 0;
-      clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
     }
     .dock-stage-pill:hover { background: #36536c; color: #fff; }
     .dock-stage-pill.active {
-      background: #51c8d0;
-      color: #112b3c;
-      border-color: #9eedef;
+      background: #f2c566;
+      color: #24384a;
+      border-color: #ffe0a0;
       font-weight: 800;
     }
     #dock-1K, #dock-2K, #dock-3K {
-      background: linear-gradient(#e6d0ac,#bc9a74);
-      color: #3d3030;
-      border-color: #e5cda6;
-      border-bottom: 3px solid #886345;
+      background: #3a4f5f;
+      color: #f3e7d0;
+      border-color: #677c86;
       font-weight: 800;
     }
     #dock-1K.active, #dock-2K.active, #dock-3K.active {
-      background: #51c8d0;
-      color: #112b3c;
-      border-color: #9eedef;
+      background: #f2c566;
+      color: #24384a;
+      border-color: #ffe0a0;
     }
+    #dock-1K.completed:not(.active), #dock-2K.completed:not(.active), #dock-3K.completed:not(.active) {
+      background:#225f61;
+      color:#d9fff1;
+      border-color:#69b9af;
+    }
+    .dock-quick-stages > .btn {min-height:45px;font-size:.94rem;}
+    .dock-more {position:relative;flex-shrink:0;}
+    .dock-more summary {list-style:none;display:flex;align-items:center;justify-content:center;min-height:45px;padding:9px 14px;border-radius:12px;border:1px solid #67879a;background:#304b63;color:#fff;font:800 1rem var(--font-head);cursor:pointer;white-space:nowrap;}
+    .dock-more summary::-webkit-details-marker {display:none;}
+    .dock-more summary:focus-visible {outline:3px solid #ffe6a2;outline-offset:3px;}
+    .dock-more:has(.active) summary {border-color:#81c5c8;color:#b8eded;}
+    .dock-more-menu {position:absolute;left:0;bottom:calc(100% + 10px);width:215px;display:grid;gap:7px;padding:10px;border:1px solid #708b9b;border-radius:15px;background:#1e374e;box-shadow:0 10px 32px #0615248c;z-index:340;}
+    .dock-more-menu .dock-stage-pill {width:100%;text-align:left;font-size:.96rem;background:#2e4b63;}
+    .dock-more-menu .dock-stage-pill.active {background:#f2c566;color:#24384a;}
+    #btn-giant-next {max-width:300px;min-height:45px;white-space:normal;line-height:1.25;text-align:center;}
 
     .timer-display {
       font-family: var(--font-head);
@@ -612,7 +597,7 @@
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     }
     .cinema-submit { position:absolute;bottom:8px;left:12px;right:12px;z-index:260; }
-    .teacher-submission-status { display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#1b374c;border:2px solid #69c5cd;border-radius:10px;padding:9px 16px;color:#fff;font-size:clamp(1rem,1.5vw,1.35rem);font-weight:800; }
+    .teacher-submission-status { display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#27485b;border:1px solid #7ac0c5;border-radius:13px;padding:9px 16px;color:#fff;font-size:clamp(1rem,1.5vw,1.35rem);font-weight:800; }
     .teacher-submission-status.complete { background:#064e3b;border-color:#34d399; }
     .closing-slide { padding:50px 24px 28px;overflow:auto;gap:22px;background:#0c1424;box-sizing:border-box; }
     .closing-ensembles { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:min(1250px,100%); }
@@ -630,10 +615,10 @@
 
     /* Group Boxes */
     .group-box {
-      border-radius: 9px;
+      border-radius: 15px;
       padding: 14px;
-      background: linear-gradient(140deg, #203850, #14263c);
-      border: 2px solid #49637c;
+      background: #263f57;
+      border: 1px solid #49637c;
     }
     .group-deed { border-color: #eab308; }
     .group-see { border-color: #3b82f6; }
@@ -664,85 +649,63 @@
     /* Lobby Hero */
     .lobby-hero {
       position: relative;
-      display: flex;
-      flex-wrap: nowrap;
+      display: grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(215px,.9fr);
       align-items: center;
-      justify-content: space-around;
-      gap: 12px;
-      background: linear-gradient(140deg, #fff7e6, #e8dfd0 85%);
-      border: 3px solid #fff9ec;
-      border-radius: 24px 9px 22px 9px;
-      padding: 16px 24px 10px;
-      margin: 8px 0 10px;
-      box-shadow: 0 8px 0 #354f66, 0 15px 25px #0005;
+      gap: 20px;
+      background: #f7f3eb;
+      border: 1px solid #fffaf2;
+      border-radius: 26px;
+      padding: 13px 22px;
+      margin: 3px 0 4px;
+      box-shadow: 0 7px 0 #0a1b2c33, 0 17px 30px #06172b3b;
     }
-    /* The title belongs in the stage heading, not on top of the PIN/QR card. */
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner::before {
-      content: '🔍 ปฏิบัติการนักสืบดนตรีไทย';
-      display: block;
-      flex: 0 1 auto;
-      text-align: center;
-      white-space: nowrap;
-      padding: 3px 18px 9px;
-      background: linear-gradient(115deg, #873a4d, #ac5361 52%, #82374d);
-      border: 3px solid #bb7472;
-      border-radius: 17px 5px 15px 5px;
-      color: #fff4d6;
-      font: 900 clamp(1.45rem, 2vw, 2.1rem)/1.3 var(--font-head);
-      text-shadow: 0 3px 0 #c1a482, 0 6px 0 #624653, 0 9px 11px #24182f90;
-      box-shadow: 0 6px 0 #493143, 0 11px 20px #0716265c;
-      pointer-events: none;
-    }
-    .lobby-hero > div:first-child > div:first-child {
-      color: #765336 !important;
-    }
-    .lobby-hero > div:first-child > div:last-child {
-      color: #38536a !important;
-    }
-    .lobby-hero > div:first-child strong { color: #a45946 !important; }
-    .lobby-hero::after {
-      content: '✦';
-      position: absolute;
-      right: 25%;
-      top: 12px;
-      font-size: 1.6rem;
-      color: #d8a556;
-      opacity: .7;
-      pointer-events: none;
-    }
+    /* A single dark, soft title shadow avoids doubled or blurry lettering. */
+    .clean-game-intro { text-align:center; margin:1px auto 5px; }
+    .clean-game-intro h1 { color:#fff8eb; margin:0; font:900 clamp(2rem,3.2vw,3.3rem)/1.23 var(--font-head); text-shadow:0 4px 12px #061324bf; }
+    .lobby-main { min-width:0; color:#203a50; text-align:center; }
+    .lobby-main h2 { font:900 clamp(1.4rem,2.15vw,1.95rem)/1.28 var(--font-head); margin:0 0 7px; }
+    .lobby-main p { font-size:1.02rem; color:#617785; font-weight:600; margin:0 0 12px; line-height:1.42; }
+    .lobby-main .join-count { color:#345b68; font-size:1.2rem; font-weight:800; margin-top:5px; }
+    .lobby-precreate { grid-template-columns:1fr; min-height:220px; text-align:center; }
+    .lobby-precreate .lobby-main { max-width:700px; margin:0 auto; }
+    .lobby-precreate .btn { min-height:60px; font-size:1.4rem; padding:10px 25px; }
+    .lobby-pin-label { color:#5c7584; font-size:.98rem; font-weight:800; }
     .pin-code {
       font-family: var(--font-head);
-      font-size: clamp(2.6rem, 4vw, 3.8rem);
+      font-size: clamp(4.2rem, 5.7vw, 5.9rem);
       font-weight: 800;
       color: #17334c;
-      background: #fff8e8;
-      border: 3px solid #cbb69a;
-      border-radius: 12px;
-      padding: 1px 22px 5px;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0 1px;
       display: inline-block;
-      letter-spacing: 8px;
+      letter-spacing: .14em;
       line-height: 1.05;
-      text-shadow: 0 2px 0 #dfcdb7;
-      box-shadow: 0 5px 0 #b6a184;
+      white-space: nowrap;
+      text-shadow: none;
+      box-shadow: none;
     }
     .qr-box {
       background: #ffffff;
-      padding: 10px;
-      border-radius: 12px;
+      padding: 7px;
+      border-radius: 15px;
       text-align: center;
       color: #0f172a;
+      justify-self:center;
     }
     #qr-canvas-holder {
-      width: 145px;
-      height: 145px;
-      margin: 0 auto 4px;
+      width: clamp(190px,21vh,218px);
+      height: clamp(190px,21vh,218px);
+      margin: 0 auto 2px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     #qr-canvas-holder svg, #qr-canvas-holder img {
-      width: 145px !important;
-      height: 145px !important;
+      width: 100% !important;
+      height: 100% !important;
     }
 
     /* Press Conference Stage with Realistic Backdrop, Spotlights & Giant Badge */
@@ -1093,13 +1056,13 @@
     .press-room-heading {font-size:clamp(2rem,4.2vw,4.7rem);font-weight:900;margin:12px 0;color:#fff;text-shadow:0 5px 18px #000a;}
     .press-room-group {font-size:clamp(2.6rem,6.5vw,7rem);line-height:1.15;color:#fbbf24;font-weight:900;margin:18px auto;text-shadow:0 5px 14px #000a;}
     .press-room-microphone {font-size:clamp(3rem,5vw,5.5rem);line-height:1.1;filter:drop-shadow(0 4px 15px #000a);}
-    .teacher-a-board {height:calc(100dvh - 210px);min-height:460px;box-sizing:border-box;background:#111827;display:flex;flex-direction:column;gap:10px;padding:16px 24px!important;overflow:hidden;}
+    .teacher-a-board {height:calc(100dvh - 210px);min-height:460px;box-sizing:border-box;background:#203951;display:flex;flex-direction:column;gap:10px;padding:16px 24px!important;overflow:hidden;}
     .teacher-a-heading {display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
     .teacher-a-cases {display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:8px;min-height:0;flex:1;}
-    .teacher-a-case {background:#18263b;border:2px solid #334155;border-left:7px solid #fbbf24;border-radius:12px;padding:10px 16px;display:flex;flex-direction:column;justify-content:center;min-height:0;}
+    .teacher-a-case {background:#2b4962;border:1px solid #4f6a80;border-left:5px solid #f5c66a;border-radius:14px;padding:10px 16px;display:flex;flex-direction:column;justify-content:center;min-height:0;}
     .teacher-a-case h3 {color:#fbbf24;margin:0 0 3px;font-size:clamp(1.04rem,1.55vw,1.7rem);}
     .teacher-a-case p {color:#fff;margin:0;font-size:clamp(.98rem,1.5vw,1.55rem);line-height:1.35;}
-    .teacher-a-pending {background:#422006;color:#fde68a;border-radius:9px;padding:9px 13px;font-size:clamp(.92rem,1.1vw,1.25rem);}
+    .teacher-a-pending {background:#344961;color:#fde6ad;border-radius:11px;padding:9px 13px;font-size:clamp(.92rem,1.1vw,1.25rem);}
     .report-download-panel {display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:9px;margin-top:12px;}
     .report-download-panel button {min-height:48px;text-align:left;white-space:normal;}
     @media(max-height:760px){.teacher-a-board{height:calc(100dvh - 170px);min-height:410px;padding:10px 18px!important;gap:6px}.teacher-a-case{padding:6px 12px}.teacher-a-heading h1{font-size:1.7rem!important}.teacher-a-heading .a-progress{font-size:1.15rem!important}}
@@ -1117,151 +1080,130 @@
     .stu-situation-card { background:#152b43;border:2px solid #69c5cd;border-radius:11px;padding:18px;margin:15px 0; }
     .stu-situation-card h3 { color:#fbbf24;font-size:1.28rem;margin:0 0 10px; }
     .stu-situation-card p { color:#fff;font-size:1.07rem;line-height:1.7; }
-    #teacher-top-pin-box .new-room-cta {font-size:1rem!important;padding:12px 18px!important;font-weight:900!important;border:2px solid #fff0b5!important;}
+    #teacher-top-pin-box .new-room-cta {font-size:.85rem!important;padding:7px 10px!important;font-weight:800!important;border:1px solid #fff0b5!important;}
     #teacher-stage-display .mission-guide-banner strong {font-size:clamp(1.5rem,2.4vw,2.4rem)!important;}
     #teacher-stage-display .mission-guide-banner div {font-size:clamp(1.18rem,1.8vw,1.65rem)!important;}
     @media(max-width:750px){.projector-body{font-size:1.45rem}.top-actions{flex-wrap:wrap}}
 
-    /* DETECTIVE ADVENTURE: Lobby-only 3D styling; all media and countdown layouts stay untouched. */
-    #teacher-stage-display { position: relative; }
-    #teacher-stage-display:has(.lobby-hero)::before,
-    #teacher-stage-display:has(.lobby-hero)::after {
-      position: absolute;
-      z-index: 1;
-      pointer-events: none;
-      text-align: center;
-    }
-    #teacher-stage-display:has(.lobby-hero)::before {
-      content: 'CASE FILE';
-      left: -188px;
-      top: 195px;
-      width: 146px;
-      height: 150px;
-      padding-top: 58px;
-      color: #f7e6c5;
-      font: 900 1.45rem var(--font-head);
-      text-shadow: 0 3px 0 #704148;
-      background: linear-gradient(150deg,#c15d64,#813a4c);
-      border: 4px solid #cb8177;
-      border-radius: 18px 8px 14px 9px;
-      transform: rotate(-13deg);
-      box-shadow: 9px 12px 0 #09182baa, inset 0 14px 0 #e3a28c5c;
-    }
-    #teacher-stage-display:has(.lobby-hero)::after {
-      content: '🔎';
-      right: -166px;
-      top: 185px;
-      font-size: 8.3rem;
-      transform: rotate(18deg);
-      filter: drop-shadow(9px 11px 4px #06172ea1);
-    }
+    /* Modern Clean Detective: simplify panels without touching clues or countdown timing. */
     #teacher-view:has(.lobby-hero) #teacher-stage-display {
       height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      overflow: hidden;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .card:first-child {
-      flex: 0 0 auto;
-      padding: 8px 15px !important;
-      margin: 0 !important;
-      border-width: 2px !important;
-      background: #273b51 !important;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .card:first-child .projector-hero {
-      font-size: clamp(1.15rem, 1.7vw, 1.65rem) !important;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .card:first-child .projector-body {
-      font-size: clamp(.9rem, 1.12vw, 1.15rem) !important;
-      margin: 3px 0 7px !important;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .card:first-child .btn {
-      font-size: clamp(1rem, 1.4vw, 1.4rem) !important;
-      padding: 7px 17px !important;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner {
-      flex: 0 0 auto;
-      margin: 0 !important;
-      padding: 7px 12px !important;
-      min-height: 60px;
-      background: linear-gradient(100deg,#1b334c,#243d53) !important;
-      border-left-color: #ba6570 !important;
-      flex-wrap: nowrap;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner > div {
-      min-width: 0;
-      flex: 1 1 0;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner strong {
-      font-size: clamp(1.1rem, 1.45vw, 1.45rem) !important;
-    }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner div {
-      font-size: clamp(.88rem, 1vw, 1rem) !important;
-    }
-    #teacher-view:has(.lobby-hero) .lobby-hero {
-      flex: 1 1 205px;
-      min-height: 175px;
-      max-height: 232px;
-      margin: 8px 0 7px;
+      gap: 10px;
       overflow: visible;
     }
-    #teacher-view:has(.lobby-hero) #teacher-stage-display > .grid-4 {
+    #teacher-view:has(.lobby-hero) .lobby-hero {
       flex: 0 0 auto;
-      height: clamp(86px, 14dvh, 125px);
-      overflow: hidden;
+      min-height: 225px;
+      max-height: none;
+      margin: 2px 0 5px;
+      overflow: visible;
+    }
+    #teacher-view:has(.lobby-hero) #teacher-stage-display > .lobby-team-grid {
+      flex: 0 0 auto;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      height:auto;
+      overflow:visible;
     }
     #teacher-view:has(.lobby-hero) .group-box {
       min-height: 0;
-      max-height: 100%;
-      overflow-y: auto;
-      border-bottom-width: 4px;
-      box-shadow: 0 5px 12px #0003;
+      padding:0;
+      overflow:visible;
+      border:1px solid #577287;
+      box-shadow:0 3px 10px #0002;
     }
-    #teacher-view:has(.lobby-hero) .group-header {
-      position: sticky;
-      top: -14px;
-      z-index: 1;
-      background: #1d334b;
+    #teacher-view:has(.lobby-hero) .group-box summary {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      padding:12px 13px;
+      font:800 1.06rem var(--font-head);
+      list-style:none;
     }
-    #teacher-view:has(.lobby-hero) .stu-pill {
+    #teacher-view:has(.lobby-hero) .group-box summary::-webkit-details-marker {display:none;}
+    #teacher-view:has(.lobby-hero) .group-box summary::after {content:'▾';color:#9ac7d1;font-size:.8rem;}
+    #teacher-view:has(.lobby-hero) .group-box[open] summary::after {content:'▴';}
+    #teacher-view:has(.lobby-hero) .group-members {max-height:125px;overflow-y:auto;padding:8px 10px;border-top:1px solid #49667b;}
+    #teacher-view:has(.lobby-hero) .group-box .stu-pill {
       background: #314c64;
       border: 1px solid #536c83;
     }
-    /* The live group graph is the same data, but reads like a paper clue card. */
+    /* Student screens: one light learning surface with clear tappable choices. */
+    #stu-login-card, #stu-stage-content > .card {
+      background: #f7f3eb;
+      color: #223a4f;
+      border: 1px solid #e8ece8;
+      border-radius: 22px;
+      box-shadow: 0 7px 0 #091e3140, 0 16px 30px #06172d35;
+    }
+    #stu-login-card { padding:23px 23px 25px; }
+    #stu-login-card::before { content:'🔎 DETECTIVE ACCESS'; color:#31858c; letter-spacing:.08em; }
+    #stu-login-card > h2 { color:#203d53 !important; font-size:1.45rem; }
+    #stu-login-card > p { color:#637b87 !important; }
+    #stu-login-card .form-label { color:#304b5e; }
+    #stu-login-card .form-control { background:#fff; color:#203d53; border:1px solid #cedbdf; border-radius:12px; }
+    #stu-login-card .form-control:focus { border-color:#4baeb6; box-shadow:0 0 0 3px #73c5c52e; }
+    #stu-login-card #stu-pin { color:#1e455a !important; }
+    #stu-stage-content > .card > h2,
+    #stu-stage-content .mobile-compact-card > h2 { color:#22475c !important; }
+    #stu-stage-content > .card > p { color:#536d7b !important; }
+    #stu-stage-content .mobile-compact-card { border:1px solid #e1e7e6; }
+    #stu-stage-content .mobile-compact-card > div[style*='font-weight:900'] { color:#2a4a5e !important; }
+    #stu-stage-content .mobile-compact-card > div[style*='font-weight:900'] span[style] { color:#237c85 !important; }
+    #stu-stage-content .compact-mobile-choice {
+      background:#fff;
+      color:#274358;
+      border:2px solid #dce4e5;
+      border-radius:13px;
+      box-shadow:none;
+      min-height:49px;
+      font-weight:800;
+    }
+    #stu-stage-content .compact-mobile-choice.selected {
+      background:#e0f1ee;
+      border-color:#5db9b9;
+      color:#245a63;
+      box-shadow:0 0 0 1px #81cacc;
+    }
+    #stu-stage-content .compact-mobile-choice.selected::after {color:#23767b;}
+    #stu-stage-content .cat-tab-btn { background:#fff; color:#28475a; border-color:#dce4e5; border-radius:12px; }
+    #stu-stage-content .cat-tab-btn.active { background:#ddf1ee; color:#24535c; border-color:#4aadb5; box-shadow:0 0 0 1px #72c6c5; }
+    #stu-stage-content .kahoot-inst-btn { background:#fff; color:#29465b; border-color:#d5e1e2; border-radius:12px; }
+    #stu-stage-content .kahoot-inst-btn.selected {background:#ddf2ea; color:#245d56; border-color:#4fac9f; box-shadow:none;}
+    #stu-stage-content .stu-situation-card { background:#fff; border:1px solid #dce6e5; border-left:4px solid #5fb9c0; border-radius:14px; }
+    #stu-stage-content .stu-situation-card h3 { color:#97621f !important; }
+    #stu-stage-content .stu-situation-card p { color:#284458 !important; }
+    #stu-stage-content .mobile-sticky-submit { background:#f7f3ebf5; border-top:1px solid #dae4e3; box-shadow:0 -5px 15px #172c4520; }
+    /* Keep the live graph's numeric meaning and color categories unchanged. */
     #stu-p-live-chart > div {
-      background: linear-gradient(140deg,#f8f0df,#eae3d5) !important;
-      border: 2px solid #c4aa89 !important;
-      box-shadow: 0 4px 0 #a8947c;
+      background: #fff !important;
+      border: 1px solid #dfe6e6 !important;
+      box-shadow: none;
       color: #203e51;
     }
     #stu-p-live-chart strong[style],
     #stu-p-live-chart span[style*='color:#fff'] { color: #243c50 !important; }
     #stu-p-live-chart div[style*='color:#94a3b8'] { color: #657584 !important; }
-    #stu-p-live-chart .micro-bar { background: #c6c8c3; }
-    #stu-stage-content .mobile-compact-card { border-top: 3px solid #b9836d; }
-    #stu-stage-content .compact-mobile-choice {
-      border-bottom-width: 4px;
-      border-radius: 11px;
-      background: linear-gradient(145deg,#2e4a62,#20384e);
-      box-shadow: 0 3px 0 #111e30;
-    }
-    #stu-stage-content .compact-mobile-choice.selected {
-      background: linear-gradient(145deg,#26716e,#1d5659);
-      border-color: #9be4d9;
-      box-shadow: inset 0 0 0 1px #9be4d9;
-    }
+    #stu-p-live-chart .micro-bar { background: #e3e9e9; }
+    #stu-p-live-chart p[style] { color:#996719 !important; }
+    #stu-p-live-vote-status > div { background:#243e56 !important; border-color:#5cb6b2 !important; }
     #stu-stage-content div[style*='grid-template-columns:repeat(3'] .compact-mobile-choice.selected::after {
       display: none;
     }
     /* Use the actual browser viewport, including toolbar losses, instead of assuming monitor size. */
+    body:has(#teacher-view .lobby-precreate) #teacher-top-pin-box .new-room-cta { display:none!important; }
     @media (min-width: 1121px) {
       body:has(#teacher-view[style*='display: block'] .lobby-hero) {
         height: 100dvh;
         min-height: 0;
         display: flex;
         flex-direction: column;
-        overflow: hidden;
+        overflow: auto;
       }
       body:has(#teacher-view[style*='display: block'] .lobby-hero) > .topbar { flex-shrink: 0; }
       body:has(#teacher-view[style*='display: block'] .lobby-hero) > .container {
@@ -1273,30 +1215,21 @@
       #teacher-view:has(.lobby-hero) { height: 100%; }
     }
     @media (max-height: 840px) and (min-width: 1121px) {
-      #teacher-view:has(.lobby-hero) .lobby-hero { max-height: 188px; min-height: 158px; padding: 23px 15px 6px; }
-      #teacher-view:has(.lobby-hero) .pin-code { font-size: 2.5rem; padding: 0 14px 3px; }
-      #teacher-view:has(.lobby-hero) #qr-canvas-holder,
-      #teacher-view:has(.lobby-hero) #qr-canvas-holder svg,
-      #teacher-view:has(.lobby-hero) #qr-canvas-holder img { width: 112px !important; height: 112px !important; }
-      #teacher-view:has(.lobby-hero) .qr-box { padding: 6px; }
-      #teacher-view:has(.lobby-hero) #teacher-stage-display > .grid-4 { height: 91px; }
-      #teacher-view:has(.lobby-hero) #teacher-stage-display > .card:first-child { padding: 6px 12px !important; }
-    }
-    @media (max-width: 1640px) {
-      #teacher-stage-display:has(.lobby-hero)::before,
-      #teacher-stage-display:has(.lobby-hero)::after { display: none; }
+      #teacher-view:has(.lobby-hero) .lobby-hero { padding: 10px 18px; }
+      #teacher-view:has(.lobby-hero) .pin-code { font-size: clamp(4.2rem,5.6vw,5.3rem); }
+      #teacher-view:has(.lobby-hero) .group-box summary { padding:8px 10px; font-size:.98rem; }
     }
     @media (max-width: 1120px) {
       #teacher-view:has(.lobby-hero) #teacher-stage-display { height:auto; overflow:visible; }
-      #teacher-view:has(.lobby-hero) #teacher-stage-display > .grid-4 { height:auto; overflow:visible; }
       #teacher-view:has(.lobby-hero) .lobby-hero { max-height:none; }
-      #teacher-view:has(.lobby-hero) .group-box { max-height:160px; }
+      .lobby-hero { grid-template-columns:1fr 1fr; }
+      #teacher-view:has(.lobby-hero) #teacher-stage-display > .lobby-team-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
     }
     @media (max-width: 650px) {
-      .lobby-hero { flex-wrap: wrap; padding-top: 16px; }
-      #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner { flex-wrap: wrap; }
-      #teacher-view:has(.lobby-hero) #teacher-stage-display > .mission-guide-banner::before { white-space: normal; width: 100%; font-size: 1.25rem; }
-      .lobby-hero::after { display:none; }
+      .lobby-hero { grid-template-columns:1fr; padding:19px; text-align:center; }
+      .lobby-main { text-align:center; }
+      #teacher-view:has(.lobby-hero) #teacher-stage-display > .lobby-team-grid {grid-template-columns:1fr;}
+      .clean-game-intro h1 {font-size:clamp(1.9rem,7vw,2.6rem);}
     }
   </style>
 </head>
@@ -1325,17 +1258,16 @@
     </div>
     <div class="top-actions">
       <!-- Teacher-only controls -->
-      <div id="teacher-top-pin-box" style="display:none; align-items:center; gap:6px; background:#090d16; padding:4px 10px; border-radius:8px; border:1px solid #334155;">
-        <span style="font-size:0.78rem; color:var(--muted);">PIN:</span>
-        <input id="teacher-pin-input" type="text" style="width:56px; background:transparent; border:none; color:var(--gold); font-weight:800; font-size:1rem; text-align:center;" value="4829">
-        <button class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:0.75rem;" onclick="teacherLoadPin()">โหลด</button>
-        <button id="btn-new-room" class="btn btn-primary new-room-cta" onclick="teacherCreateNewRoom()">➕ สร้างห้องใหม่</button>
-      </div>
-
       <audio id="game-background-audio" src="audio/background.mp3" preload="none" loop></audio>
       <div id="teacher-tools-wrapper" style="display:none;position:relative">
         <button class="btn btn-secondary btn-sm" onclick="toggleTeacherTools()">⚙️ เครื่องมือครู</button>
         <div id="teacher-tools-panel" class="teacher-tools-panel">
+          <div id="teacher-top-pin-box" style="display:none;align-items:center;gap:6px;background:#142c41;padding:5px 8px;border-radius:10px;border:1px solid #537489;">
+            <label for="teacher-pin-input" style="font-size:.78rem;color:#c2d8de">PIN ห้องเดิม:</label>
+            <input id="teacher-pin-input" type="text" style="width:64px;background:#eff4f3;border:0;border-radius:5px;color:#203d53;font-weight:800;font-size:1rem;text-align:center" value="4829">
+            <button class="btn btn-secondary btn-sm" style="padding:5px 8px" onclick="teacherLoadPin()">โหลดห้อง</button>
+            <button id="btn-new-room" class="btn btn-primary new-room-cta" onclick="teacherCreateNewRoom()">＋ สร้างห้องใหม่</button>
+          </div>
           <button id="btn-bgm" class="btn btn-secondary btn-sm" onclick="toggleBGM()">🔇 เพลงประกอบ: ปิด</button>
           <label id="bgm-volume-control" style="display:inline-flex;align-items:center;gap:5px;color:#fff;font-size:.85rem">🔊 ระดับเสียง <input type="range" id="bgm-volume" min="0" max="100" value="65" oninput="setBGMVolume(this.value)" style="width:90px"></label>
           <button id="btn-test-sound" class="btn btn-secondary btn-sm" onclick="startBGM()">▶️ ทดลองฟังเพลง</button>
@@ -1433,19 +1365,24 @@
       <!-- Floating Bottom Remote Control Dock (Always visible without scrolling!) -->
       <div class="teacher-floating-dock no-print">
         <div class="dock-inner">
-          <!-- Left: Prev + Quick Stage Pills (Includes direct Press Conference button!) -->
+          <!-- Primary controls stay visible; secondary destinations are one tap away. -->
           <div class="dock-quick-stages">
             <button class="btn btn-secondary btn-sm" onclick="teacherPrevStage()" title="ย้อนกลับ 1 ขั้น">
               ⬅️ ย้อนกลับ
             </button>
-            <button class="dock-stage-pill" id="dock-LOBBY" onclick="teacherSetStage('LOBBY')">🏠 เข้าห้อง</button>
             <button class="dock-stage-pill" id="dock-1K" onclick="teacherSetStage('1K')">📁 คดีที่ 1</button>
             <button class="dock-stage-pill" id="dock-2K" onclick="teacherSetStage('2K')">📁 คดีที่ 2</button>
             <button class="dock-stage-pill" id="dock-3K" onclick="teacherSetStage('3K')">📁 คดีที่ 3</button>
-            <button class="dock-stage-pill" id="dock-REVEAL" onclick="teacherSetStage('REVEAL')">✉️ เปิดซองเฉลย</button>
-            <button class="dock-stage-pill" id="dock-A" onclick="teacherSetStage('A')">🎯 ตัดสินใจ</button>
-            <button class="dock-stage-pill" id="dock-SUMMARY" onclick="teacherSetStage('SUMMARY')">🏆 สรุปผล</button>
           </div>
+          <details class="dock-more" id="dock-more">
+            <summary>☰ เพิ่มเติม</summary>
+            <div class="dock-more-menu">
+              <button class="dock-stage-pill" id="dock-LOBBY" onclick="teacherSetStage('LOBBY');this.closest('details').open=false">🏠 เข้าห้อง</button>
+              <button class="dock-stage-pill" id="dock-REVEAL" onclick="teacherSetStage('REVEAL');this.closest('details').open=false">✉️ เปิดซองเฉลย</button>
+              <button class="dock-stage-pill" id="dock-A" onclick="teacherSetStage('A');this.closest('details').open=false">🎯 ภารกิจตัดสินใจ</button>
+              <button class="dock-stage-pill" id="dock-SUMMARY" onclick="teacherSetStage('SUMMARY');this.closest('details').open=false">🏆 สรุปผล</button>
+            </div>
+          </details>
 
           <!-- Center: Compact Timer -->
           <div style="display:flex; align-items:center; gap:6px;">
@@ -1456,7 +1393,7 @@
 
           <!-- Right: Giant Next Step Button -->
           <div>
-            <button id="btn-giant-next" class="btn btn-primary" style="padding:10px 18px; font-size:1rem;" onclick="teacherNextStage()">
+            <button id="btn-giant-next" class="btn btn-primary" style="padding:10px 16px; font-size:1rem;" onclick="teacherNextStage()">
               ⏭️ ไปด่านถัดไป ➔
             </button>
           </div>
@@ -3153,6 +3090,8 @@
     }
 
     async function teacherCreateNewRoom() {
+      const joined = (roomState.students || []).length;
+      if (teacherRoomReady && joined > 0 && !window.confirm(`มีนักเรียนเข้าร่วมห้องแล้ว ${joined} คน\nต้องการสร้างห้องใหม่จริงหรือไม่?`)) return;
       await withTeacherLoading("กำลังสร้างห้องใหม่และโหลดข้อมูล…", async () => {
       const newPin = String(Math.floor(1000 + Math.random() * 9000));
       const resp = await callGasApi({ action: "createRoom", pin: newPin });
@@ -3336,15 +3275,23 @@
       const pillStage = /^[123]/.test(stage) ? stage[0] + "K" : stage;
       const activePill = document.getElementById("dock-" + pillStage);
       if (activePill) activePill.classList.add("active");
+      [1,2,3].forEach(n => {
+        const caseBtn = document.getElementById("dock-" + n + "K");
+        if (!caseBtn) return;
+        const completed = STAGE_ORDER.indexOf(stage) > STAGE_ORDER.indexOf(n + "PRESS");
+        caseBtn.classList.toggle("completed", completed);
+        caseBtn.textContent = `${completed ? '✓' : '📁'} คดีที่ ${n}`;
+      });
 
       const newRoomButton = document.getElementById("btn-new-room");
       if (newRoomButton) newRoomButton.style.display = stage === "LOBBY" ? "inline-flex" : "none";
 
       const nextBtn = document.getElementById("btn-giant-next");
       if (!nextBtn) return;
-      nextBtn.textContent = "⏭️ ถัดไป";
+      nextBtn.textContent = meta.nextLabel || "⏭️ ถัดไป";
       nextBtn.title = meta.nextLabel || "ไปขั้นถัดไป";
-      nextBtn.style.display = ["A", "SUMMARY"].includes(stage) ? "none" : "inline-flex";
+      nextBtn.style.display = stage === "SUMMARY" ? "none" : "inline-flex";
+      nextBtn.disabled = stage === "LOBBY" && !teacherRoomReady;
 
       let isAllReady = false;
       if (stage === "1K" || stage === "2K" || stage === "3K") {
@@ -3574,52 +3521,32 @@
         students.forEach(s => {
           if (byGroup[s.group]) byGroup[s.group].push(s);
         });
+        const expandedGroups = new Set(Array.from(container.querySelectorAll("details.group-box[open]"), el => el.dataset.group));
+        const groupStyles = {"ดีด":["🟡","#eab308","group-deed"],"สี":["🔵","#3b82f6","group-see"],"ตี":["🔴","#ef4444","group-tee"],"เป่า":["🟢","#10b981","group-pao"]};
+        const groupCards = Object.keys(byGroup).map(g => {
+          const [icon,color,cls] = groupStyles[g];
+          return `<details class="group-box ${cls}" data-group="${g}" ${expandedGroups.has(g)?'open':''} style="border-left:4px solid ${color}">
+            <summary><span>${icon} กลุ่ม${g}</span><span class="stu-pill">${byGroup[g].length} คน</span></summary>
+            <div class="group-members">${byGroup[g].map(s => `<span class="stu-pill">เลขที่ ${escapeHtml(s.number)} ${escapeHtml(s.name)}</span>`).join("") || '<span style="color:var(--muted)">ยังไม่มีสมาชิก</span>'}</div>
+          </details>`;
+        }).join("");
 
         container.innerHTML = `
-          ${!teacherRoomReady ? `<div class="card" style="border:4px solid #fbbf24;background:#172554;text-align:center;padding:30px;margin-bottom:18px">
-            <div class="projector-hero">⚠️ ก่อนเล่นต้องสร้างห้องใหม่</div>
-            <p class="projector-body" style="margin:10px 0 20px">กดสร้างห้องเพื่อรับ PIN ใหม่ แล้วให้นักเรียนเข้าร่วม</p>
-            <button class="btn btn-primary" style="font-size:clamp(1.5rem,2.5vw,2.5rem);padding:22px 35px;border:3px solid #fff" onclick="teacherCreateNewRoom()">➕ สร้างห้องใหม่</button>
-          </div>` : `<div style="border:2px solid #10b981;border-radius:12px;padding:10px 18px;margin-bottom:14px;text-align:center;font-size:1.15rem;color:#a7f3d0;font-weight:850">✅ ห้องพร้อมใช้งาน · PIN ${currentPin}</div>`}
-          <div class="mission-guide-banner gold">
-            <div>
-              <strong style="font-family:var(--font-head); font-size:1.2rem; color:var(--gold);">🟢 ${meta.title}</strong>
-              <div style="font-size:0.95rem; color:#e2e8f0;">${meta.instruction}</div>
-            </div>
-          </div>
-
-          <div class="lobby-hero">
-            <div style="text-align:center;">
-              <div style="font-size:0.95rem; color:var(--gold); font-weight:700; letter-spacing:1px;">🔑 รหัสห้องสืบสวน (GAME PIN)</div>
+          <div class="clean-game-intro"><h1>ปฏิบัติการนักสืบดนตรีไทย</h1></div>
+          ${teacherRoomReady ? `<div class="lobby-hero">
+            <div class="lobby-main">
+              <div class="lobby-pin-label">🔑 รหัสเข้าห้องสืบสวน (PIN)</div>
               <div class="pin-code">${currentPin}</div>
-              <div style="color:#cbd5e1; font-size:1.05rem; margin-top:6px;">
-                สายสืบเข้าห้องแล้ว: <strong style="color:var(--gold); font-size:1.35rem;">${students.length} คน</strong>
-              </div>
+              <div class="join-count">✅ เข้าร่วมแล้ว ${students.length} คน</div>
+              <p style="margin-top:10px">ให้นักเรียนสแกน QR Code หรือกรอก PIN แล้วเลือกกลุ่ม ดีด สี ตี หรือเป่า</p>
             </div>
-            <div class="qr-box">
-              <div id="qr-canvas-holder"></div>
-              <div style="font-size:0.82rem; font-weight:700;">📱 สแกนเข้าหน่วยสืบสวน</div>
-            </div>
+            <div class="qr-box"><div id="qr-canvas-holder"></div><div style="font-size:.83rem;font-weight:800">📱 สแกนเพื่อเข้าร่วม</div></div>
           </div>
-
-          <div class="grid-4">
-            <div class="group-box group-deed">
-              <div class="group-header"><span style="color:#facc15;">🟡 กลุ่มดีด</span><span class="stu-pill">${byGroup["ดีด"].length} คน</span></div>
-              <div>${byGroup["ดีด"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
-            </div>
-            <div class="group-box group-see">
-              <div class="group-header"><span style="color:#38bdf8;">🔵 กลุ่มสี</span><span class="stu-pill">${byGroup["สี"].length} คน</span></div>
-              <div>${byGroup["สี"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
-            </div>
-            <div class="group-box group-tee">
-              <div class="group-header"><span style="color:#f87171;">🔴 กลุ่มตี</span><span class="stu-pill">${byGroup["ตี"].length} คน</span></div>
-              <div>${byGroup["ตี"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
-            </div>
-            <div class="group-box group-pao">
-              <div class="group-header"><span style="color:#34d399;">🟢 กลุ่มเป่า</span><span class="stu-pill">${byGroup["เป่า"].length} คน</span></div>
-              <div>${byGroup["เป่า"].map(s => `<span class="stu-pill">เลขที่ ${s.number} ${s.name}</span>`).join("") || '<span style="color:var(--muted); font-size:0.84rem;">รอสายสืบเข้ากลุ่ม...</span>'}</div>
-            </div>
-          </div>
+          <div class="lobby-team-grid">${groupCards}</div>` : `<div class="lobby-hero lobby-precreate"><div class="lobby-main">
+            <h2>🔍 พร้อมเริ่มสืบสวนหรือยัง?</h2>
+            <p>กดสร้างห้องใหม่เพื่อรับรหัส PIN และ QR Code แล้วให้นักเรียนเข้าร่วม</p>
+            <button class="btn btn-primary" onclick="teacherCreateNewRoom()">＋ สร้างห้องใหม่ก่อนเล่น</button>
+          </div></div>`}
         `;
         renderLobbyQRCode();
         return;
