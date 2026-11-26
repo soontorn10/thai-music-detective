@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102139">
+  <title>รับเงาปริศนา | ปฏิบัติการนักสืบดนตรีไทย</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme:dark; --navy:#102139; --surface:#1c354e; --line:#56758b; --gold:#ffcf73; --aqua:#85d8d7; --ink:#fff7e8; --muted:#bfcede; }
+    * { box-sizing:border-box; }
+    html,body { min-height:100%; margin:0; }
+    body { font-family:"Sarabun","Leelawadee UI",Tahoma,sans-serif; color:var(--ink); background:radial-gradient(ellipse at 50% 0,#284d68 0,#142b44 49%,#0c1b2e 100%); }
+    button,input { font:inherit; }
+    button:focus-visible,input:focus-visible,a:focus-visible { outline:3px solid white; outline-offset:3px; }
+    .app { min-height:100vh; min-height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr) auto; }
+    .topbar { display:flex; align-items:center; gap:10px; padding:13px clamp(14px,4vw,32px); background:#0b1b2be8; border-bottom:1px solid #3b6078; }
+    .logo { width:39px; height:39px; border:1px solid #48778c; border-radius:12px; background:#25465d; display:grid; place-items:center; font-size:24px; flex:none; }
+    .brand { min-width:0; }
+    .brand strong { display:block; font:700 clamp(16px,4.3vw,21px)/1.2 "Kanit",sans-serif; }
+    .brand small { display:block; color:var(--aqua); font-size:12px; margin-top:2px; }
+    main { display:flex; justify-content:center; align-items:center; min-height:0; padding:clamp(14px,3vh,28px) 14px; }
+    .panel { width:min(100%,445px); border-radius:24px; border:1px solid var(--line); background:linear-gradient(145deg,#234058,#162e47); box-shadow:0 20px 50px #05101e65; padding:clamp(18px,4vw,30px); text-align:center; }
+    [hidden] { display:none !important; }
+    .eyebrow { color:var(--gold); font:700 14px "Kanit",sans-serif; }
+    h1 { font:800 clamp(27px,6.7vw,35px)/1.3 "Kanit",sans-serif; margin:7px 0; }
+    .hint { color:var(--muted); font-size:clamp(15px,4vw,18px); line-height:1.45; margin:5px auto 20px; }
+    label { display:block; font:700 18px "Kanit",sans-serif; text-align:left; margin:0 0 8px; }
+    input { width:100%; min-height:64px; text-align:center; color:#102b42; background:#fff8ec; border:3px solid #e9c47b; border-radius:15px; font:800 30px "Kanit",sans-serif; letter-spacing:5px; }
+    input::placeholder { color:#89949b; font-size:19px; letter-spacing:0; font-weight:500; }
+    .primary,.secondary { display:flex; justify-content:center; align-items:center; width:100%; border-radius:14px; text-decoration:none; min-height:56px; font:700 20px "Kanit",sans-serif; cursor:pointer; }
+    .primary { color:#16283b; background:linear-gradient(#ffe299,#efb951); border:1px solid #ffe8ba; box-shadow:0 5px 0 #9d6835; margin-top:20px; }
+    .primary:active { transform:translateY(3px); box-shadow:0 2px 0 #9d6835; }
+    .primary.aqua { background:linear-gradient(#b4e9e8,#77cdca); border-color:#cef8f3; box-shadow:0 5px 0 #267a83; }
+    .secondary { min-height:45px; margin-top:16px; color:var(--muted); background:transparent; border:1px solid #59748a; font-size:15px; }
+    .error { color:#ffe0b4; font-weight:700; line-height:1.4; margin:12px 0 0; }
+    .shadow-card { display:grid; place-items:center; height:clamp(185px,38dvh,330px); width:100%; overflow:hidden; border:2px solid #5a8ba3; background:#0b2133; border-radius:19px; margin-top:15px; position:relative; }
+    .shadow-card img { display:block; width:100%; height:100%; object-fit:contain; }
+    .loading { display:flex; align-items:center; justify-content:center; gap:12px; color:var(--aqua); font-weight:700; padding:15px; }
+    .spin { width:30px; height:30px; border:4px solid #587182; border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; flex:none; }
+    .waiting { margin:14px 0 8px; line-height:1.5; font-size:clamp(15px,3.9vw,18px); color:#dcebf2; }
+    .panel.teacher { width:min(100%,990px); text-align:left; }
+    .teacher-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(270px,370px); gap:clamp(18px,4vw,38px); align-items:center; }
+    .teacher h1 { margin:6px 0 10px; font-size:clamp(30px,3.3vw,43px); }
+    .teacher .hint { margin:4px 0 16px; }
+    .size-picker { display:flex; gap:10px; margin:11px 0 22px; }
+    .size-picker button { flex:1; min-height:56px; border:1px solid #658499; border-radius:13px; color:var(--ink); background:#304c63; cursor:pointer; font:700 20px "Kanit",sans-serif; }
+    .size-picker button[aria-pressed="true"] { color:#172b40; background:var(--gold); border-color:#fff3c8; }
+    .teacher-links { display:grid; gap:12px; }
+    .teacher-next { margin:0 0 2px; color:var(--aqua); font-size:15px; font-weight:700; }
+    .teacher-links a { margin:0; }
+    .teacher-links .secondary { text-align:center; border-color:#658499; color:#e8f5fb; }
+    .qr-area { text-align:center; }
+    .qr-paper { display:grid; place-items:center; width:min(100%,340px); aspect-ratio:1; background:white; border:11px solid #fff7e8; border-radius:20px; margin:0 auto; box-shadow:0 14px 30px #0004; overflow:hidden; }
+    .qr-paper svg { display:block; width:100%; height:100%; }
+    .qr-paper a { color:#19334a; overflow-wrap:anywhere; }
+    .qr-title { color:var(--gold); font:700 21px "Kanit",sans-serif; margin:13px 0 3px; }
+    .qr-url { font-size:12px; color:var(--muted); overflow-wrap:anywhere; line-height:1.35; }
+    .foot { padding:10px 15px 15px; text-align:center; font-size:12px; color:#9bb1c2; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    @media (max-height:680px) { main { padding:10px 12px; } .panel { padding:15px 18px; } .hint { margin-bottom:12px; } .shadow-card { height:clamp(140px,30dvh,250px); } .primary { margin-top:13px; } .waiting { margin:9px 0 5px; } }
+    @media (max-width:680px) { .teacher-grid { grid-template-columns:1fr; } .panel.teacher { text-align:center; } .teacher-grid .qr-area { grid-row:1; } .qr-paper { width:min(52vw,220px); border-width:7px; } .qr-title { margin-top:8px; } .teacher .hint { margin-bottom:8px; } .size-picker { margin:7px 0 12px; } }
+    @media (prefers-reduced-motion:reduce) { .spin { animation:none; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <span class="logo" aria-hidden="true">🕵️</span>
+      <span class="brand"><strong>ปฏิบัติการนักสืบดนตรีไทย</strong><small>เกมเงาปริศนา · รับเงาเพื่อรวมทีม</small></span>
+    </header>
+    <main>
+      <section class="panel teacher" id="teacherView" aria-label="จอครูสำหรับแบ่งกลุ่ม" hidden>
+        <div class="teacher-grid">
+          <div>
+            <div class="eyebrow">🔎 ภารกิจเปิดตัวนักสืบ</div>
+            <h1>🎭 เกมเงาปริศนา</h1>
+            <p class="hint">รับเบาะแสลับ แล้วค้นหาเพื่อนร่วมทีม</p>
+            <label>จำนวนนักเรียนในห้อง</label>
+            <div class="size-picker" role="group" aria-label="เลือกจำนวนคน">
+              <button id="size30" type="button" aria-pressed="false">30 คน</button>
+              <button id="size40" type="button" aria-pressed="true">40 คน</button>
+            </div>
+            <div class="teacher-links">
+              <p class="teacher-next">เมื่อนักเรียนได้รับเงาแล้ว ให้เปิดเฉลยบนจอใหญ่</p>
+              <a class="primary" href="shadow-reveal.html">🔎 ไปเฉลยเงาปริศนา →</a>
+              <a class="secondary" href="index.html">🕵️ เข้าสู่ภารกิจหลัก →</a>
+            </div>
+          </div>
+          <div class="qr-area">
+            <div class="qr-paper" id="teacherQr" role="img" aria-label="QR Code สำหรับเข้าหน้าแบ่งกลุ่มนักเรียน"></div>
+            <div class="qr-title">📱 สแกนเพื่อรับเงา</div>
+            <div class="qr-url" id="studentLink"></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel" id="codeView" aria-label="กรอกรหัสรับเงา" hidden>
+        <div class="eyebrow">🔍 ภารกิจแรก</div>
+        <h1>รับเงาปริศนาของคุณ</h1>
+        <p class="hint">กรอกรหัสรับเงาที่คุณครูแจ้ง</p>
+        <form id="codeForm" autocomplete="off">
+          <label for="roomCode">รหัสรับเงา</label>
+          <input id="roomCode" name="room_code" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="กรอกรหัส" required autocomplete="off">
+          <p class="error" id="codeError" role="alert" hidden></p>
+          <button class="primary" type="submit">ไปต่อ →</button>
+        </form>
+      </section>
+      <section class="panel" id="numberView" aria-label="กรอกเลขที่นักเรียน" hidden>
+        <div class="eyebrow">🔐 ยืนยันตัวตน</div>
+        <h1>คุณคือสายสืบหมายเลขใด?</h1>
+        <p class="hint">กรอกเลขที่ของคุณเพื่อรับภาพเงา</p>
+        <form id="numberForm" autocomplete="off">
+          <label for="studentNo">เลขที่นักเรียน</label>
+          <input id="studentNo" name="student_no" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="กรอกเลขที่" required autocomplete="off">
+          <p class="error" id="numberError" role="alert" hidden></p>
+          <button class="primary" type="submit">🔎 เปิดภาพเงาของฉัน</button>
+        </form>
+        <button class="secondary" id="backToCode" type="button">← เปลี่ยนรหัส</button>
+      </section>
+      <section class="panel" id="resultView" aria-label="ภาพเงาปริศนา" hidden>
+        <div class="eyebrow">📁 เบาะแสของคุณ</div>
+        <h1>เงาปริศนาของฉัน</h1>
+        <div class="shadow-card" id="imageBox">
+          <div class="loading" id="imageLoading" role="status"><span class="spin"></span>กำลังเปิดเบาะแส...</div>
+          <img id="shadowImage" alt="ภาพเงาปริศนาของคุณ" draggable="false" hidden>
+        </div>
+        <p class="waiting">🤫 จดจำภาพนี้ไว้ แล้วรอคุณครูเฉลยบนจอใหญ่<br>จากนั้นตามหาเพื่อนที่ได้รับเงาเหมือนกัน</p>
+        <a class="primary aqua" href="index.html">เข้าสู่ภารกิจหลัก →</a>
+        <button class="secondary" id="backToNumber" type="button">← กลับไปแก้เลขที่</button>
+      </section>
+    </main>
+    <footer class="foot">เกมเงาปริศนา · นักเรียนไม่ต้องส่งคำตอบในหน้านี้</footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script>
+    'use strict';
+    // ใช้ชุดจัดกลุ่มเดิม 30/40 คน ไม่สุ่มใหม่ จึงได้ภาพเดิมเมื่อกรอกเลขที่ซ้ำ
+    const GROUPS = {
+      30: [
+        [4, 9, 14, 18, 22, 27, 29],
+        [2, 8, 11, 17, 21, 25, 30],
+        [1, 6, 12, 15, 19, 23, 26, 28],
+        [3, 5, 7, 10, 13, 16, 20, 24]
+      ],
+      40: [
+        [3, 7, 14, 18, 21, 27, 30, 32, 36, 39],
+        [1, 8, 12, 15, 20, 24, 29, 34, 37, 40],
+        [4, 6, 9, 16, 19, 22, 26, 31, 35, 38],
+        [2, 5, 10, 11, 13, 17, 23, 25, 28, 33]
+      ]
+    };
+    const $ = id => document.getElementById(id);
+    let roomSize = 0;
+    let imageRequest = 0;
+    let teacherSize = 40;
+    // ใช้ URL GitHub จริงเสมอ เพื่อให้ QR ถูกต้องแม้เปิดดูไฟล์ในหน้า Preview
+    const PUBLIC_GROUP_URL = 'https://soontorn10.github.io/thai-music-detective/shadow-group.html';
+    function show(view) {
+      for (const id of ['teacherView', 'codeView', 'numberView', 'resultView']) $(id).hidden = id !== view;
+    }
+    function error(id, message) { $(id).textContent = message; $(id).hidden = !message; }
+    function drawTeacherQr() {
+      $('size30').setAttribute('aria-pressed', String(teacherSize === 30));
+      $('size40').setAttribute('aria-pressed', String(teacherSize === 40));
+      const studentUrl = new URL(PUBLIC_GROUP_URL);
+      studentUrl.searchParams.set('room', String(teacherSize));
+      const url = studentUrl.href;
+      $('studentLink').textContent = url;
+      try {
+        if (typeof qrcode !== 'function') throw Error('QR library unavailable');
+        const qr = qrcode(0, 'M');
+        qr.addData(url);
+        qr.make();
+        $('teacherQr').innerHTML = qr.createSvgTag({ cellSize:5, margin:2, scalable:true });
+      } catch (e) {
+        $('teacherQr').innerHTML = '';
+        const fallback = document.createElement('a');
+        fallback.href = url;
+        fallback.textContent = 'เปิดลิงก์สำหรับนักเรียน';
+        $('teacherQr').appendChild(fallback);
+      }
+    }
+    $('size30').addEventListener('click', () => { teacherSize = 30; drawTeacherQr(); });
+    $('size40').addEventListener('click', () => { teacherSize = 40; drawTeacherQr(); });
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('room') === '30' || params.get('room') === '40') {
+      roomSize = Number(params.get('room'));
+      $('roomCode').value = String(roomSize);
+      show('numberView');
+    } else if (params.get('join') === '1') {
+      show('codeView');
+    } else {
+      show('teacherView');
+      drawTeacherQr();
+    }
+    for (const id of ['roomCode', 'studentNo']) {
+      $(id).addEventListener('input', () => error(id === 'roomCode' ? 'codeError' : 'numberError', ''));
+    }
+    $('codeForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const code = $('roomCode').value.trim();
+      if (code !== '30' && code !== '40') return error('codeError', 'รหัสไม่ถูกต้อง กรุณาตรวจสอบกับคุณครู');
+      roomSize = Number(code);
+      $('studentNo').value = '';
+      show('numberView');
+    });
+    $('numberForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const raw = $('studentNo').value.trim();
+      const number = Number(raw);
+      if (!/^\d+$/.test(raw) || !Number.isInteger(number) || number < 1 || number > roomSize) {
+        return error('numberError', `กรุณากรอกเลขที่ 1–${roomSize}`);
+      }
+      const group = GROUPS[roomSize].findIndex(numbers => numbers.includes(number));
+      if (group < 0) return error('numberError', 'ไม่พบเลขที่นี้ในระบบ');
+      const img = $('shadowImage');
+      const loading = $('imageLoading');
+      img.hidden = true;
+      loading.innerHTML = '<span class="spin"></span>กำลังเปิดเบาะแส...';
+      loading.hidden = false;
+      show('resultView');
+      const source = `images/reveal-images/${group + 1}.png`;
+      const request = ++imageRequest;
+      const asset = new Image();
+      asset.onload = () => { if (request !== imageRequest) return; img.src = source; img.hidden = false; loading.hidden = true; };
+      asset.onerror = () => { if (request === imageRequest) loading.textContent = 'โหลดภาพไม่ได้ กรุณาแจ้งคุณครูและตรวจสอบไฟล์ ' + source; };
+      asset.src = source;
+    });
+    $('backToCode').addEventListener('click', () => show('codeView'));
+    $('backToNumber').addEventListener('click', () => show('numberView'));
+  </script>
+</body>
+</html>
