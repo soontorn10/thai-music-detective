@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>เกมเงาปริศนา | ปฏิบัติการนักสืบดนตรีไทย</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #102139;
+      --surface: #1c354e;
+      --surface-2: #25445d;
+      --line: #48637a;
+      --gold: #ffcf73;
+      --gold-deep: #b87c34;
+      --aqua: #85d8d7;
+      --ink: #fff7e8;
+      --muted: #b9ccdc;
+      --font-head: "Kanit", "Leelawadee UI", Tahoma, sans-serif;
+      --font-body: "Sarabun", "Leelawadee UI", Tahoma, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: radial-gradient(ellipse at 50% -10%, #2b506b 0%, #142c45 45%, #0c1b2e 100%);
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+    .app { height: 100vh; height: 100dvh; display: grid; grid-template-rows: 70px minmax(0, 1fr) 92px; }
+    .topbar, .controls {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      background: rgba(10, 26, 43, .96);
+      padding: 10px clamp(12px, 2.5vw, 32px);
+    }
+    .topbar { border-bottom: 1px solid var(--line); }
+    .controls { border-top: 2px solid #3c8e9d; }
+    .brand { display: flex; gap: 11px; align-items: center; min-width: 0; }
+    .brand-icon {
+      width: 46px; height: 46px; display: grid; place-items: center; flex: none;
+      border-radius: 13px; font-size: 24px; border: 1px solid #477c8e; background: #20425b;
+    }
+    .brand strong { display: block; font: 700 clamp(16px, 1.7vw, 22px)/1.2 var(--font-head); white-space: nowrap; }
+    .brand small { display: block; color: var(--aqua); font-size: 12px; white-space: nowrap; }
+    .audio-tools { display: flex; align-items: center; gap: 9px; }
+    .volume-label { font: 600 13px var(--font-body); color: var(--muted); white-space: nowrap; }
+    .volume { width: 105px; accent-color: var(--aqua); cursor: pointer; }
+    .btn {
+      border: 1px solid #617b90; border-radius: 13px;
+      padding: 11px 17px; min-height: 52px; color: var(--ink);
+      background: #2a465f; font: 700 clamp(14px, 1.3vw, 19px)/1.15 var(--font-head);
+      white-space: nowrap; transition: transform .12s, filter .12s, border-color .12s;
+    }
+    .btn:not(:disabled):hover { transform: translateY(-2px); filter: brightness(1.12); }
+    .btn:disabled { opacity: .35; cursor: not-allowed; }
+    .btn-gold {
+      color: #14283a; border-color: #ffe3a7; background: linear-gradient(180deg, #ffe39c, #f4bd57);
+      box-shadow: 0 5px 0 var(--gold-deep);
+    }
+    .btn-aqua {
+      color: #102c3c; border-color: #bcf4e9; background: linear-gradient(180deg, #a8e9e6, #65bfbd);
+      box-shadow: 0 5px 0 #2d7f85;
+    }
+    .btn-small { padding: 9px 12px; min-height: 40px; font-size: 14px; }
+    .main { position: relative; min-height: 0; overflow: hidden; display: grid; }
+    .main::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .28;
+      background: repeating-linear-gradient(115deg, transparent 0 180px, rgba(105, 171, 195, .10) 181px 183px, transparent 184px 360px);
+    }
+    .screen { display: none; min-width: 0; min-height: 0; position: relative; }
+    .screen.active { display: flex; }
+    .hero-screen { justify-content: center; align-items: center; padding: clamp(12px, 3vh, 26px); }
+    .hero-card {
+      position: relative; width: min(850px, 96%); max-height: 100%; text-align: center;
+      padding: clamp(18px, 3.3vh, 34px) clamp(16px, 4vw, 48px);
+      background: linear-gradient(145deg, rgba(35, 64, 86, .97), rgba(21, 41, 63, .97));
+      border: 1px solid #648699; border-radius: 27px;
+      box-shadow: 0 21px 62px rgba(0, 0, 0, .32);
+    }
+    .eyebrow {
+      display: inline-block; background: rgba(255, 207, 115, .15); color: var(--gold);
+      border: 1px solid #b68d56; border-radius: 100px; padding: 5px 17px;
+      font: 700 clamp(12px, 1.4vw, 17px) var(--font-head); letter-spacing: .02em;
+    }
+    .hero-symbol { display: block; font-size: clamp(46px, 9vh, 78px); margin: 5px auto; filter: drop-shadow(0 5px 14px #0005); }
+    .hero-title {
+      font: 800 clamp(36px, 6vw, 72px)/1.2 var(--font-head);
+      color: #fff7df; text-shadow: 0 5px 0 #102c45, 0 12px 20px #0007;
+      margin: 6px 0 7px;
+    }
+    .hero-desc { font: 600 clamp(18px, 2vw, 25px)/1.5 var(--font-body); color: #d5edf0; margin: 8px 0 17px; }
+    .hero-marks { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 22px; }
+    .mark { color: #e2ecf3; background: #294a62; border: 1px solid #628296; border-radius: 999px; padding: 6px 13px; font-size: 14px; font-weight: 700; }
+    .hero-cta { min-width: min(100%, 300px); font-size: clamp(18px, 2.2vw, 25px); padding: 15px 23px; }
+    .hero-note { display: block; margin-top: 19px; font-size: clamp(13px, 1.35vw, 17px); color: var(--muted); }
+    .slide-screen { justify-content: center; align-items: stretch; padding: 12px 20px 15px; }
+    .frame {
+      position: relative; display: flex; justify-content: center; align-items: center;
+      width: 100%; min-height: 0; overflow: hidden;
+      border-radius: 19px; border: 1px solid #55758a;
+      background: radial-gradient(circle at 50% 45%, #294b63, #0a1b2d 76%);
+      box-shadow: inset 0 0 60px #0006;
+    }
+    .frame::after { content: ""; position: absolute; pointer-events: none; inset: 0; border: 1px solid rgba(255,255,255,.07); border-radius: inherit; }
+    .slide-img {
+      display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain;
+      opacity: 0; transform: scale(1.013);
+      transition: opacity .22s ease, transform .34s ease;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .slide-img.ready { opacity: 1; transform: scale(1); }
+    .frame.correct { border-color: #d3aa5d; }
+    .frame.correct .slide-img.ready { animation: settle .4s ease; }
+    .frame.joke .slide-img.ready { animation: bounce .35s ease; }
+    .load-overlay { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; background: #0d2034e8; font-weight: 700; font-size: clamp(16px, 2vw, 23px); text-align: center; padding: 18px; }
+    .load-overlay[hidden] { display: none; }
+    .spinner { width: 40px; height: 40px; border-radius: 50%; border: 4px solid #577084; border-top-color: var(--gold); animation: spin .8s linear infinite; margin: 0 auto 14px; }
+    .load-error { max-width: 520px; line-height: 1.8; }
+    .load-error code { display: block; font: 600 15px monospace; color: #ffd785; overflow-wrap: anywhere; margin: 7px 0; }
+    .slide-progress { flex: 1; min-width: 0; text-align: center; line-height: 1.15; }
+    .slide-progress strong { display: block; color: var(--gold); font: 800 clamp(16px, 1.6vw, 24px) var(--font-head); }
+    .slide-progress span { display: block; color: var(--muted); font-size: clamp(12px, 1.12vw, 16px); }
+    .control-right { display: flex; gap: 10px; align-items: center; }
+    .step-count { font: 800 clamp(15px, 1.7vw, 22px) var(--font-head); color: var(--gold); white-space: nowrap; }
+    .shortcuts { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .spark { font-size: clamp(45px, 7vh, 70px); }
+    .final-title { font-size: clamp(32px, 5vw, 64px); }
+    .final-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .final-actions a { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+    .final-cta { font-size: clamp(17px, 2vw, 23px); min-width: 230px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes bounce { 0% { transform: scale(.97); } 65% { transform: scale(1.012); } 100% { transform: scale(1); } }
+    @keyframes settle { 0% { filter: brightness(1.32); transform: scale(1.015); } 100% { filter: brightness(1); transform: scale(1); } }
+    @media (max-width: 800px) {
+      .app { grid-template-rows: 59px minmax(0, 1fr) 82px; }
+      .brand small, .volume-label, .shortcuts { display: none; }
+      .brand-icon { width: 36px; height: 36px; font-size: 20px; }
+      .volume { width: 75px; }
+      .topbar, .controls { gap: 8px; padding: 7px 11px; }
+      .slide-screen { padding: 8px; }
+      .btn { min-height: 46px; padding: 9px 12px; }
+      .step-count { display: none; }
+      .hero-marks { margin-bottom: 12px; }
+    }
+    @media (max-width: 520px) {
+      .brand strong { font-size: 13px; }
+      .volume { width: 52px; }
+      .audio-tools { gap: 4px; }
+      .btn-small { padding: 6px; font-size: 12px; }
+      .slide-progress span { display: none; }
+      .control-right { gap: 4px; }
+      .hero-note { font-size: 12px; }
+    }
+    @media (max-height: 600px) {
+      .app { grid-template-rows: 54px minmax(0, 1fr) 70px; }
+      .hero-card { padding: 12px 22px; }
+      .hero-symbol { font-size: 38px; margin: 0; }
+      .hero-title { font-size: clamp(29px, 4.4vw, 49px); }
+      .hero-desc { font-size: 17px; margin: 2px 0 9px; }
+      .hero-marks { margin-bottom: 9px; }
+      .hero-note { margin-top: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🕵️</span>
+        <div><strong>ปฏิบัติการนักสืบดนตรีไทย</strong><small>เกมเงาปริศนา · ขั้นนำเข้าสู่บทเรียน</small></div>
+      </div>
+      <div class="audio-tools">
+        <button id="muteBtn" class="btn btn-small" type="button" aria-label="ปิดเสียงทั้งหมด">🔊 เสียงเปิด</button>
+        <label class="volume-label" for="volume">ระดับเสียง</label>
+        <input id="volume" class="volume" type="range" min="0" max="100" value="70" aria-label="ปรับระดับเสียง">
+        <button id="fullscreenBtn" class="btn btn-small" type="button" title="เต็มจอ (F)">⛶ เต็มจอ</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section id="intro" class="screen hero-screen active" aria-label="หน้าเริ่มเกม">
+        <div class="hero-card">
+          <span class="eyebrow">🔎 ภารกิจเปิดตัวนักสืบ</span>
+          <span class="hero-symbol" aria-hidden="true">🕵️‍♂️</span>
+          <h1 class="hero-title">เกมเงาปริศนา</h1>
+          <p class="hero-desc">มองภาพเงาให้ดี แล้วทายว่าเป็นเครื่องดนตรีอะไร!</p>
+          <div class="hero-marks"><span class="mark">4 ปริศนา</span><span class="mark">12 ภาพ</span><span class="mark">ครูควบคุมการเฉลย</span></div>
+          <button id="startBtn" class="btn btn-gold hero-cta" type="button">▶ เริ่มเกมเงาปริศนา</button>
+          <span class="hero-note">ครูเป็นผู้กดเปิดภาพและเฉลยทีละขั้น</span>
+        </div>
+      </section>
+
+      <section id="slides" class="screen slide-screen" aria-label="ภาพเงาปริศนา">
+        <div id="imageFrame" class="frame">
+          <img id="slideImage" class="slide-img" alt="ภาพปริศนาที่ครูกำลังเปิด" draggable="false">
+          <div id="loading" class="load-overlay" role="status" aria-live="polite">
+            <div><div class="spinner"></div>กำลังโหลดภาพปริศนา...</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="outro" class="screen hero-screen" aria-label="หน้าจบเกม">
+        <div class="hero-card">
+          <span class="eyebrow">✅ จบเกมเงาปริศนา</span>
+          <span class="hero-symbol spark" aria-hidden="true">📁✨</span>
+          <h2 class="hero-title final-title">รวมทีมนักสืบสำเร็จ!</h2>
+          <p class="hero-desc">พร้อมเข้าสู่ภารกิจสืบสวนวงดนตรีไทย 3 คดี</p>
+          <div class="final-actions">
+            <button id="againBtn" class="btn final-cta" type="button">↻ เล่นเกมเงาอีกครั้ง</button>
+            <a href="index.html" class="btn btn-gold final-cta">▶ เข้าสู่ภารกิจหลัก</a>
+          </div>
+          <span class="hero-note">ครูเป็นผู้เลือกว่าจะเริ่มภารกิจหลักเมื่อใด</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="controls">
+      <button id="backBtn" class="btn" type="button" disabled>◀ ย้อนกลับ</button>
+      <div class="slide-progress">
+        <strong id="statusTitle">พร้อมเริ่มเกม</strong>
+        <span id="statusHint">สังเกต • ทาย • เปิดเฉลย</span>
+      </div>
+      <div class="control-right">
+        <span id="stepCount" class="step-count"></span>
+        <button id="nextBtn" class="btn btn-aqua" type="button">▶ เริ่มเกม</button>
+      </div>
+    </footer>
+  </div>
+
+  <audio id="bgm" src="audio/background.mp3" preload="none" loop></audio>
+  <audio id="funnySfx" src="audio/funny-reveal.mp3" preload="auto"></audio>
+  <audio id="correctSfx" src="audio/correct-reveal.mp3" preload="auto"></audio>
+
+  <script>
+    'use strict';
+    // Explicit order: shadow → joke reveal → actual answer, for each of 4 puzzles.
+    const slides = ['1.png', '1.1.png', '1.2.png', '2.png', '2.1.png', '2.2.png',
+                    '3.png', '3.1.png', '3.2.png', '4.png', '4.1.png', '4.2.png'];
+    const imageFolder = 'images/reveal-images/';
+    const $ = (id) => document.getElementById(id);
+    const intro = $('intro'), stage = $('slides'), outro = $('outro');
+    const photo = $('slideImage'), frame = $('imageFrame'), loading = $('loading');
+    const bgm = $('bgm'), funny = $('funnySfx'), correct = $('correctSfx');
+    const back = $('backBtn'), next = $('nextBtn');
+    let view = 'intro', index = -1, soundOn = true, master = .70, currentSfx = null, requestId = 0;
+
+    function setView(which) {
+      view = which;
+      intro.classList.toggle('active', which === 'intro');
+      stage.classList.toggle('active', which === 'slide');
+      outro.classList.toggle('active', which === 'outro');
+      back.disabled = which === 'intro';
+      next.textContent = which === 'intro' ? '▶ เริ่มเกม' : which === 'outro' ? '↻ เล่นใหม่' : '▶ ภาพถัดไป';
+      $('stepCount').textContent = which === 'slide' ? `${index + 1}/12` : '';
+      if (which === 'intro') {
+        $('statusTitle').textContent = 'พร้อมเริ่มเกม';
+        $('statusHint').textContent = 'สังเกต • ทาย • เปิดเฉลย';
+      } else if (which === 'outro') {
+        $('statusTitle').textContent = 'ครบ 4 ปริศนา';
+        $('statusHint').textContent = 'พร้อมเข้าภารกิจสืบสวน 3 คดี';
+      }
+    }
+
+    function normalBgmVolume() { return soundOn ? .36 * master : 0; }
+    function restoreBgm() { bgm.volume = normalBgmVolume(); }
+    function stopSfx() {
+      if (currentSfx) { currentSfx.pause(); currentSfx.currentTime = 0; currentSfx = null; }
+      restoreBgm();
+    }
+    function playBgm() {
+      if (!soundOn || master === 0) return;
+      restoreBgm();
+      const promise = bgm.play();
+      if (promise) promise.catch(() => { /* Browsers may require another user gesture. */ });
+    }
+    function playRevealEffect(phase) {
+      stopSfx();
+      if (!soundOn || master === 0 || phase === 0) return;
+      const sfx = phase === 1 ? funny : correct;
+      currentSfx = sfx;
+      sfx.currentTime = 0;
+      sfx.volume = .9 * master;
+      bgm.volume = .075 * master; // Music continues underneath, then returns to its former level.
+      const promise = sfx.play();
+      if (promise) promise.catch(() => { if (currentSfx === sfx) stopSfx(); });
+    }
+    [funny, correct].forEach((sfx) => {
+      sfx.addEventListener('ended', () => { if (currentSfx === sfx) { currentSfx = null; restoreBgm(); } });
+      sfx.addEventListener('error', () => { if (currentSfx === sfx) stopSfx(); });
+    });
+
+    function showSlide(position, forward) {
+      index = position;
+      setView('slide');
+      const group = Math.floor(index / 3) + 1;
+      const phase = index % 3;
+      const names = ['ภาพเงาปริศนา', 'เฉลยมุกหลอก', 'เฉลยจริง'];
+      $('statusTitle').textContent = `ปริศนาที่ ${group}/4 · ${names[phase]}`;
+      $('statusHint').textContent = phase === 0 ? 'ลองให้นักเรียนทายก่อนเปิดเฉลย' :
+                                  phase === 1 ? 'ยังมีเฉลยจริงรออยู่!' : 'ชวนบอกประเภท ดีด สี ตี หรือเป่า';
+      next.textContent = index === slides.length - 1 ? '▶ จบเกม' : '▶ ภาพถัดไป';
+      frame.className = 'frame' + (phase === 1 ? ' joke' : phase === 2 ? ' correct' : '');
+      photo.classList.remove('ready');
+      photo.removeAttribute('src');
+      const imagePath = imageFolder + slides[index];
+      const token = ++requestId;
+      loading.hidden = false;
+      loading.innerHTML = '<div><div class="spinner"></div>กำลังโหลดภาพปริศนา...</div>';
+      const asset = new Image();
+      asset.onload = () => {
+        if (token !== requestId) return;
+        photo.src = asset.src;
+        photo.alt = `ปริศนาที่ ${group} ${names[phase]}`;
+        loading.hidden = true;
+        requestAnimationFrame(() => photo.classList.add('ready'));
+        // Only going forward triggers a reveal effect; backtracking stays quiet.
+        if (forward && phase > 0) playRevealEffect(phase);
+        if (index + 1 < slides.length) { const preload = new Image(); preload.src = imageFolder + slides[index + 1]; }
+      };
+      asset.onerror = () => {
+        if (token !== requestId) return;
+        loading.innerHTML = `<div class="load-error">⚠️ โหลดภาพไม่สำเร็จ<code>${imagePath}</code><button class="btn btn-gold btn-small" id="retryBtn" type="button">↻ ลองใหม่</button></div>`;
+        $('retryBtn').onclick = () => showSlide(index, false);
+      };
+      asset.src = imagePath;
+      if (!forward) stopSfx();
+    }
+
+    function startGame() { stopSfx(); playBgm(); showSlide(0, false); }
+    function finishGame() { requestId++; stopSfx(); setView('outro'); }
+    function goForward() {
+      if (view === 'intro') return startGame();
+      if (view === 'outro') { index = -1; setView('intro'); return; }
+      if (index === slides.length - 1) return finishGame();
+      stopSfx(); showSlide(index + 1, true);
+    }
+    function goBack() {
+      if (view === 'outro') return showSlide(slides.length - 1, false);
+      if (view !== 'slide') return;
+      if (index === 0) { requestId++; stopSfx(); setView('intro'); return; }
+      showSlide(index - 1, false);
+    }
+    next.addEventListener('click', goForward);
+    back.addEventListener('click', goBack);
+    $('startBtn').addEventListener('click', startGame);
+    $('againBtn').addEventListener('click', () => { index = -1; setView('intro'); });
+    $('muteBtn').addEventListener('click', () => {
+      soundOn = !soundOn;
+      $('muteBtn').textContent = soundOn ? '🔊 เสียงเปิด' : '🔇 ปิดเสียง';
+      $('muteBtn').setAttribute('aria-label', soundOn ? 'ปิดเสียงทั้งหมด' : 'เปิดเสียงทั้งหมด');
+      if (!soundOn) { stopSfx(); bgm.pause(); }
+      else playBgm();
+    });
+    $('volume').addEventListener('input', (event) => {
+      master = Number(event.target.value) / 100;
+      if (currentSfx) { currentSfx.volume = .9 * master; bgm.volume = .075 * master; }
+      else restoreBgm();
+      if (master > 0 && soundOn && bgm.paused && view !== 'intro') playBgm();
+    });
+    $('fullscreenBtn').addEventListener('click', async () => {
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else await document.documentElement.requestFullscreen();
+      } catch (_) { alert('หากเบราว์เซอร์ไม่รองรับ ให้กด F11 เพื่อแสดงเต็มจอ'); }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.target instanceof HTMLElement && ['INPUT', 'TEXTAREA'].includes(event.target.tagName)) return;
+      if (event.code === 'ArrowRight' || event.code === 'Space') { event.preventDefault(); goForward(); }
+      else if (event.code === 'ArrowLeft') { event.preventDefault(); goBack(); }
+      else if (event.key.toLowerCase() === 'f' && !event.ctrlKey && !event.altKey) $('fullscreenBtn').click();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { stopSfx(); bgm.pause(); }
+      else if (soundOn && view !== 'intro') playBgm();
+    });
+    restoreBgm();
+    setView('intro');
+  </script>
+</body>
+</html>
