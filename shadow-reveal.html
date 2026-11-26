@@ -131,17 +131,13 @@
       border-radius: 2px; background: var(--c);
       box-shadow: 0 0 9px var(--c); animation: firework 1.65s ease-out forwards;
     }
-    .success-ribbon {
-      position: absolute; z-index: 5; left: 50%; top: 8%; transform: translateX(-50%);
-      padding: 10px 25px; color: #102b40; background: linear-gradient(#ffecad, #ffd073);
-      border: 2px solid #fff4c9; border-radius: 100px; box-shadow: 0 6px 25px #0007;
-      font: 800 clamp(18px, 2.2vw, 29px) var(--font-head); white-space: nowrap;
-      animation: ribbon-in .35s ease-out;
-    }
-    .success-ribbon[hidden] { display: none; }
     .load-overlay { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; background: #0d2034e8; font-weight: 700; font-size: clamp(16px, 2vw, 23px); text-align: center; padding: 18px; }
     .load-overlay[hidden] { display: none; }
     .spinner { width: 40px; height: 40px; border-radius: 50%; border: 4px solid #577084; border-top-color: var(--gold); animation: spin .8s linear infinite; margin: 0 auto 14px; }
+    .scan-content { position: relative; min-width: min(85%, 330px); padding: 24px 25px; border: 1px solid #5d8794; border-radius: 20px; background: #112c43ef; box-shadow: 0 14px 40px #0006; }
+    .scan-icon { display: block; font-size: clamp(43px, 7vw, 69px); line-height: 1.15; margin-bottom: 3px; animation: scan-search .65s ease-in-out infinite alternate; }
+    .scan-track { width: 100%; height: 7px; overflow: hidden; margin-top: 17px; background: #3a5567; border-radius: 100px; }
+    .scan-track i { display: block; width: 38%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--aqua), var(--gold)); animation: scan-progress .68s ease-in-out infinite alternate; }
     .load-error { max-width: 520px; line-height: 1.8; }
     .load-error code { display: block; font: 600 15px monospace; color: #ffd785; overflow-wrap: anywhere; margin: 7px 0; }
     .slide-progress { flex: 1; min-width: 0; text-align: center; line-height: 1.15; }
@@ -149,17 +145,21 @@
     .slide-progress span { display: block; color: var(--muted); font-size: clamp(12px, 1.12vw, 16px); }
     .control-right { display: flex; gap: 10px; align-items: center; }
     .step-count { font: 800 clamp(15px, 1.7vw, 22px) var(--font-head); color: var(--gold); white-space: nowrap; }
-    .spark { font-size: clamp(45px, 7vh, 70px); }
-    .final-title { font-size: clamp(32px, 5vw, 64px); }
     .final-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
     .final-actions a { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
     .final-cta { font-size: clamp(17px, 2vw, 23px); min-width: 230px; }
+    .bridge-card { width: min(1050px, 97%); }
+    .bridge-title { font: 800 clamp(24px, 3.65vw, 49px)/1.2 var(--font-head); margin: 9px 0 0; color: #fff6df; }
+    .bridge-arrow { font: 800 clamp(27px, 4vw, 44px)/1 var(--font-head); color: var(--aqua); margin: 5px auto; }
+    .bridge-target { font: 800 clamp(28px, 4.25vw, 57px)/1.2 var(--font-head); color: var(--gold); margin: 0 0 10px; }
+    .bridge-card .hero-desc { margin: 6px 0 21px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes scan-search { from { transform: translateX(-7px) rotate(-11deg); } to { transform: translateX(7px) rotate(11deg); } }
+    @keyframes scan-progress { from { transform: translateX(0); } to { transform: translateX(165%); } }
     @keyframes bounce { 0% { transform: scale(.97); } 65% { transform: scale(1.012); } 100% { transform: scale(1); } }
     @keyframes settle { 0% { filter: brightness(1.32); transform: scale(1.015); } 100% { filter: brightness(1); transform: scale(1); } }
     @keyframes count-pulse { from { opacity: .15; transform: scale(1.32); } to { opacity: 1; transform: scale(1); } }
     @keyframes firework { 0% { opacity: 0; transform: translate(0, 0) scale(.4) rotate(0); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.65) rotate(260deg); } }
-    @keyframes ribbon-in { from { opacity: 0; transform: translate(-50%, -22px) scale(.85); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
     @media (max-width: 800px) {
       .app { grid-template-rows: 59px minmax(0, 1fr) 82px; }
       .brand small, .volume-label { display: none; }
@@ -225,19 +225,19 @@
             <div id="countdownNumber" class="countdown-number">3</div>
           </div>
           <div id="celebration" class="celebration" aria-hidden="true"></div>
-          <div id="successRibbon" style="display:none" hidden></div>
         </div>
       </section>
 
       <section id="outro" class="screen hero-screen" aria-label="หน้าจบเกม">
-        <div class="hero-card">
-          <span class="eyebrow">✅ จบเกมเงาปริศนา</span>
-          <span class="hero-symbol spark" aria-hidden="true">📁✨</span>
-          <h2 class="hero-title final-title">รวมทีมสำเร็จ!</h2>
-          <p class="hero-desc">พร้อมเข้าสู่ภารกิจสืบสวน 3 คดี</p>
+        <div class="hero-card bridge-card">
+          <span class="eyebrow">🔎 ภารกิจต่อไป</span>
+          <h2 class="bridge-title">จากการจำแนกประเภทเครื่องดนตรีไทย</h2>
+          <div class="bridge-arrow" aria-hidden="true">↓</div>
+          <h3 class="bridge-target">สู่การจัดประเภทวงดนตรีไทย</h3>
+          <p class="hero-desc">ใช้เบาะแสการประสมเครื่องดนตรี ไขปริศนาทั้ง 3 คดี</p>
           <div class="final-actions">
             <button id="againBtn" class="btn final-cta" type="button">↻ เล่นเกมเงาอีกครั้ง</button>
-            <a href="index.html" class="btn btn-gold final-cta">▶ เข้าสู่ภารกิจหลัก</a>
+            <a href="index.html" class="btn btn-gold final-cta">🔎 เข้าสู่ภารกิจหลัก</a>
           </div>
         </div>
       </section>
@@ -272,7 +272,7 @@
     const bgm = $('bgm'), funny = $('funnySfx'), correct = $('correctSfx');
     const back = $('backBtn'), next = $('nextBtn');
     let view = 'intro', index = -1, soundOn = true, master = .70, currentSfx = null, requestId = 0;
-    let countdownActive = false, countdownTimer = null, fireworkTimer = null;
+    let countdownActive = false, countdownTimer = null, fireworkTimer = null, scanTimer = null;
 
     function setView(which) {
       view = which;
@@ -280,6 +280,7 @@
       stage.classList.toggle('active', which === 'slide');
       outro.classList.toggle('active', which === 'outro');
       back.disabled = which === 'intro';
+      if (which !== 'slide') next.disabled = false;
       next.textContent = which === 'intro' ? '▶ เริ่มเกม' : which === 'outro' ? '↻ เล่นใหม่' : '▶ ภาพถัดไป';
       $('stepCount').textContent = which === 'slide' ? `${index + 1}/12` : '';
       if (which === 'intro') {
@@ -322,11 +323,9 @@
     function clearCelebration() {
       clearTimeout(fireworkTimer);
       $('celebration').replaceChildren();
-      $('successRibbon').hidden = true;
     }
     function celebrate() {
       clearCelebration();
-      $('successRibbon').hidden = false;
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const layer = $('celebration');
         const colors = ['#ffcf73', '#fff4b3', '#80d8d6', '#a7f1e5'];
@@ -380,6 +379,8 @@
     }
 
     function showSlide(position, forward, preserveSfx = false) {
+      clearTimeout(scanTimer);
+      scanTimer = null;
       clearCelebration();
       index = position;
       setView('slide');
@@ -397,19 +398,27 @@
       const token = ++requestId;
       next.disabled = true;
       loading.hidden = false;
-      loading.innerHTML = '<div><div class="spinner"></div>กำลังโหลดภาพปริศนา...</div>';
+      loading.innerHTML = '<div class="scan-content"><span class="scan-icon" aria-hidden="true">🔎</span>กำลังสแกนเบาะแส...<div class="scan-track" aria-hidden="true"><i></i></div></div>';
       const asset = new Image();
       asset.onload = () => {
         if (token !== requestId) return;
-        photo.src = asset.src;
-        photo.alt = `ปริศนาที่ ${group} ${names[phase]}`;
-        loading.hidden = true;
-        next.disabled = false;
-        requestAnimationFrame(() => photo.classList.add('ready'));
-        // The real-answer drumroll already started before the countdown.
-        if (forward && phase > 0 && !preserveSfx) playRevealEffect(phase);
-        if (forward && phase === 2) celebrate();
-        if (index + 1 < slides.length) { const preload = new Image(); preload.src = imageFolder + slides[index + 1]; }
+        const revealImage = () => {
+          if (token !== requestId) return;
+          scanTimer = null;
+          photo.src = asset.src;
+          photo.alt = `ปริศนาที่ ${group} ${names[phase]}`;
+          loading.hidden = true;
+          next.disabled = false;
+          requestAnimationFrame(() => photo.classList.add('ready'));
+          // The real-answer drumroll already started before the countdown.
+          if (forward && phase > 0 && !preserveSfx) playRevealEffect(phase);
+          if (forward && phase === 2) celebrate();
+          if (index + 1 < slides.length) { const preload = new Image(); preload.src = imageFolder + slides[index + 1]; }
+        };
+        // Preserve the 3–2–1 real reveal: no extra delay after its countdown.
+        if (forward && phase !== 2 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          scanTimer = setTimeout(revealImage, 680);
+        } else revealImage();
       };
       asset.onerror = () => {
         if (token !== requestId) return;
@@ -421,12 +430,13 @@
       if (!forward && !preserveSfx) stopSfx();
     }
 
-    function startGame() { cancelCountdown(); stopSfx(); playBgm(); showSlide(0, false); }
-    function finishGame() { cancelCountdown(); clearCelebration(); requestId++; stopSfx(); setView('outro'); }
+    function startGame() { cancelCountdown(); stopSfx(); playBgm(); showSlide(0, true); }
+    function finishGame() { cancelCountdown(); clearTimeout(scanTimer); clearCelebration(); requestId++; stopSfx(); setView('outro'); }
     function goForward() {
       if (countdownActive) return;
       if (view === 'intro') return startGame();
       if (view === 'outro') { index = -1; setView('intro'); return; }
+      if (next.disabled) return;
       if (index === slides.length - 1) return finishGame();
       if (index % 3 === 1) return beginCountdown();
       stopSfx(); showSlide(index + 1, true);
@@ -435,7 +445,7 @@
       if (countdownActive) { cancelCountdown(); return; }
       if (view === 'outro') return showSlide(slides.length - 1, false);
       if (view !== 'slide') return;
-      if (index === 0) { requestId++; stopSfx(); setView('intro'); return; }
+      if (index === 0) { clearTimeout(scanTimer); requestId++; stopSfx(); setView('intro'); return; }
       showSlide(index - 1, false);
     }
     next.addEventListener('click', goForward);
