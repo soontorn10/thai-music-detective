@@ -1076,19 +1076,6 @@
     @media(max-width:650px){.teacher-mission-brief{margin:8px 0;padding:16px}.teacher-mission-brief .brief-step{padding:11px;gap:10px}.teacher-mission-brief .brief-number{flex-basis:36px;width:36px;height:36px}}
     .report-download-panel {display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:9px;margin-top:12px;}
     .report-download-panel button {min-height:48px;text-align:left;white-space:normal;}
-    /* แฟ้มห้องสืบสวน: สารบัญออนไลน์ ไม่เพิ่มภาระส่วนแสดงภารกิจ */
-    .room-archive-modal {max-width:980px;}
-    .room-archive-filters {display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:12px 0;}
-    .room-archive-filters input,.room-archive-filters select {background:#f3f4f6;color:#142c41;border:1px solid #91a6b7;border-radius:9px;padding:9px 11px;font:inherit;min-height:42px;}
-    .room-archive-list {display:grid;gap:9px;max-height:52vh;overflow-y:auto;padding-right:3px;}
-    .room-archive-item {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:13px;background:#142d44;border:1px solid #4c6d82;border-radius:12px;}
-    .room-archive-item strong {color:#fff;font-size:1.07rem;}
-    .room-archive-item .archive-meta {color:#c7d6e1;font-size:.88rem;margin-top:3px;}
-    .room-archive-item .archive-actions {display:flex;flex-wrap:wrap;gap:6px;}
-    .room-archive-item .btn {font-size:.88rem;min-height:42px;}
-    .archive-report-banner {display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#27465e;border:2px solid var(--gold);padding:12px 16px;border-radius:12px;margin:8px 0 15px;}
-    .archive-report-banner strong {font-size:1.1rem;color:var(--gold-light);}
-    @media(max-width:580px){.room-archive-filters input,.room-archive-filters select {width:100%;}.room-archive-item .archive-actions {width:100%;}.room-archive-item .archive-actions button {flex:1;}}
     @media(max-height:760px){.teacher-a-board{height:calc(100dvh - 170px);min-height:410px;padding:10px 18px!important;gap:6px}.teacher-a-case{padding:6px 12px}.teacher-a-heading h1{font-size:1.7rem!important}.teacher-a-heading .a-progress{font-size:1.15rem!important}}
     .teacher-busy-overlay { position:fixed;inset:0;z-index:99990;background:rgba(3,7,18,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;font-size:1.65rem;color:#fff;font-weight:800;text-align:center;padding:20px; }
     .teacher-busy-overlay.show { display:flex; }
@@ -1288,14 +1275,14 @@
         <div id="teacher-tools-panel" class="teacher-tools-panel">
           <div id="teacher-top-pin-box" style="display:none;align-items:center;gap:6px;background:#142c41;padding:5px 8px;border-radius:10px;border:1px solid #537489;">
             <label for="teacher-pin-input" style="font-size:.78rem;color:#c2d8de">PIN ห้องเดิม:</label>
-            <input id="teacher-pin-input" type="text" style="width:64px;background:#eff4f3;border:0;border-radius:5px;color:#203d53;font-weight:800;font-size:1rem;text-align:center" value="4829">
+            <input id="teacher-pin-input" type="text" maxlength="4" placeholder="PIN" style="width:64px;background:#eff4f3;border:0;border-radius:5px;color:#203d53;font-weight:800;font-size:1rem;text-align:center" value="">
             <button class="btn btn-secondary btn-sm" style="padding:5px 8px" onclick="teacherLoadPin()">โหลดห้อง</button>
             <button id="btn-new-room" class="btn btn-primary new-room-cta" onclick="teacherCreateNewRoom()">＋ สร้างห้องใหม่</button>
           </div>
           <button id="btn-bgm" class="btn btn-secondary btn-sm" onclick="toggleBGM()">🔇 เพลงประกอบ: ปิด</button>
           <label id="bgm-volume-control" style="display:inline-flex;align-items:center;gap:5px;color:#fff;font-size:.85rem">🔊 ระดับเสียง <input type="range" id="bgm-volume" min="0" max="100" value="65" oninput="setBGMVolume(this.value)" style="width:90px"></label>
           <button id="btn-test-sound" class="btn btn-secondary btn-sm" onclick="startBGM()">▶️ ทดลองฟังเพลง</button>
-          <button class="btn btn-secondary btn-sm" onclick="openRoomArchive()">🗂️ แฟ้มห้องสืบสวน</button>
+          <a class="btn btn-secondary btn-sm" href="https://docs.google.com/spreadsheets/d/1PezTEFNFF3NeHmQ5r5ZNklA9mqxHm6TeTz45kpIV4is/edit" target="_blank" rel="noopener noreferrer">📊 เปิด Google Sheets</a>
           <button id="btn-config-top" class="btn btn-secondary btn-sm" onclick="openConfigModal()">🔧 ตั้งค่าระบบ</button>
           <button id="btn-switch-student" class="btn btn-secondary btn-sm" onclick="switchToStudentView()">📱 มุมมองนักเรียน</button>
         </div>
@@ -1310,8 +1297,16 @@
     <!-- Status Banner -->
     <div id="sync-banner" style="display:none; margin-bottom:10px; padding:10px 14px; border-radius:10px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:600; font-size:0.92rem;"></div>
 
+    <section id="teacher-entry" style="display:none;max-width:700px;margin:clamp(24px,8vh,80px) auto;">
+      <div class="card" style="text-align:center;padding:clamp(22px,4vw,40px)">
+        <h1 style="color:var(--gold);margin:4px 0 10px">🕵️ ศูนย์ควบคุมภารกิจ</h1>
+        <p style="color:var(--muted);margin:0 0 20px">สำหรับคุณครูสร้างห้อง แสดง QR Code และควบคุมเกมสืบสวน</p>
+        <button class="btn btn-primary" style="width:min(100%,320px);padding:15px;font-size:1.15rem" onclick="openTeacherModal()">🔐 เข้าสู่มุมครู</button>
+      </div>
+    </section>
+
     <!-- ================= STUDENT VIEW (KAHOOT-STYLE ONE CARD AT A TIME) ================= -->
-    <section id="student-view">
+    <section id="student-view" style="display:none;">
       <!-- 1. Student Login -->
       <div id="stu-login-card" class="card" style="max-width: 480px; margin: 12px auto;">
         <h2 style="color:var(--gold); text-align:center; margin-bottom:4px;">🕵️‍♂️ เข้าร่วมหน่วยสืบสวนดนตรีไทย</h2>
@@ -1332,7 +1327,7 @@
         <div class="grid-2">
           <div class="form-group">
             <label class="form-label" for="stu-class">🏫 ชั้นเรียน (ยึดตามห้องที่ครูสร้าง)</label>
-            <input id="stu-class" type="text" class="form-control" autocomplete="off" placeholder="เช่น ม.1/1" value="ม.1/1">
+            <input id="stu-class" type="text" class="form-control" autocomplete="off" placeholder="ชั้นเรียนตาม PIN ของครู" value="">
           </div>
           <div class="form-group">
             <label class="form-label" for="stu-num">🔢 เลขที่</label>
@@ -1384,10 +1379,6 @@
 
     <!-- ================= TEACHER VIEW (PROJECTOR) ================= -->
     <section id="teacher-view" style="display:none;">
-      <div id="archive-report-banner" class="archive-report-banner no-print">
-        <strong id="archive-report-label">🗂️ กำลังดูรายงานย้อนหลัง</strong>
-        <button class="btn btn-primary btn-sm" onclick="closeArchivedReport()">↩️ กลับห้องที่กำลังสอน</button>
-      </div>
       <!-- Main Projector Display Area -->
       <div id="teacher-stage-display"></div>
 
@@ -1451,55 +1442,18 @@
     </div>
   </div>
 
-  <!-- เลือกห้องเรียนก่อนสร้าง PIN: เปิดจากปุ่มสร้างห้องเดิมทุกตำแหน่ง -->
+  <!-- พิมพ์เลขห้องก่อนสร้าง PIN: เปิดจากปุ่มสร้างห้องเดิมทุกตำแหน่ง -->
   <div id="new-room-modal" class="modal-backdrop" onclick="closeNewRoomModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <h2 style="color:var(--gold);margin:0 0 6px;">📁 เปิดแฟ้มห้องสืบสวนใหม่</h2>
-      <p style="color:var(--muted);margin:0 0 14px;">เลือกห้องเรียนก่อนให้ระบบสร้าง PIN และ QR Code</p>
+      <p style="color:var(--muted);margin:0 0 14px;">พิมพ์เลขห้องก่อนให้ระบบสร้าง PIN และ QR Code</p>
       <label for="new-room-class" class="form-label">🏫 ห้องเรียน</label>
-      <select id="new-room-class" class="form-control" style="font-size:1.14rem;min-height:54px;">
-        <option value="">— เลือกห้องเรียน —</option>
-        <option value="ม.1/1">ม.1/1</option><option value="ม.1/2">ม.1/2</option><option value="ม.1/3">ม.1/3</option>
-        <option value="ม.1/4">ม.1/4</option><option value="ม.1/5">ม.1/5</option><option value="ม.1/6">ม.1/6</option>
-        <option value="ม.1/7">ม.1/7</option><option value="ม.1/8">ม.1/8</option><option value="ม.1/9">ม.1/9</option>
-        <option value="ทดลองระบบ">🧪 ทดลองระบบ</option>
-      </select>
+      <input id="new-room-class" type="text" class="form-control" autocomplete="off" inputmode="text" maxlength="8" placeholder="เช่น 1/1" style="font-size:1.35rem;min-height:54px;text-align:center" onkeydown="if(event.key==='Enter') teacherConfirmNewRoom()">
       <p style="color:#cbd5e1;font-size:.88rem;">ระบบจะบันทึกห้องเรียนและวันที่สร้างใน Google Sheets อัตโนมัติ</p>
       <div style="display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:16px;">
         <button class="btn btn-secondary" onclick="closeNewRoomModal()">ยกเลิก</button>
         <button id="new-room-confirm" class="btn btn-primary" onclick="teacherConfirmNewRoom()">＋ สร้าง PIN และ QR Code</button>
       </div>
-    </div>
-  </div>
-
-  <!-- แฟ้มย้อนหลัง: ส่งเฉพาะลายเซ็นยืนยัน ไม่ส่งหรือบันทึกรหัสผ่านครู -->
-  <div id="room-archive-modal" class="modal-backdrop" onclick="closeRoomArchive()">
-    <div class="modal-card room-archive-modal" onclick="event.stopPropagation()">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-        <h2 style="color:var(--gold);margin:0;">🗂️ แฟ้มห้องสืบสวน</h2>
-        <button class="btn btn-secondary btn-sm" onclick="closeRoomArchive()">✕ ปิด</button>
-      </div>
-      <p style="color:var(--muted);margin:6px 0 12px;">ค้นหาห้องเรียน ดูรายงานย้อนหลัง หรือซ่อนห้องทดลองโดยไม่ลบคะแนน</p>
-      <div id="archive-login-box">
-        <label class="form-label" for="archive-password">🔐 รหัสจัดการแฟ้มห้อง (ตั้งค่าใน Apps Script)</label>
-        <input id="archive-password" type="password" class="form-control" autocomplete="off" placeholder="รหัสผ่านแฟ้มห้องสืบสวน" onkeydown="if(event.key==='Enter') loadRoomArchive()">
-        <button class="btn btn-primary" style="margin-top:12px;" onclick="loadRoomArchive()">🔓 เปิดแฟ้มห้องสืบสวน</button>
-      </div>
-      <div id="archive-content" style="display:none;">
-        <div id="archive-count" style="color:#b9e7e1;font-weight:700;"></div>
-        <p style="color:#a9c3d5;font-size:.84rem;margin:5px 0 2px;">PIN ที่สร้างไว้ก่อนอัปเดตจะอยู่ในหมวด “ห้องเดิมยังไม่จัดประเภท” และกำหนดชื่อห้องย้อนหลังได้</p>
-        <div class="room-archive-filters">
-          <input id="archive-search" type="search" style="flex:1;min-width:175px;" placeholder="ค้นหา ม.1/1 หรือ PIN" oninput="renderRoomArchiveList()">
-          <select id="archive-type" onchange="renderRoomArchiveList()" aria-label="ประเภทห้อง">
-            <option value="CLASS">ห้องเรียนจริง</option><option value="TEST">ห้องทดลอง</option>
-            <option value="LEGACY">ห้องเดิมยังไม่จัดประเภท</option><option value="ALL">ทุกประเภท</option>
-          </select>
-          <label style="display:flex;align-items:center;gap:6px;font-size:.92rem;"><input id="archive-show-hidden" type="checkbox" onchange="renderRoomArchiveList()"> แสดงห้องที่ซ่อน</label>
-          <button class="btn btn-secondary btn-sm" onclick="loadRoomArchive()">🔄 รีเฟรช</button>
-        </div>
-        <div id="archive-list" class="room-archive-list" aria-live="polite"></div>
-      </div>
-      <p id="archive-status" style="color:#b9e7e1;font-size:.9rem;margin:12px 0 0;" role="status"></p>
     </div>
   </div>
 
@@ -1766,7 +1720,7 @@
      * 2. APPLICATION STATE
      ********************************************************************/
     let appMode = "STUDENT";
-    let currentPin = "4829";
+    let currentPin = "";
     let studentProfile = null;
     let studentShuffledA = null;
 
@@ -1783,7 +1737,7 @@
     }
 
     let roomState = {
-      pin: "4829",
+      pin: "",
       stage: "LOBBY",
       pressAssignments: {},
       revealedCases: { case1: false, case2: false, case3: false },
@@ -2235,7 +2189,6 @@
     }
 
     async function refreshRoomState() {
-      if (archivedReportView) return; // รายงานย้อนหลังเป็นภาพอ่านอย่างเดียว ไม่ให้ polling เปลี่ยนหน้าจอ
       const requestId = ++roomStateRequestId;
       const pinToLoad = appMode === "TEACHER"
         ? (document.getElementById("teacher-pin-input")?.value || currentPin)
@@ -2299,7 +2252,7 @@
     function startPolling() {
       if (pollTimer) clearInterval(pollTimer);
       pollTimer = setInterval(() => {
-        if (!archivedReportView && ((appMode === "TEACHER" && !teacherActionBusy) || studentProfile)) {
+        if ((appMode === "TEACHER" && !teacherActionBusy) || studentProfile) {
           refreshRoomState();
         }
       }, 3500);
@@ -3103,6 +3056,7 @@
       }
       closeTeacherModal();
       appMode = "TEACHER";
+      document.getElementById("teacher-entry").style.display = "none";
       teacherRenderedSig = "";
       document.getElementById("student-view").style.display = "none";
       document.getElementById("teacher-view").style.display = "block";
@@ -3111,15 +3065,15 @@
       document.getElementById("btn-teacher-menu").style.display = "none";
       if (!bgmPlaying) startBGM();
       withTeacherLoading("กำลังโหลดข้อมูลหน้าจอครู…", async () => {
-        await refreshRoomState();
+        if (currentPin) await refreshRoomState();
+        else { teacherRoomReady = false; renderTeacherStage(true); }
         return true;
       });
       startPolling();
     }
     function switchToStudentView() {
-      if (archivedReportView) closeArchivedReport();
-      archiveManagerKey = "";
       appMode = "STUDENT";
+      document.getElementById("teacher-entry").style.display = "none";
       studentRenderedSig = "";
       document.getElementById("teacher-view").style.display = "none";
       document.getElementById("student-view").style.display = "block";
@@ -3165,9 +3119,6 @@
     }
 
     let teacherActionBusy = false;
-    let archiveManagerKey = ""; // เก็บเฉพาะระหว่างเปิดหน้า ไม่เก็บใน localStorage
-    let archiveRooms = [];
-    let archivedReportView = null;
     async function withTeacherLoading(message, task) {
       if (teacherActionBusy) return false;
       teacherActionBusy = true;
@@ -3189,9 +3140,11 @@
     }
 
     async function teacherConfirmNewRoom() {
-      const classRoom = document.getElementById("new-room-class").value;
-      if (!classRoom) return alert("กรุณาเลือกห้องเรียนก่อนสร้าง PIN ครับ");
-      const joined = ((archivedReportView ? archivedReportView.roomState : roomState).students || []).length;
+      const classRoom = document.getElementById("new-room-class").value.trim();
+      if (!/^(?:ม\.)?[1-6]\/([1-9][0-9]?)$/.test(classRoom.replace(/\s+/g, ""))) {
+        return alert("กรุณาพิมพ์ห้องเรียน เช่น 1/1 หรือ 1/16 ครับ");
+      }
+      const joined = (roomState.students || []).length;
       if (teacherRoomReady && joined > 0 && !window.confirm(`มีนักเรียนเข้าร่วมห้องแล้ว ${joined} คน\nต้องการสร้างห้องใหม่จริงหรือไม่?`)) return;
       await withTeacherLoading("กำลังบันทึกห้องเรียนและสร้าง PIN…", async () => {
       let newPin = "", resp = null;
@@ -3202,12 +3155,11 @@
         if (resp?.status === "ok" || !String(resp?.message || "").includes("PIN นี้มีห้อง")) break;
       }
       if (!resp || resp.status !== "ok") throw new Error(resp?.message || "สร้างห้องไม่สำเร็จ");
-      if (archivedReportView) closeArchivedReport();
       closeNewRoomModal();
       roomStateRequestId++;
       document.getElementById("teacher-pin-input").value = newPin;
       currentPin = newPin;
-      roomState = { ...roomState, pin: newPin, roomClassRoom: classRoom, stage: "LOBBY", phase: "PLAYING", students: [], pressAssignments: {}, revealedCases: {case1:false,case2:false,case3:false} };
+      roomState = { ...roomState, pin: newPin, roomClassRoom: resp.classRoom || classRoom, stage: "LOBBY", phase: "PLAYING", students: [], pressAssignments: {}, revealedCases: {case1:false,case2:false,case3:false} };
       teacherRoomReady = true;
       lastStudentCount = 0;
       roomState.pressAssignments = {};
@@ -3223,7 +3175,6 @@
     }
 
     async function teacherLoadPin() {
-      if (archivedReportView) closeArchivedReport();
       const pinVal = document.getElementById("teacher-pin-input").value.trim();
       if (!pinVal) return;
       await withTeacherLoading("กำลังดึงข้อมูลห้อง " + pinVal + "…", async () => {
@@ -3239,185 +3190,6 @@
         renderTeacherStage(true);
         return true;
       });
-    }
-
-    // ยืนยัน HMAC: ส่งเฉพาะลายเซ็นชั่วคราว ไม่ส่งรหัสผ่านแฟ้มผ่าน URL หรือ localStorage
-    async function callRoomArchiveApi(payload) {
-      if (!GAS_WEB_APP_URL) throw new Error("ยังไม่ได้ตั้งค่าที่อยู่ Google Apps Script");
-      if (!window.crypto?.subtle) throw new Error("เบราว์เซอร์นี้ไม่รองรับการยืนยันแบบปลอดภัย กรุณาใช้ Chrome หรือ Edge เวอร์ชันปัจจุบัน");
-      try {
-        const authTime = Date.now();
-        const authNonce = Array.from(window.crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2,"0")).join("");
-        const message = ["TMD_ARCHIVE_V1", payload.action || "", payload.pin || "",
-          payload.classRoom || "", String(authTime), authNonce].join("|");
-        const encoder = new TextEncoder();
-        const key = await window.crypto.subtle.importKey("raw", encoder.encode(archiveManagerKey),
-          { name:"HMAC", hash:"SHA-256" }, false, ["sign"]);
-        const bytes = await window.crypto.subtle.sign("HMAC", key, encoder.encode(message));
-        const authSig = Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2,"0")).join("");
-        const response = await callGasApi({ ...payload, authTime, authNonce, authSig });
-        if (!response) throw new Error("เซิร์ฟเวอร์ไม่ตอบกลับ");
-        return response;
-      } catch (err) {
-        throw new Error("เชื่อมต่อแฟ้มห้องออนไลน์ไม่สำเร็จ กรุณาตรวจสอบการ Deploy และการเชื่อมต่อ (" + err.message + ")");
-      }
-    }
-
-    function openRoomArchive() {
-      if (appMode !== "TEACHER") return;
-      document.getElementById("teacher-tools-panel").classList.remove("show");
-      document.getElementById("room-archive-modal").classList.add("show");
-      document.getElementById("archive-login-box").style.display = archiveManagerKey ? "none" : "block";
-      document.getElementById("archive-content").style.display = archiveManagerKey ? "block" : "none";
-      document.getElementById("archive-status").textContent = "";
-      if (archiveManagerKey) loadRoomArchive();
-      else document.getElementById("archive-password").focus();
-    }
-
-    function closeRoomArchive() {
-      document.getElementById("room-archive-modal").classList.remove("show");
-      document.getElementById("archive-password").value = "";
-    }
-
-    async function loadRoomArchive() {
-      const passwordInput = document.getElementById("archive-password");
-      const password = archiveManagerKey || passwordInput.value;
-      const status = document.getElementById("archive-status");
-      if (!password) { status.textContent = "กรุณากรอกรหัสจัดการแฟ้มห้อง"; return; }
-      archiveManagerKey = password;
-      status.textContent = "⏳ กำลังโหลดสารบัญห้องเรียนออนไลน์…";
-      try {
-        const response = await callRoomArchiveApi({ action: "listRooms" });
-        if (!response || response.status !== "ok") {
-          if (response?.code === "ACCESS_DENIED" || response?.code === "SETUP_REQUIRED") {
-            archiveManagerKey = "";
-            passwordInput.value = "";
-          }
-          throw new Error(response?.message || "ไม่สามารถเรียกข้อมูลห้องเรียนได้");
-        }
-        archiveRooms = response.rooms || [];
-        passwordInput.value = "";
-        document.getElementById("archive-login-box").style.display = "none";
-        document.getElementById("archive-content").style.display = "block";
-        status.textContent = "✅ โหลดสารบัญจาก Google Sheets แล้ว";
-        renderRoomArchiveList();
-      } catch (err) {
-        status.textContent = "⚠️ " + err.message;
-        if (!archiveManagerKey) document.getElementById("archive-login-box").style.display = "block";
-      }
-    }
-
-    function archiveDateText(value) {
-      if (!value) return "ไม่ทราบวันที่สร้าง (ห้องเดิม)";
-      const date = new Date(value);
-      return Number.isNaN(date.getTime()) ? "ไม่ทราบวันที่สร้าง" :
-        date.toLocaleString("th-TH", { timeZone:"Asia/Bangkok",day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit" });
-    }
-
-    function renderRoomArchiveList() {
-      const holder = document.getElementById("archive-list");
-      const search = document.getElementById("archive-search").value.trim().toLowerCase();
-      const filterType = document.getElementById("archive-type").value;
-      const includeArchived = document.getElementById("archive-show-hidden").checked;
-      const visible = archiveRooms.filter(r => {
-        if (!/^\d{4,6}$/.test(r.pin)) return false;
-        if (!includeArchived && r.archived) return false;
-        const kind = r.roomType === "TEST" || r.classRoom === "ทดลองระบบ" ? "TEST" :
-          (r.roomType === "CLASS" && r.classRoom ? "CLASS" : "LEGACY");
-        if (filterType !== "ALL" && filterType !== kind) return false;
-        return (r.classRoom + " " + r.pin).toLowerCase().includes(search);
-      });
-      const active = archiveRooms.filter(r => !r.archived).length;
-      document.getElementById("archive-count").textContent = `พบ ${visible.length} ห้องจากทั้งหมด ${archiveRooms.length} ห้อง · ยังแสดงในสารบัญ ${active} ห้อง`;
-      holder.innerHTML = visible.length ? visible.map(r => {
-        const pin = r.pin; // ผ่านการตรวจตัวเลขแล้วก่อนแทรกใน onclick
-        const label = escapeHtml(r.classRoom || "ยังไม่ระบุห้อง (ข้อมูลเดิม)");
-        const dateText = archiveDateText(r.createdAt);
-        const typeText = r.roomType === "TEST" ? "🧪 ทดลอง" :
-          (r.classRoom ? "🏫 ชั้นเรียน" : "📁 ห้องเดิม");
-        return `<div class="room-archive-item" style="opacity:${r.archived ? '.73' : '1'}">
-          <div><strong>${label}</strong> <span style="color:#9bd8d2">· PIN ${pin}</span>
-            <div class="archive-meta">${typeText} · ${escapeHtml(dateText)} ${r.archived ? '· ซ่อนแล้ว' : ''}</div></div>
-          <div class="archive-actions">
-            <button class="btn btn-success btn-sm" onclick="openArchivedReport('${pin}')">📊 ดูรายงาน</button>
-            <button class="btn btn-secondary btn-sm" onclick="editRoomArchiveLabel('${pin}')">✏️ ชื่อห้อง</button>
-            <button class="btn ${r.archived ? 'btn-primary' : 'btn-danger'} btn-sm" onclick="toggleArchivedRoom('${pin}',${!r.archived})">${r.archived ? '↩️ คืนรายการ' : '🗑️ ซ่อน'}</button>
-          </div>
-        </div>`;
-      }).join("") : `<div class="room-archive-item">ไม่มีห้องตามตัวกรองนี้ ลองเลือก “ทุกประเภท” หรือ “แสดงห้องที่ซ่อน”</div>`;
-    }
-
-    async function editRoomArchiveLabel(pin) {
-      const record = archiveRooms.find(r => r.pin === pin);
-      if (!record) return;
-      const label = window.prompt("ระบุชื่อห้อง ม.1/1–ม.1/9 หรือพิมพ์ ทดลองระบบ", record.classRoom || "ม.1/");
-      if (label === null) return;
-      const value = label.trim();
-      if (!/^ม\.1\/[1-9]$/.test(value) && value !== "ทดลองระบบ") return alert("กรุณาระบุเช่น ม.1/2 หรือ ทดลองระบบ");
-      try {
-        const response = await callRoomArchiveApi({ action:"updateRoomMeta", pin, classRoom:value });
-        if (response?.status !== "ok") throw new Error(response?.message || "บันทึกไม่สำเร็จ");
-        record.classRoom = value;
-        record.roomType = value === "ทดลองระบบ" ? "TEST" : "CLASS";
-        renderRoomArchiveList();
-      } catch (err) { alert("⚠️ " + err.message); }
-    }
-
-    async function toggleArchivedRoom(pin, archive) {
-      if (!window.confirm(archive
-        ? `ซ่อนห้อง PIN ${pin} จากสารบัญหรือไม่?\nข้อมูลคะแนนใน Google Sheets จะไม่ถูกลบ`
-        : `นำห้อง PIN ${pin} กลับมาแสดงในสารบัญหรือไม่?`)) return;
-      try {
-        const response = await callRoomArchiveApi({ action:archive ? "archiveRoom" : "restoreRoom", pin });
-        if (response?.status !== "ok") throw new Error(response?.message || "ดำเนินการไม่สำเร็จ");
-        const record = archiveRooms.find(r => r.pin === pin);
-        if (record) record.archived = archive;
-        renderRoomArchiveList();
-      } catch (err) { alert("⚠️ " + err.message); }
-    }
-
-    async function openArchivedReport(pin) {
-      const record = archiveRooms.find(r => r.pin === pin);
-      if (!record) return;
-      await withTeacherLoading("กำลังดึงรายงานย้อนหลัง PIN " + pin + "…", async () => {
-        const response = await callGasApi({ action:"getState", pin });
-        if (!response || response.status !== "ok") throw new Error(response?.message || "โหลดรายงานไม่สำเร็จ");
-        if (!archivedReportView) archivedReportView = {
-          pin:currentPin, roomState:roomState, ready:teacherRoomReady,
-          previousPinInput:document.getElementById("teacher-pin-input").value
-        };
-        roomStateRequestId++;
-        currentPin = pin;
-        document.getElementById("teacher-pin-input").value = pin;
-        roomState = { ...response, stage:"SUMMARY", phase:"PLAYING" }; // เปลี่ยนหน้าเฉพาะในเบราว์เซอร์
-        teacherRoomReady = true;
-        teacherRenderedSig = "";
-        document.querySelector(".teacher-floating-dock").style.display = "none";
-        const banner = document.getElementById("archive-report-banner");
-        banner.style.display = "flex";
-        document.getElementById("archive-report-label").textContent =
-          `🗂️ รายงานย้อนหลัง ${record.classRoom || 'ห้องเดิม'} · PIN ${pin}` +
-          (response.stage === "SUMMARY" ? "" : " · ห้องนี้ยังไม่ปิดคดี คะแนนอาจไม่ครบ");
-        closeRoomArchive();
-        renderTeacherStage(true);
-        window.scrollTo({ top:0, behavior:"smooth" });
-        return true;
-      });
-    }
-
-    function closeArchivedReport() {
-      if (!archivedReportView) return;
-      const previous = archivedReportView;
-      archivedReportView = null;
-      roomStateRequestId++;
-      currentPin = previous.pin;
-      roomState = previous.roomState;
-      teacherRoomReady = previous.ready;
-      document.getElementById("teacher-pin-input").value = previous.previousPinInput;
-      document.querySelector(".teacher-floating-dock").style.display = "";
-      document.getElementById("archive-report-banner").style.display = "none";
-      teacherRenderedSig = "";
-      renderTeacherStage(true);
     }
 
     async function refreshStudentRoomClass() {
@@ -3437,7 +3209,6 @@
     }
 
     async function teacherSetStage(newStage) {
-      if (archivedReportView) return alert("กำลังดูรายงานย้อนหลัง กรุณากดกลับห้องที่กำลังสอนก่อน");
       if (!currentPin || !teacherRoomReady) return alert("⚠️ กรุณาสร้างห้องใหม่ หรือโหลดห้องที่มีอยู่ก่อน");
       await withTeacherLoading("กำลังเปลี่ยนหน้าภารกิจ…", async () => {
         const needsIntro = /^[123][KP]$/.test(newStage) || newStage === "A";
@@ -4556,9 +4327,13 @@
       document.getElementById("stu-pin").addEventListener("change", refreshStudentRoomClass);
       const pinParam = urlParams.get("pin");
       if (pinParam) {
+        document.getElementById("student-view").style.display = "block";
+        document.getElementById("btn-teacher-menu").style.display = "none";
         document.getElementById("stu-pin").value = pinParam;
         currentPin = pinParam;
         refreshStudentRoomClass();
+      } else {
+        document.getElementById("teacher-entry").style.display = "block";
       }
 
       try {
