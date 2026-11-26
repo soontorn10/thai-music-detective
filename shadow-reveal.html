@@ -94,10 +94,7 @@
       margin: 6px 0 7px;
     }
     .hero-desc { font: 600 clamp(18px, 2vw, 25px)/1.5 var(--font-body); color: #d5edf0; margin: 8px 0 17px; }
-    .hero-marks { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 22px; }
-    .mark { color: #e2ecf3; background: #294a62; border: 1px solid #628296; border-radius: 999px; padding: 6px 13px; font-size: 14px; font-weight: 700; }
     .hero-cta { min-width: min(100%, 300px); font-size: clamp(18px, 2.2vw, 25px); padding: 15px 23px; }
-    .hero-note { display: block; margin-top: 19px; font-size: clamp(13px, 1.35vw, 17px); color: var(--muted); }
     .slide-screen { justify-content: center; align-items: stretch; padding: 12px 20px 15px; }
     .frame {
       position: relative; display: flex; justify-content: center; align-items: center;
@@ -117,6 +114,31 @@
     .frame.correct { border-color: #d3aa5d; }
     .frame.correct .slide-img.ready { animation: settle .4s ease; }
     .frame.joke .slide-img.ready { animation: bounce .35s ease; }
+    .countdown-layer {
+      position: absolute; inset: 0; z-index: 3; display: grid; place-content: center;
+      text-align: center; background: rgba(9, 27, 43, .88); pointer-events: none;
+    }
+    .countdown-layer[hidden] { display: none; }
+    .countdown-label { color: var(--gold); font: 700 clamp(21px, 2.6vw, 36px) var(--font-head); }
+    .countdown-number {
+      color: #fff9df; font: 800 clamp(116px, 20vw, 270px)/1 var(--font-head);
+      text-shadow: 0 9px 0 #946329, 0 20px 45px #000a;
+      animation: count-pulse .9s ease both;
+    }
+    .celebration { position: absolute; inset: 0; z-index: 4; overflow: hidden; pointer-events: none; }
+    .celebration i {
+      position: absolute; left: var(--x); top: var(--y); width: 8px; height: 13px;
+      border-radius: 2px; background: var(--c);
+      box-shadow: 0 0 9px var(--c); animation: firework 1.65s ease-out forwards;
+    }
+    .success-ribbon {
+      position: absolute; z-index: 5; left: 50%; top: 8%; transform: translateX(-50%);
+      padding: 10px 25px; color: #102b40; background: linear-gradient(#ffecad, #ffd073);
+      border: 2px solid #fff4c9; border-radius: 100px; box-shadow: 0 6px 25px #0007;
+      font: 800 clamp(18px, 2.2vw, 29px) var(--font-head); white-space: nowrap;
+      animation: ribbon-in .35s ease-out;
+    }
+    .success-ribbon[hidden] { display: none; }
     .load-overlay { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; background: #0d2034e8; font-weight: 700; font-size: clamp(16px, 2vw, 23px); text-align: center; padding: 18px; }
     .load-overlay[hidden] { display: none; }
     .spinner { width: 40px; height: 40px; border-radius: 50%; border: 4px solid #577084; border-top-color: var(--gold); animation: spin .8s linear infinite; margin: 0 auto 14px; }
@@ -127,7 +149,6 @@
     .slide-progress span { display: block; color: var(--muted); font-size: clamp(12px, 1.12vw, 16px); }
     .control-right { display: flex; gap: 10px; align-items: center; }
     .step-count { font: 800 clamp(15px, 1.7vw, 22px) var(--font-head); color: var(--gold); white-space: nowrap; }
-    .shortcuts { font-size: 12px; color: var(--muted); white-space: nowrap; }
     .spark { font-size: clamp(45px, 7vh, 70px); }
     .final-title { font-size: clamp(32px, 5vw, 64px); }
     .final-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
@@ -136,16 +157,18 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes bounce { 0% { transform: scale(.97); } 65% { transform: scale(1.012); } 100% { transform: scale(1); } }
     @keyframes settle { 0% { filter: brightness(1.32); transform: scale(1.015); } 100% { filter: brightness(1); transform: scale(1); } }
+    @keyframes count-pulse { from { opacity: .15; transform: scale(1.32); } to { opacity: 1; transform: scale(1); } }
+    @keyframes firework { 0% { opacity: 0; transform: translate(0, 0) scale(.4) rotate(0); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.65) rotate(260deg); } }
+    @keyframes ribbon-in { from { opacity: 0; transform: translate(-50%, -22px) scale(.85); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
     @media (max-width: 800px) {
       .app { grid-template-rows: 59px minmax(0, 1fr) 82px; }
-      .brand small, .volume-label, .shortcuts { display: none; }
+      .brand small, .volume-label { display: none; }
       .brand-icon { width: 36px; height: 36px; font-size: 20px; }
       .volume { width: 75px; }
       .topbar, .controls { gap: 8px; padding: 7px 11px; }
       .slide-screen { padding: 8px; }
       .btn { min-height: 46px; padding: 9px 12px; }
       .step-count { display: none; }
-      .hero-marks { margin-bottom: 12px; }
     }
     @media (max-width: 520px) {
       .brand strong { font-size: 13px; }
@@ -154,7 +177,6 @@
       .btn-small { padding: 6px; font-size: 12px; }
       .slide-progress span { display: none; }
       .control-right { gap: 4px; }
-      .hero-note { font-size: 12px; }
     }
     @media (max-height: 600px) {
       .app { grid-template-rows: 54px minmax(0, 1fr) 70px; }
@@ -162,8 +184,6 @@
       .hero-symbol { font-size: 38px; margin: 0; }
       .hero-title { font-size: clamp(29px, 4.4vw, 49px); }
       .hero-desc { font-size: 17px; margin: 2px 0 9px; }
-      .hero-marks { margin-bottom: 9px; }
-      .hero-note { margin-top: 8px; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
@@ -173,7 +193,7 @@
     <header class="topbar">
       <div class="brand">
         <span class="brand-icon" aria-hidden="true">🕵️</span>
-        <div><strong>ปฏิบัติการนักสืบดนตรีไทย</strong><small>เกมเงาปริศนา · ขั้นนำเข้าสู่บทเรียน</small></div>
+        <div><strong>ปฏิบัติการนักสืบดนตรีไทย</strong><small>เกมเงาปริศนา</small></div>
       </div>
       <div class="audio-tools">
         <button id="muteBtn" class="btn btn-small" type="button" aria-label="ปิดเสียงทั้งหมด">🔊 เสียงเปิด</button>
@@ -189,10 +209,8 @@
           <span class="eyebrow">🔎 ภารกิจเปิดตัวนักสืบ</span>
           <span class="hero-symbol" aria-hidden="true">🕵️‍♂️</span>
           <h1 class="hero-title">เกมเงาปริศนา</h1>
-          <p class="hero-desc">มองภาพเงาให้ดี แล้วทายว่าเป็นเครื่องดนตรีอะไร!</p>
-          <div class="hero-marks"><span class="mark">4 ปริศนา</span><span class="mark">12 ภาพ</span><span class="mark">ครูควบคุมการเฉลย</span></div>
-          <button id="startBtn" class="btn btn-gold hero-cta" type="button">▶ เริ่มเกมเงาปริศนา</button>
-          <span class="hero-note">ครูเป็นผู้กดเปิดภาพและเฉลยทีละขั้น</span>
+          <p class="hero-desc">เงานี้คืออะไร?</p>
+          <button id="startBtn" class="btn btn-gold hero-cta" type="button">▶ เริ่มเกม</button>
         </div>
       </section>
 
@@ -202,6 +220,12 @@
           <div id="loading" class="load-overlay" role="status" aria-live="polite">
             <div><div class="spinner"></div>กำลังโหลดภาพปริศนา...</div>
           </div>
+          <div id="countdown" class="countdown-layer" hidden aria-live="assertive">
+            <div class="countdown-label">เตรียมเปิดเฉลยจริง!</div>
+            <div id="countdownNumber" class="countdown-number">3</div>
+          </div>
+          <div id="celebration" class="celebration" aria-hidden="true"></div>
+          <div id="successRibbon" class="success-ribbon" hidden>✨ ไขปริศนาสำเร็จ!</div>
         </div>
       </section>
 
@@ -209,13 +233,12 @@
         <div class="hero-card">
           <span class="eyebrow">✅ จบเกมเงาปริศนา</span>
           <span class="hero-symbol spark" aria-hidden="true">📁✨</span>
-          <h2 class="hero-title final-title">รวมทีมนักสืบสำเร็จ!</h2>
-          <p class="hero-desc">พร้อมเข้าสู่ภารกิจสืบสวนวงดนตรีไทย 3 คดี</p>
+          <h2 class="hero-title final-title">รวมทีมสำเร็จ!</h2>
+          <p class="hero-desc">พร้อมเข้าสู่ภารกิจสืบสวน 3 คดี</p>
           <div class="final-actions">
             <button id="againBtn" class="btn final-cta" type="button">↻ เล่นเกมเงาอีกครั้ง</button>
             <a href="index.html" class="btn btn-gold final-cta">▶ เข้าสู่ภารกิจหลัก</a>
           </div>
-          <span class="hero-note">ครูเป็นผู้เลือกว่าจะเริ่มภารกิจหลักเมื่อใด</span>
         </div>
       </section>
     </main>
@@ -249,6 +272,7 @@
     const bgm = $('bgm'), funny = $('funnySfx'), correct = $('correctSfx');
     const back = $('backBtn'), next = $('nextBtn');
     let view = 'intro', index = -1, soundOn = true, master = .70, currentSfx = null, requestId = 0;
+    let countdownActive = false, countdownTimer = null, fireworkTimer = null;
 
     function setView(which) {
       view = which;
@@ -262,7 +286,7 @@
         $('statusTitle').textContent = 'พร้อมเริ่มเกม';
         $('statusHint').textContent = 'สังเกต • ทาย • เปิดเฉลย';
       } else if (which === 'outro') {
-        $('statusTitle').textContent = 'ครบ 4 ปริศนา';
+        $('statusTitle').textContent = 'จบเกมแล้ว';
         $('statusHint').textContent = 'พร้อมเข้าภารกิจสืบสวน 3 คดี';
       }
     }
@@ -295,7 +319,68 @@
       sfx.addEventListener('error', () => { if (currentSfx === sfx) stopSfx(); });
     });
 
-    function showSlide(position, forward) {
+    function clearCelebration() {
+      clearTimeout(fireworkTimer);
+      $('celebration').replaceChildren();
+      $('successRibbon').hidden = true;
+    }
+    function celebrate() {
+      clearCelebration();
+      $('successRibbon').hidden = false;
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const layer = $('celebration');
+        const colors = ['#ffcf73', '#fff4b3', '#80d8d6', '#a7f1e5'];
+        for (let i = 0; i < 32; i++) {
+          const particle = document.createElement('i');
+          const angle = (i % 16) * Math.PI / 8;
+          const distance = 100 + (i % 4) * 26;
+          particle.style.setProperty('--x', i < 16 ? '24%' : '76%');
+          particle.style.setProperty('--y', i < 16 ? '31%' : '28%');
+          particle.style.setProperty('--dx', `${Math.cos(angle) * distance}px`);
+          particle.style.setProperty('--dy', `${Math.sin(angle) * distance}px`);
+          particle.style.setProperty('--c', colors[i % colors.length]);
+          layer.appendChild(particle);
+        }
+      }
+      fireworkTimer = setTimeout(clearCelebration, 1900);
+    }
+    function cancelCountdown() {
+      if (!countdownActive) return;
+      countdownActive = false;
+      clearTimeout(countdownTimer);
+      $('countdown').hidden = true;
+      next.disabled = false;
+      stopSfx();
+    }
+    function beginCountdown() {
+      if (countdownActive) return;
+      countdownActive = true;
+      next.disabled = true;
+      $('countdown').hidden = false;
+      // Load the answer before the countdown ends to keep the reveal seamless.
+      const preload = new Image();
+      preload.src = imageFolder + slides[index + 1];
+      playRevealEffect(2); // Drumroll begins while everyone waits for 3–2–1.
+      let seconds = 3;
+      const tick = () => {
+        $('countdownNumber').textContent = String(seconds);
+        countdownTimer = setTimeout(() => {
+          if (!countdownActive) return;
+          seconds--;
+          if (seconds) tick();
+          else {
+            countdownActive = false;
+            $('countdown').hidden = true;
+            next.disabled = false;
+            showSlide(index + 1, true, true);
+          }
+        }, 1000);
+      };
+      tick();
+    }
+
+    function showSlide(position, forward, preserveSfx = false) {
+      clearCelebration();
       index = position;
       setView('slide');
       const group = Math.floor(index / 3) + 1;
@@ -310,6 +395,7 @@
       photo.removeAttribute('src');
       const imagePath = imageFolder + slides[index];
       const token = ++requestId;
+      next.disabled = true;
       loading.hidden = false;
       loading.innerHTML = '<div><div class="spinner"></div>กำลังโหลดภาพปริศนา...</div>';
       const asset = new Image();
@@ -318,29 +404,35 @@
         photo.src = asset.src;
         photo.alt = `ปริศนาที่ ${group} ${names[phase]}`;
         loading.hidden = true;
+        next.disabled = false;
         requestAnimationFrame(() => photo.classList.add('ready'));
-        // Only going forward triggers a reveal effect; backtracking stays quiet.
-        if (forward && phase > 0) playRevealEffect(phase);
+        // The real-answer drumroll already started before the countdown.
+        if (forward && phase > 0 && !preserveSfx) playRevealEffect(phase);
+        if (forward && phase === 2) celebrate();
         if (index + 1 < slides.length) { const preload = new Image(); preload.src = imageFolder + slides[index + 1]; }
       };
       asset.onerror = () => {
         if (token !== requestId) return;
+        next.disabled = false;
         loading.innerHTML = `<div class="load-error">⚠️ โหลดภาพไม่สำเร็จ<code>${imagePath}</code><button class="btn btn-gold btn-small" id="retryBtn" type="button">↻ ลองใหม่</button></div>`;
         $('retryBtn').onclick = () => showSlide(index, false);
       };
       asset.src = imagePath;
-      if (!forward) stopSfx();
+      if (!forward && !preserveSfx) stopSfx();
     }
 
-    function startGame() { stopSfx(); playBgm(); showSlide(0, false); }
-    function finishGame() { requestId++; stopSfx(); setView('outro'); }
+    function startGame() { cancelCountdown(); stopSfx(); playBgm(); showSlide(0, false); }
+    function finishGame() { cancelCountdown(); clearCelebration(); requestId++; stopSfx(); setView('outro'); }
     function goForward() {
+      if (countdownActive) return;
       if (view === 'intro') return startGame();
       if (view === 'outro') { index = -1; setView('intro'); return; }
       if (index === slides.length - 1) return finishGame();
+      if (index % 3 === 1) return beginCountdown();
       stopSfx(); showSlide(index + 1, true);
     }
     function goBack() {
+      if (countdownActive) { cancelCountdown(); return; }
       if (view === 'outro') return showSlide(slides.length - 1, false);
       if (view !== 'slide') return;
       if (index === 0) { requestId++; stopSfx(); setView('intro'); return; }
@@ -376,7 +468,7 @@
       else if (event.key.toLowerCase() === 'f' && !event.ctrlKey && !event.altKey) $('fullscreenBtn').click();
     });
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) { stopSfx(); bgm.pause(); }
+      if (document.hidden) { cancelCountdown(); stopSfx(); bgm.pause(); }
       else if (soundOn && view !== 'intro') playBgm();
     });
     restoreBgm();
